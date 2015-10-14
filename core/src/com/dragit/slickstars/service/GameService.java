@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Line;
 import com.dragit.slickstars.game.MainGame;
+import com.dragit.slickstars.game.MainGame.BallDirection;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.listener.DragingListener;
 import com.dragit.slickstars.util.Art;
@@ -64,17 +65,18 @@ public class GameService {
 	private Ball ballPush(Ball ball) {
 		ball.setPosition(getRandomX(), game.HEIGHT + game.BALL_SIZE);
 		ball.isAlive = true;
+		ball.setDirection(BallDirection.NONE);
 		return ball;
 	}
 	
 	private void ballCreate() {
 		ballTimer.schedule(new TimerTask() {
-					
 			@Override
 			public void run() {
 				ballPush();
 			}
 		}, 0, TIME_CREATE_BALL);
+		
 		Logger.log(CLASS_NAME, "balls creating..");
 	}
 	
@@ -86,8 +88,19 @@ public class GameService {
 			ball.setY(ball.getY() - game.BALL_SPEED);
 		}
 		
+		if(ball.isDragged && ball.getDirection() != BallDirection.NONE) {
+			if(ball.getDirection() == BallDirection.LEFT) {
+				ball.setX(ball.getX() - game.DRAG_SPEED);
+			}
+			
+			if(ball.getDirection() == BallDirection.RIGHT) {
+				ball.setX(ball.getX() + game.DRAG_SPEED);
+			}
+		}
+		
 		if(isBallOut(ball)) { 
 			ball.isAlive = false;
+			ball.isDragged = false;
 			ballPush(ball);
 		}
 		return 1;
@@ -130,7 +143,7 @@ public class GameService {
 		}
 		
 		for(Line line : lines) {
-			line.getSprite().draw(game.batch);
+			line.draw(game.batch);
 		}
 	}
 	

@@ -16,6 +16,7 @@ public class MainGame extends Game {
 	public final int HEIGHT = 800;
 	public final float BALL_SIZE = 48f;
 	public final int BALL_SPEED = 2;
+	public final int DRAG_SPEED = 8;
 	
 	private OrthographicCamera camera;
 	
@@ -30,6 +31,12 @@ public class MainGame extends Game {
 		GAME_PLAY,
 		GAME_PAUSE,
 		GAME_END
+	}
+	
+	public enum BallDirection {
+		NONE,
+		LEFT,
+		RIGHT
 	}
 	
 	public GameStatus status = GameStatus.GAME_NONE;
