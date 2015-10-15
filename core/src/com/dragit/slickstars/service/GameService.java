@@ -56,7 +56,7 @@ public class GameService {
 	private Ball ballPush() {
 		Ball ball = null;
 		if(balls.size() < maxBalls) {
-			ball = new Ball(getRandomPos(0, game.WIDTH), game.HEIGHT - game.BALL_SIZE, game.BALL_SIZE, game.BALL_SIZE, new Sprite(Art.ballTexture));
+			ball = new Ball(getRandomPos(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, new Sprite(Art.ballTexture));
 			ball.addListener(new DragingListener()); 
 			game.stage.addActor(ball);
 			balls.add(ball);
@@ -66,7 +66,7 @@ public class GameService {
 	}
 	
 	private Ball ballPush(Ball ball) {
-		ball.setPosition(getRandomPos(0, game.WIDTH), game.HEIGHT - game.BALL_SIZE);
+		ball.setPosition(getRandomPos(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2);
 		ball.isAlive = true;
 		ball.setDirection(Direction.NONE);
 		return ball;
@@ -77,7 +77,7 @@ public class GameService {
 			if(!ball.isDragged) {
 				ball.isAlive = false;
 				//Particle.explossionEffect.getEmitters().first().setPosition(ball.getX(), ball.getY());
-				ballPush(ball);
+				ball.setY((0 - game.BALL_SIZE) * 2);
 			}
 		}
 	}
@@ -87,6 +87,15 @@ public class GameService {
 			@Override
 			public void run() {
 				ballPush();
+				
+				for(Ball ball : balls) {
+					if(isBallOut(ball)) { 
+						ball.isAlive = false;
+						ball.isDragged = false;
+						ballPush(ball);
+						break;
+					}
+				}
 			}
 		}, 0, TIME_CREATE_BALL);
 		
@@ -109,12 +118,6 @@ public class GameService {
 			if(ball.getDirection() == Direction.RIGHT) {
 				ball.setX(ball.getX() + game.DRAG_SPEED);
 			}
-		}
-		
-		if(isBallOut(ball)) { 
-			ball.isAlive = false;
-			ball.isDragged = false;
-			ballPush(ball);
 		}
 		return 1;
 	}
@@ -142,7 +145,7 @@ public class GameService {
 	private Line lineUpdate(Line line) {
 		float linePos = 0f;
 		int minPos = (int) game.BALL_SIZE * 2;
-		int maxPos = (int) (game.HEIGHT - LINE_HEIGHT);
+		int maxPos = (int) (game.HEIGHT - (game.HEIGHT / 4) - LINE_HEIGHT);
 		
 		linePos = getRandomPos(minPos, maxPos);
 		
