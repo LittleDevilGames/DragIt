@@ -9,6 +9,7 @@ import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.service.GameService;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Particle;
 
 public class GameScreen implements Screen {
 	private final String CLASS_NAME = "GameScreen";
@@ -25,6 +26,7 @@ public class GameScreen implements Screen {
 		camera.setToOrtho(false, game.WIDTH, game.HEIGHT);
 		
 		Art.load();
+		//Particle.load();
 		
 		gameService = new GameService(game);
 		Logger.log(CLASS_NAME, "started");

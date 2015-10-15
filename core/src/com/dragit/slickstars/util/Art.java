@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 public class Art {
-	
 	public static final String TEXTURE_PATH = "data/tex";
 	
 	public static Texture ballTexture;
@@ -17,6 +16,8 @@ public class Art {
 		try {
 			ballTexture = loadTexture(TEXTURE_PATH + File.separator + "ball.png");
 			lineTexture = loadTexture(TEXTURE_PATH + File.separator + "line.png");
+			
+			Logger.log("Art", "textures loaded");
 		}
 		catch(GdxRuntimeException e) {
 			System.err.println("Error loading texture file - " + e.getMessage());

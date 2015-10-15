@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Particle;
 
 public class MainGame extends Game {
 	private final String CLASS_NAME = "MainGame";
@@ -33,10 +34,12 @@ public class MainGame extends Game {
 		GAME_END
 	}
 	
-	public enum BallDirection {
+	public enum Direction {
 		NONE,
 		LEFT,
-		RIGHT
+		RIGHT,
+		UP,
+		DOWN
 	}
 	
 	public GameStatus status = GameStatus.GAME_NONE;
@@ -73,6 +76,8 @@ public class MainGame extends Game {
 		font.dispose();
 		stage.dispose();
 		Art.dispose();
+		//Particle.dispose();
+		
 		Logger.log(CLASS_NAME, "disposed");
 	}
 }

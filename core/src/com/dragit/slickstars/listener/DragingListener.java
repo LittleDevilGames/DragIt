@@ -3,7 +3,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.dragit.slickstars.entity.Ball;
-import com.dragit.slickstars.game.MainGame.BallDirection;
+import com.dragit.slickstars.game.MainGame.Direction;
 
 public class DragingListener extends DragListener {
 	
@@ -17,10 +17,10 @@ public class DragingListener extends DragListener {
 		super.drag(event, x, y, pointer);
 		Ball b = (Ball) event.getTarget();
 		
-		BallDirection direction = getDragDirection(b, DRAG_POWER);
+		Direction direction = getDragDirection(b, DRAG_POWER);
 		b.setDirection(direction);
 		
-		if(direction != BallDirection.NONE) {
+		if(direction != Direction.NONE) {
 			b.isDragged = true;
 		}
 		
@@ -32,13 +32,13 @@ public class DragingListener extends DragListener {
 		//Ball b = (Ball) event.getTarget();
 	}
 	
-	private BallDirection getDragDirection(Ball ball, int power) {
+	private Direction getDragDirection(Ball ball, int power) {
 		if(getDeltaX() > power) {
-			return BallDirection.LEFT;
+			return Direction.LEFT;
 		}
 		else if(getDeltaX() < -power) {
-			return BallDirection.RIGHT;
+			return Direction.RIGHT;
 		}
-		return BallDirection.NONE;
+		return Direction.NONE;
 	}
 }
