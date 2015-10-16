@@ -24,9 +24,6 @@ public class Countdown extends TimerTask {
 					partOfTime--;
 				}
 			}
-			else {
-				pauseState = true;
-			}
 		}
 	}
 	

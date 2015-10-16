@@ -53,8 +53,10 @@ public class GameService {
 		lineTimer();
 		ballTimer();
 		
+		pause(false);
 		game.score = 0;
 		game.status = GameStatus.GAME_PLAY;
+		
 		Logger.log(CLASS_NAME, "started");
 	}
 	
@@ -218,52 +220,46 @@ public class GameService {
 		if(Particle.explossionEffect.isComplete()) {
 			Particle.explossionEffect.reset();
 		}*/
+
+		for(Ball ball : balls) {
+			ballUpdate(ball);
+		}
 		
-		if(!MainGame.isPause) {
-			
-			for(Ball ball : balls) {
-				ballUpdate(ball);
-			}
-			
-			for(Line line : lines) {
-				line.draw(game.batch);
+		for(Line line : lines) {
+			line.draw(game.batch);
 				
-				if(line.getDirection() == Direction.UP) {
-					if(line.getY() < line.target.y) {
-						line.setY(line.getY() + (game.DRAG_SPEED * 2));
-					}
-					else {
-						line.setDirection(Direction.NONE);
-					}
+			if(line.getDirection() == Direction.UP) {
+				if(line.getY() < line.target.y) {
+					line.setY(line.getY() + (game.DRAG_SPEED * 2));
 				}
-				else if(line.getDirection() == Direction.DOWN) {
-					if(line.getY() > line.target.y) {
-						line.setY(line.getY() - (game.DRAG_SPEED * 2));
-					}
-					else {
-						line.setDirection(Direction.NONE);
-					}
+				else {
+					line.setDirection(Direction.NONE);
 				}
 			}
-			
-			if(countdown.getPartOfTime() < 1 && !countdown.isPause()) {
-				game.setDifficult(game.getDifficult() + 1);
-				countdown.setPartOfTime(partOfTime);
-				Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
+			else if(line.getDirection() == Direction.DOWN) {
+				if(line.getY() > line.target.y) {
+					line.setY(line.getY() - (game.DRAG_SPEED * 2));
+				}
+				else {
+					line.setDirection(Direction.NONE);
+				}
 			}
+		}
 			
-			game.font.draw(game.batch, "Score " + game.score, game.WIDTH - (game.WIDTH / 4), game.HEIGHT - 30f);
-			game.font.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 4, game.HEIGHT - 30f);
+		if(countdown.getPartOfTime() < 1 && !countdown.isPause()) {
+			game.setDifficult(game.getDifficult() + 1);
+			countdown.setPartOfTime(partOfTime);
+			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
 		}
-		else {
-			game.font.draw(game.batch, "PAUSE", game.WIDTH / 2, game.HEIGHT / 2);
-		}
+			
+		game.font.draw(game.batch, "Score " + game.score, game.WIDTH - (game.WIDTH / 4), game.HEIGHT - 30f);
+		game.font.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 4, game.HEIGHT - 30f);
 	}
 	
 	public void pause(boolean pause) {
 		MainGame.isPause = pause;
 		countdown.setPause(pause);
-		
+		Logger.log(CLASS_NAME, "game pause " + pause);
 	}
 	
 	public void dispose() {

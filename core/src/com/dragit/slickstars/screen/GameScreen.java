@@ -27,7 +27,6 @@ public class GameScreen implements Screen {
 		Art.load();
 		//Particle.load();
 		
-		MainGame.isPause = false;
 		gameService = new GameService(game);
 		Logger.log(CLASS_NAME, "started");
 	}
@@ -48,8 +47,12 @@ public class GameScreen implements Screen {
 		
 		game.batch.begin();
 		
-		gameService.update(delta);
-
+		if(!MainGame.isPause) {
+			gameService.update(delta);
+		}
+		else {
+			game.font.draw(game.batch, "PAUSE", game.WIDTH / 2, game.HEIGHT / 2);
+		}
 		game.batch.end();
 		
 		game.stage.act(delta);
