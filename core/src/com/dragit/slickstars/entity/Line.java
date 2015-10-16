@@ -54,6 +54,14 @@ public class Line {
 		sprite.setY(y);
 	}
 	
+	public float getWidth() {
+		return this.sprite.getWidth();
+	}
+	
+	public float getHeight() {
+		return this.sprite.getHeight();
+	}
+	
 	public Direction getDirection() {
 		return direction;
 	}

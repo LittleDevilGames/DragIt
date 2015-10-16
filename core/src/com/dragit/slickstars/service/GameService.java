@@ -7,7 +7,6 @@ import java.util.TimerTask;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Line;
 import com.dragit.slickstars.game.MainGame;
@@ -16,7 +15,6 @@ import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.listener.DragingListener;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Logger;
-import com.dragit.slickstars.util.Particle;
 
 public class GameService {
 	private final String CLASS_NAME = "GameService";
@@ -72,14 +70,31 @@ public class GameService {
 		return ball;
 	}
 	
-	private void ballReset() {
-		for(Ball ball : balls) {
-			if(!ball.isDragged) {
-				ball.isAlive = false;
-				//Particle.explossionEffect.getEmitters().first().setPosition(ball.getX(), ball.getY());
-				ball.setY((0 - game.BALL_SIZE) * 2);
+	private int ballReset() {
+		if(lines.isEmpty()) return 0;
+		
+		try {
+			Line line = lines.get(lines.size()-1);
+			for(Ball ball : balls) {
+				if(!ball.isDragged) {
+					if((line.getY() + LINE_HEIGHT) > ball.getY()) {
+						ball.isAlive = false;
+						//Particle.explossionEffect.getEmitters().first().setPosition(ball.getX(), ball.getY());
+						ball.setY((0 - game.BALL_SIZE) * 2);
+					}
+				}
 			}
 		}
+		catch(NullPointerException e) {
+			Gdx.app.error("ERROR", "Error null: " + e);
+		}
+		catch(ArrayIndexOutOfBoundsException e) {
+			Gdx.app.error("ERROR", "Error array: " + e);
+		}
+		catch(Exception e) {
+			Gdx.app.error("ERROR", "Error: " + e);
+		}
+		return 1;
 	}
 	
 	private void ballTimer() {
@@ -132,10 +147,10 @@ public class GameService {
 		lineTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				ballReset();
 				for(Line line : lines) {
 					lineUpdate(line);
 				}
+				ballReset();
 			}
 		}, 0, TIME_CREATE_LINE);
 		
