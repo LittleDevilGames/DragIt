@@ -16,9 +16,9 @@ public class DragingListener extends DragListener {
 	public void drag (InputEvent event, float x, float y, int pointer) {
 		super.drag(event, x, y, pointer);
 		Ball b = (Ball) event.getTarget();
-		Direction direction;
 		
 		if(!b.isDragged) {
+			Direction direction;
 			direction = getDragDirection(b, DRAG_POWER);
 			if(direction != Direction.NONE) {
 				b.setDirection(direction);

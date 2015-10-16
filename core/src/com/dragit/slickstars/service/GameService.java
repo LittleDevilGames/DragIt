@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Line;
+import com.dragit.slickstars.game.Countdown;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.GameStatus;
@@ -26,19 +27,24 @@ public class GameService {
 	private final float LINE_HEIGHT = 48f;
 	private final int TIME_CREATE_BALL = 1000;
 	private final int TIME_CREATE_LINE = 4500;
+	private final int DRAG_SCORE = 50;
 	
 	private Timer ballTimer;
 	private Timer lineTimer;
+	private Timer countDownTimer;
 	private int maxBalls;
+	private Countdown countdown;
+	private int partOfTime;
 	
 	public GameService(MainGame game) {
 		this.game = game;
 		this.balls = new ArrayList<Ball>();
 		this.lines = new ArrayList<Line>();
 		
+		game.setDifficult(1);
+		startCountdown();
 		this.ballTimer = new Timer();
 		this.lineTimer = new Timer();
-		game.setDifficult(1);
 		this.maxBalls = game.getDifficult() * 5;
 		
 		Gdx.input.setInputProcessor(game.stage);
@@ -47,8 +53,16 @@ public class GameService {
 		lineTimer();
 		ballTimer();
 		
+		game.score = 0;
 		game.status = GameStatus.GAME_PLAY;
 		Logger.log(CLASS_NAME, "started");
+	}
+	
+	private void startCountdown() {
+		partOfTime = game.GAME_TIME / 4;
+		countdown = new Countdown(game.GAME_TIME, partOfTime);
+		countDownTimer = new Timer();
+		countDownTimer.schedule(countdown, 0, 1000);
 	}
 	
 	private Ball ballPush() {
@@ -126,6 +140,7 @@ public class GameService {
 		}
 		
 		if(ball.isDragged && ball.getDirection() != Direction.NONE) {
+			game.score += DRAG_SCORE * game.getDifficult();
 			if(ball.getDirection() == Direction.LEFT) {
 				ball.setX(ball.getX() - game.DRAG_SPEED);
 			}
@@ -228,6 +243,15 @@ public class GameService {
 				}
 			}
 		}
+		
+		if(countdown.getPartOfTime() < 1 && countdown.getTime() > 1) {
+			game.setDifficult(game.getDifficult() + 1);
+			countdown.setPartOfTime(partOfTime);
+			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
+		}
+		
+		game.font.draw(game.batch, "Score " + game.score, game.WIDTH - (game.WIDTH / 4), game.HEIGHT - 30f);
+		game.font.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 4, game.HEIGHT - 30f);
 	}
 	
 	public void dispose() {

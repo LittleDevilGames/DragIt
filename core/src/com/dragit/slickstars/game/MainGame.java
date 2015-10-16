@@ -17,6 +17,8 @@ public class MainGame extends Game {
 	public final float BALL_SIZE = 56f;
 	public final int BALL_SPEED = 4;
 	public final int DRAG_SPEED = 15;
+	public final int GAME_TIME = 60;
+	public final int MAX_DIFFICULTS = 4;
 	
 	private OrthographicCamera camera;
 	
@@ -25,6 +27,8 @@ public class MainGame extends Game {
 	public SpriteBatch batch;
 	public Stage stage;
 	public BitmapFont font;
+	
+	public int score;
 	
 	public enum GameStatus {
 		GAME_NONE,
