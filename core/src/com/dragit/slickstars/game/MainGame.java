@@ -14,7 +14,7 @@ public class MainGame extends Game {
 	
 	public final int WIDTH = 480;
 	public final int HEIGHT = 800;
-	public final float BALL_SIZE = 48f;
+	public final float BALL_SIZE = 56f;
 	public final int BALL_SPEED = 4;
 	public final int DRAG_SPEED = 15;
 	
