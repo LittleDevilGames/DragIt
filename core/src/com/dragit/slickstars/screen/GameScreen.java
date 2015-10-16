@@ -27,6 +27,7 @@ public class GameScreen implements Screen {
 		Art.load();
 		//Particle.load();
 		
+		MainGame.isPause = false;
 		gameService = new GameService(game);
 		Logger.log(CLASS_NAME, "started");
 	}

@@ -24,11 +24,18 @@ public class Countdown extends TimerTask {
 					partOfTime--;
 				}
 			}
+			else {
+				pauseState = true;
+			}
 		}
 	}
 	
 	public void setPause(boolean state) {
 		this.pauseState = state;
+	}
+	
+	public boolean isPause() {
+		return this.pauseState;
 	}
 
 	public int getTime() {

@@ -219,39 +219,51 @@ public class GameService {
 			Particle.explossionEffect.reset();
 		}*/
 		
-		for(Ball ball : balls) {
-			ballUpdate(ball);
-		}
-		
-		for(Line line : lines) {
-			line.draw(game.batch);
+		if(!MainGame.isPause) {
 			
-			if(line.getDirection() == Direction.UP) {
-				if(line.getY() < line.target.y) {
-					line.setY(line.getY() + (game.DRAG_SPEED * 2));
+			for(Ball ball : balls) {
+				ballUpdate(ball);
+			}
+			
+			for(Line line : lines) {
+				line.draw(game.batch);
+				
+				if(line.getDirection() == Direction.UP) {
+					if(line.getY() < line.target.y) {
+						line.setY(line.getY() + (game.DRAG_SPEED * 2));
+					}
+					else {
+						line.setDirection(Direction.NONE);
+					}
 				}
-				else {
-					line.setDirection(Direction.NONE);
+				else if(line.getDirection() == Direction.DOWN) {
+					if(line.getY() > line.target.y) {
+						line.setY(line.getY() - (game.DRAG_SPEED * 2));
+					}
+					else {
+						line.setDirection(Direction.NONE);
+					}
 				}
 			}
-			else if(line.getDirection() == Direction.DOWN) {
-				if(line.getY() > line.target.y) {
-					line.setY(line.getY() - (game.DRAG_SPEED * 2));
-				}
-				else {
-					line.setDirection(Direction.NONE);
-				}
+			
+			if(countdown.getPartOfTime() < 1 && !countdown.isPause()) {
+				game.setDifficult(game.getDifficult() + 1);
+				countdown.setPartOfTime(partOfTime);
+				Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
 			}
+			
+			game.font.draw(game.batch, "Score " + game.score, game.WIDTH - (game.WIDTH / 4), game.HEIGHT - 30f);
+			game.font.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 4, game.HEIGHT - 30f);
 		}
-		
-		if(countdown.getPartOfTime() < 1 && countdown.getTime() > 1) {
-			game.setDifficult(game.getDifficult() + 1);
-			countdown.setPartOfTime(partOfTime);
-			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
+		else {
+			game.font.draw(game.batch, "PAUSE", game.WIDTH / 2, game.HEIGHT / 2);
 		}
+	}
+	
+	public void pause(boolean pause) {
+		MainGame.isPause = pause;
+		countdown.setPause(pause);
 		
-		game.font.draw(game.batch, "Score " + game.score, game.WIDTH - (game.WIDTH / 4), game.HEIGHT - 30f);
-		game.font.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 4, game.HEIGHT - 30f);
 	}
 	
 	public void dispose() {

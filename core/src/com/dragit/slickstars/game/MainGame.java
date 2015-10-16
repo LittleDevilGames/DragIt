@@ -29,6 +29,7 @@ public class MainGame extends Game {
 	public BitmapFont font;
 	
 	public int score;
+	public static boolean isPause;
 	
 	public enum GameStatus {
 		GAME_NONE,
