@@ -8,7 +8,7 @@ import com.dragit.slickstars.game.MainGame.Direction;
 
 public class DragingListener extends DragListener {
 	
-	private final int DRAG_POWER = 5;
+	private final int DRAG_POWER = 3;
 	
 	public DragingListener() {
 		this.setTapSquareSize(128f);
@@ -43,6 +43,12 @@ public class DragingListener extends DragListener {
 		}
 		else if(getDeltaX() < -power) {
 			return Direction.RIGHT;
+		}
+		else if(getDeltaY() > power) {
+			return Direction.UP;
+		}
+		else if(getDeltaY() < -power) {
+			return Direction.DOWN;
 		}
 		return Direction.NONE;
 	}

@@ -7,14 +7,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
+import javafx.scene.shape.Rectangle;
+
 public class Art {
 	public static final String TEXTURE_PATH = "data/tex";
 	
 	public static HashMap<String, Texture> textures;
+	public static Rectangle leftSide;
+	public static Rectangle rightSide;
 	
 	public static void load() {
 		textures = new HashMap<String, Texture>();
 		try {
+			leftSide = new Rectangle();
+			rightSide = new Rectangle();
+			
 			textures.put("leftBallTexture", loadTexture(TEXTURE_PATH + File.separator + "ball-left.png"));
 			textures.put("rightBallTexture", loadTexture(TEXTURE_PATH + File.separator + "ball-right.png"));
 			textures.put("upBallTexture", loadTexture(TEXTURE_PATH + File.separator + "ball-up.png"));

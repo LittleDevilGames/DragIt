@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Line;
 import com.dragit.slickstars.game.Countdown;
@@ -17,6 +18,7 @@ import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.listener.DragingListener;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Logger;
+import com.sun.prism.impl.shape.ShapeRasterizer;
 
 public class GameService {
 	private final String CLASS_NAME = "GameService";
@@ -45,7 +47,7 @@ public class GameService {
 		
 		this.ballTextures = new ArrayList<String>();
 		getBallTextures();
-		
+
 		game.setDifficult(1);
 		startCountdown();
 		this.ballTimer = new Timer();
@@ -166,12 +168,18 @@ public class GameService {
 		
 		if(ball.isDragged && ball.getDirection() != Direction.NONE) {
 			game.score += DRAG_SCORE * game.getDifficult();
+			
 			if(ball.getDirection() == Direction.LEFT) {
 				ball.setX(ball.getX() - game.DRAG_SPEED);
 			}
-			
 			if(ball.getDirection() == Direction.RIGHT) {
 				ball.setX(ball.getX() + game.DRAG_SPEED);
+			}
+			if(ball.getDirection() == Direction.UP) {
+				ball.setY(ball.getY() - game.DRAG_SPEED);
+			}
+			if(ball.getDirection() == Direction.DOWN) {
+				ball.setY(ball.getY() + game.DRAG_SPEED);
 			}
 		}
 		return 1;
@@ -243,7 +251,7 @@ public class GameService {
 		if(Particle.explossionEffect.isComplete()) {
 			Particle.explossionEffect.reset();
 		}*/
-
+		
 		for(Ball ball : balls) {
 			ballUpdate(ball);
 		}

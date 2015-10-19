@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.service.GameService;
@@ -16,6 +18,7 @@ public class GameScreen implements Screen {
 	private MainGame game;
 	private OrthographicCamera camera;
 	private GameService gameService;
+	private ShapeRenderer shapeRenderer;
 	
 	public GameScreen(MainGame game) {
 		this.game = game;
@@ -24,6 +27,7 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, game.WIDTH, game.HEIGHT);
 		
+		shapeRenderer = new ShapeRenderer();
 		Art.load();
 		//Particle.load();
 		
@@ -44,7 +48,14 @@ public class GameScreen implements Screen {
 		
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
+		shapeRenderer.setProjectionMatrix(camera.combined);
 		
+		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.setColor(0, 1, 0, 1);
+		shapeRenderer.rect(0, 0, 10, game.HEIGHT);
+		shapeRenderer.rect(game.WIDTH - 10, 0, 10, game.HEIGHT);
+		shapeRenderer.end();
+		 
 		game.batch.begin();
 		
 		if(!MainGame.isPause) {
