@@ -1,6 +1,7 @@
 package com.dragit.slickstars.util;
 
 import java.io.File;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,13 +10,16 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 public class Art {
 	public static final String TEXTURE_PATH = "data/tex";
 	
-	public static Texture ballTexture;
-	public static Texture lineTexture;
+	public static HashMap<String, Texture> textures;
 	
 	public static void load() {
+		textures = new HashMap<String, Texture>();
 		try {
-			ballTexture = loadTexture(TEXTURE_PATH + File.separator + "ball.png");
-			lineTexture = loadTexture(TEXTURE_PATH + File.separator + "line.png");
+			textures.put("leftBallTexture", loadTexture(TEXTURE_PATH + File.separator + "ball-left.png"));
+			textures.put("rightBallTexture", loadTexture(TEXTURE_PATH + File.separator + "ball-right.png"));
+			textures.put("upBallTexture", loadTexture(TEXTURE_PATH + File.separator + "ball-up.png"));
+			textures.put("downBallTexture", loadTexture(TEXTURE_PATH + File.separator + "ball-down.png"));
+			textures.put("lineTexture", loadTexture(TEXTURE_PATH + File.separator + "line.png"));
 			
 			Logger.log("Art", "textures loaded");
 		}
@@ -27,13 +31,18 @@ public class Art {
 		}
 	}
 	
+	public static Texture get(String textureName) {
+		return textures.get(textureName);
+	}
+	
 	public static Texture loadTexture(String path) {
 		 Texture texture = new Texture(Gdx.files.internal(path));
 		 return texture;
 	}
 	
 	public static void dispose() {
-		ballTexture.dispose();
-		lineTexture.dispose();
+		for(Texture tex : textures.values()) {
+			tex.dispose();
+		}
 	}
 }

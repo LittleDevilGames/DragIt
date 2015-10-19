@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Line;
@@ -35,11 +36,15 @@ public class GameService {
 	private int maxBalls;
 	private Countdown countdown;
 	private int partOfTime;
+	private ArrayList<String> ballTextures;
 	
 	public GameService(MainGame game) {
 		this.game = game;
 		this.balls = new ArrayList<Ball>();
 		this.lines = new ArrayList<Line>();
+		
+		this.ballTextures = new ArrayList<String>();
+		getBallTextures();
 		
 		game.setDifficult(1);
 		startCountdown();
@@ -60,6 +65,16 @@ public class GameService {
 		Logger.log(CLASS_NAME, "started");
 	}
 	
+	private void getBallTextures() {
+		if(!Art.textures.isEmpty()) {
+			for(String texName : Art.textures.keySet()) {
+				if(texName.contains("Ball")) {
+					ballTextures.add(texName);
+				}
+			}
+		}
+	}
+	
 	private void startCountdown() {
 		partOfTime = game.GAME_TIME / 4;
 		countdown = new Countdown(game.GAME_TIME, partOfTime);
@@ -67,10 +82,18 @@ public class GameService {
 		countDownTimer.schedule(countdown, 0, 1000);
 	}
 	
+	private Texture getRandomBall() {
+		Random rand = new Random();
+		int idx = rand.nextInt(ballTextures.size());
+		String texName = ballTextures.get(idx);
+		return Art.textures.get(texName);
+	}
+	
 	private Ball ballPush() {
 		Ball ball = null;
 		if(balls.size() < maxBalls) {
-			ball = new Ball(getRandomPos(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, new Sprite(Art.ballTexture));
+			Sprite sprite = new Sprite(getRandomBall());
+			ball = new Ball(getRandomPos(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, sprite);
 			ball.addListener(new DragingListener()); 
 			game.stage.addActor(ball);
 			balls.add(ball);
@@ -155,7 +178,7 @@ public class GameService {
 	}
 	
 	private void lineAdd() {
-		Line line = new Line(0f, 0f, game.WIDTH, LINE_HEIGHT, new Sprite(Art.lineTexture));
+		Line line = new Line(0f, 0f, game.WIDTH, LINE_HEIGHT, new Sprite(Art.get("lineTexture")));
 		line = lineUpdate(line);
 		lines.add(line);
 	}
@@ -176,8 +199,8 @@ public class GameService {
 	
 	private Line lineUpdate(Line line) {
 		float linePos = 0f;
-		int minPos = (int) game.BALL_SIZE * 2;
-		int maxPos = (int) (game.HEIGHT - (game.HEIGHT / 4) - LINE_HEIGHT);
+		int minPos = (int) (game.HEIGHT / 4);
+		int maxPos = (int) ((game.HEIGHT - (game.HEIGHT / 4)) - LINE_HEIGHT);
 		
 		linePos = getRandomPos(minPos, maxPos);
 		
@@ -200,7 +223,7 @@ public class GameService {
 	
 	private float getRandomPos(int min, int max) {
 		float pos = 0;
-		pos = new Random().nextInt(max - min + 1);
+		pos = new Random().nextInt(max - min) + min;
 		return pos;
 	}
 	
