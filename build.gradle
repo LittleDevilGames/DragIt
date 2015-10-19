@@ -56,7 +56,7 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
     }
 }
-
+/*
 project(":ios") {
     apply plugin: "java"
     apply plugin: "robovm"
@@ -84,7 +84,7 @@ project(":html") {
         compile "net.dermetfan.libgdx-utils:libgdx-utils:0.13.1:sources"
     }
 }
-
+*/
 project(":core") {
     apply plugin: "java"
 
