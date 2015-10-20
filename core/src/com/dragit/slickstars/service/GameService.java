@@ -37,7 +37,7 @@ public class GameService {
 	private Timer lineTimer;
 	private Timer countDownTimer;
 	private int maxBalls;
-	private Countdown countdown;
+	protected Countdown countdown;
 	private int partOfTime;
 	private ArrayList<Border> sides;
 	
@@ -58,8 +58,8 @@ public class GameService {
 		
 		Gdx.input.setInputProcessor(game.stage);
 		
-		lineAdd();
-		lineTimer();
+		//lineAdd();
+		//lineTimer();
 		ballTimer();
 		
 		pause(false);
@@ -269,7 +269,7 @@ public class GameService {
 			ballUpdate(ball);
 		}
 		
-		for(Line line : lines) {
+		/*for(Line line : lines) {
 			line.draw(game.batch);
 				
 			if(line.getDirection() == Direction.UP) {
@@ -288,7 +288,7 @@ public class GameService {
 					line.setDirection(Direction.NONE);
 				}
 			}
-		}
+		}*/
 			
 		if(countdown.getPartOfTime() < 1 && !countdown.isPause()) {
 			game.setDifficult(game.getDifficult() + 1);

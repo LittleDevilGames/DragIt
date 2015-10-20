@@ -10,8 +10,6 @@ import com.dragit.slickstars.service.GameService;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Logger;
 
-import sun.applet.Main;
-
 public class GameScreen implements Screen {
 	private final String CLASS_NAME = "GameScreen";
 	
