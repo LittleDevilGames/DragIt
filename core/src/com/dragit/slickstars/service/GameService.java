@@ -6,9 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Line;
 import com.dragit.slickstars.game.Countdown;
@@ -18,7 +16,6 @@ import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.listener.DragingListener;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Logger;
-import com.sun.prism.impl.shape.ShapeRasterizer;
 
 public class GameService {
 	private final String CLASS_NAME = "GameService";
@@ -38,16 +35,12 @@ public class GameService {
 	private int maxBalls;
 	private Countdown countdown;
 	private int partOfTime;
-	private ArrayList<String> ballTextures;
 	
 	public GameService(MainGame game) {
 		this.game = game;
 		this.balls = new ArrayList<Ball>();
 		this.lines = new ArrayList<Line>();
 		
-		this.ballTextures = new ArrayList<String>();
-		getBallTextures();
-
 		game.setDifficult(1);
 		startCountdown();
 		this.ballTimer = new Timer();
@@ -67,34 +60,17 @@ public class GameService {
 		Logger.log(CLASS_NAME, "started");
 	}
 	
-	private void getBallTextures() {
-		if(!Art.textures.isEmpty()) {
-			for(String texName : Art.textures.keySet()) {
-				if(texName.contains("Ball")) {
-					ballTextures.add(texName);
-				}
-			}
-		}
-	}
-	
 	private void startCountdown() {
 		partOfTime = game.GAME_TIME / 4;
 		countdown = new Countdown(game.GAME_TIME, partOfTime);
 		countDownTimer = new Timer();
 		countDownTimer.schedule(countdown, 0, 1000);
 	}
-	
-	private Texture getRandomBall() {
-		Random rand = new Random();
-		int idx = rand.nextInt(ballTextures.size());
-		String texName = ballTextures.get(idx);
-		return Art.textures.get(texName);
-	}
-	
+
 	private Ball ballPush() {
 		Ball ball = null;
 		if(balls.size() < maxBalls) {
-			Sprite sprite = new Sprite(getRandomBall());
+			Sprite sprite = new Sprite(Art.get("ballTexture"));
 			ball = new Ball(getRandomPos(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, sprite);
 			ball.addListener(new DragingListener()); 
 			game.stage.addActor(ball);
