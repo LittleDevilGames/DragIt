@@ -93,6 +93,7 @@ public class GameService {
 	private Ball ballPush(Ball ball) {
 		ball.setPosition(getRandomPos(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2);
 		ball.isAlive = true;
+		ball.isDragged = false;
 		ball.setDirection(Direction.NONE);
 		return ball;
 	}
@@ -163,16 +164,6 @@ public class GameService {
 		
 		if(game.status != GameStatus.GAME_PLAY) return 0;
 		
-		if(ball.isDragged && ball.isAlive) {
-			ball.isDragged = false;
-			
-			if(isBallOut(ball)) {
-				ball.isAlive = false;
-			}
-			
-			ballCheckSide(ball);
-		}
-		
 		if(ball.isAlive && ball.isDragged == false) {
 			ball.setY(ball.getY() - game.BALL_SPEED);
 		}
@@ -184,6 +175,16 @@ public class GameService {
 			if(ball.getDirection() == Direction.RIGHT) {
 				ball.setX(ball.getX() + game.DRAG_SPEED);
 			}
+		}
+		
+		if(ball.isDragged && ball.isAlive) {
+			
+			if(isBallOut(ball)) {
+				ball.isDragged = false;
+				ball.isAlive = false;
+			}
+			
+			ballCheckSide(ball);
 		}
 		return 1;
 	}
@@ -248,6 +249,14 @@ public class GameService {
 		return false;
 	}
 	
+	public void render(float delta) {
+		game.shapeRenderer.begin(ShapeType.Filled);
+		for(Border side : sides) {
+			game.shapeRenderer.rect(side.position.x, side.position.y, side.getWidth(), side.getHeight(), side.getColor(), side.getColor(), side.getColor(), side.getColor());
+		}
+		game.shapeRenderer.end();
+	}
+	
 	public void update(float delta) {
 		/*Particle.explossionEffect.draw(game.batch, delta);
 		
@@ -255,11 +264,6 @@ public class GameService {
 			Particle.explossionEffect.reset();
 		}*/
 		
-		game.shapeRenderer.begin(ShapeType.Filled);
-		for(Border side : sides) {
-			game.shapeRenderer.rect(side.position.x, side.position.y, side.getWidth(), side.getHeight(), side.getColor(), side.getColor(), side.getColor(), side.getColor());
-		}
-		game.shapeRenderer.end();
 		
 		for(Ball ball : balls) {
 			ballUpdate(ball);
