@@ -6,8 +6,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.dragit.slickstars.entity.Ball;
+import com.dragit.slickstars.entity.Border;
 import com.dragit.slickstars.entity.Line;
 import com.dragit.slickstars.game.Countdown;
 import com.dragit.slickstars.game.MainGame;
@@ -35,6 +39,7 @@ public class GameService {
 	private int maxBalls;
 	private Countdown countdown;
 	private int partOfTime;
+	private ArrayList<Border> sides;
 	
 	public GameService(MainGame game) {
 		this.game = game;
@@ -46,6 +51,10 @@ public class GameService {
 		this.ballTimer = new Timer();
 		this.lineTimer = new Timer();
 		this.maxBalls = game.getDifficult() * 5;
+		
+		this.sides = new ArrayList<Border>();
+		this.sides.add(new Border(new Vector2(0, 0), 10, game.HEIGHT, Color.GREEN));
+		this.sides.add(new Border(new Vector2(game.WIDTH - 10, 0), 10, game.HEIGHT, Color.RED));
 		
 		Gdx.input.setInputProcessor(game.stage);
 		
@@ -227,6 +236,12 @@ public class GameService {
 		if(Particle.explossionEffect.isComplete()) {
 			Particle.explossionEffect.reset();
 		}*/
+		
+		game.shapeRenderer.begin(ShapeType.Filled);
+		for(Border side : sides) {
+			game.shapeRenderer.rect(side.position.x, side.position.y, side.getWidth(), side.getHeight(), side.getColor(), side.getColor(), side.getColor(), side.getColor());
+		}
+		game.shapeRenderer.end();
 		
 		for(Ball ball : balls) {
 			ballUpdate(ball);

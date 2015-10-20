@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
@@ -27,6 +28,7 @@ public class MainGame extends Game {
 	public SpriteBatch batch;
 	public Stage stage;
 	public BitmapFont font;
+	public ShapeRenderer shapeRenderer;
 	
 	public int score;
 	public static boolean isPause;
@@ -55,6 +57,7 @@ public class MainGame extends Game {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
 		stage = new Stage();
+		shapeRenderer = new ShapeRenderer();
 		
 		this.setScreen(new MenuScreen(this));
 		Logger.log(CLASS_NAME, "started");
