@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.service.GameService;
@@ -45,7 +43,6 @@ public class GameScreen implements Screen {
 		
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
-		game.shapeRenderer.setProjectionMatrix(camera.combined);
 		
 		game.batch.begin();
 		

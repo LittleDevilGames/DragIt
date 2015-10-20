@@ -13,10 +13,12 @@ public class Ball extends Actor {
 	private Sprite sprite;
 	public boolean isAlive;
 	private Direction direction;
+	private Color color;
 	
-	public Ball(float x, float y, float w, float h, Sprite sprite) {
+	public Ball(float x, float y, float w, float h, Color color, Sprite sprite) {
 		this.sprite = sprite;
 		this.sprite.setBounds(x, y, w, h);
+		this.color = color;
 		this.setBounds(x, y, w, h);
 		this.defaultColor = sprite.getColor();
 		this.isDragged = false;
@@ -62,5 +64,13 @@ public class Ball extends Actor {
 
 	public void setDirection(Direction direction) {
 		this.direction = direction;
+	}
+	
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 }

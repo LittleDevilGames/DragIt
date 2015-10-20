@@ -53,8 +53,8 @@ public class GameService {
 		this.maxBalls = game.getDifficult() * 5;
 		
 		this.sides = new ArrayList<Border>();
-		this.sides.add(new Border(new Vector2(0, 0), 10, game.HEIGHT, Color.GREEN));
-		this.sides.add(new Border(new Vector2(game.WIDTH - 10, 0), 10, game.HEIGHT, Color.RED));
+		this.sides.add(new Border(new Vector2(0, 0), 10, game.HEIGHT, Direction.LEFT, Color.GREEN));
+		this.sides.add(new Border(new Vector2(game.WIDTH - 10, 0), 10, game.HEIGHT, Direction.RIGHT, Color.RED));
 		
 		Gdx.input.setInputProcessor(game.stage);
 		
@@ -80,7 +80,8 @@ public class GameService {
 		Ball ball = null;
 		if(balls.size() < maxBalls) {
 			Sprite sprite = new Sprite(Art.get("ballTexture"));
-			ball = new Ball(getRandomPos(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, sprite);
+			Color color = Color.GREEN;
+			ball = new Ball(getRandomPos(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, color, sprite);
 			ball.addListener(new DragingListener()); 
 			game.stage.addActor(ball);
 			balls.add(ball);
@@ -130,9 +131,7 @@ public class GameService {
 				ballPush();
 				
 				for(Ball ball : balls) {
-					if(isBallOut(ball)) { 
-						ball.isAlive = false;
-						ball.isDragged = false;
+					if(ball.isAlive == false) { 
 						ballPush(ball);
 						break;
 					}
@@ -143,28 +142,47 @@ public class GameService {
 		Logger.log(CLASS_NAME, "balls creating..");
 	}
 	
+	private int ballCheckSide(Ball ball) {
+			if(!ball.isDragged) return 0;
+			
+			for(Border side : sides) {
+				if(side.getSide() == Direction.LEFT && ball.getDirection() == Direction.LEFT) {
+					game.score += DRAG_SCORE * game.getDifficult();
+				}
+				else if(side.getSide() == Direction.RIGHT && ball.getDirection() == Direction.RIGHT) {
+					game.score += DRAG_SCORE * game.getDifficult();
+				}
+				else {
+					game.score -= DRAG_SCORE * game.getDifficult();
+				}
+			}
+			return 1;
+	}
+	
 	private int ballUpdate(Ball ball) {
 		
 		if(game.status != GameStatus.GAME_PLAY) return 0;
+		
+		if(ball.isDragged && ball.isAlive) {
+			ball.isDragged = false;
+			
+			if(isBallOut(ball)) {
+				ball.isAlive = false;
+			}
+			
+			ballCheckSide(ball);
+		}
 		
 		if(ball.isAlive && ball.isDragged == false) {
 			ball.setY(ball.getY() - game.BALL_SPEED);
 		}
 		
 		if(ball.isDragged && ball.getDirection() != Direction.NONE) {
-			game.score += DRAG_SCORE * game.getDifficult();
-			
 			if(ball.getDirection() == Direction.LEFT) {
 				ball.setX(ball.getX() - game.DRAG_SPEED);
 			}
 			if(ball.getDirection() == Direction.RIGHT) {
 				ball.setX(ball.getX() + game.DRAG_SPEED);
-			}
-			if(ball.getDirection() == Direction.UP) {
-				ball.setY(ball.getY() - game.DRAG_SPEED);
-			}
-			if(ball.getDirection() == Direction.DOWN) {
-				ball.setY(ball.getY() + game.DRAG_SPEED);
 			}
 		}
 		return 1;
@@ -273,7 +291,7 @@ public class GameService {
 			countdown.setPartOfTime(partOfTime);
 			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
 		}
-			
+		
 		game.font.draw(game.batch, "Score " + game.score, game.WIDTH - (game.WIDTH / 4), game.HEIGHT - 30f);
 		game.font.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 4, game.HEIGHT - 30f);
 	}

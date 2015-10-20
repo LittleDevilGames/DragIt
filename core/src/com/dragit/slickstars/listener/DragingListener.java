@@ -20,8 +20,7 @@ public class DragingListener extends DragListener {
 			Ball b = (Ball) event.getTarget();
 			
 			if(!b.isDragged) {
-				Direction direction;
-				direction = getDragDirection(b, DRAG_POWER);
+				Direction direction = getDragDirection(b, DRAG_POWER);
 				if(direction != Direction.NONE) {
 					b.setDirection(direction);
 					b.isDragged = true;
@@ -43,12 +42,6 @@ public class DragingListener extends DragListener {
 		}
 		else if(getDeltaX() < -power) {
 			return Direction.RIGHT;
-		}
-		else if(getDeltaY() > power) {
-			return Direction.UP;
-		}
-		else if(getDeltaY() < -power) {
-			return Direction.DOWN;
 		}
 		return Direction.NONE;
 	}
