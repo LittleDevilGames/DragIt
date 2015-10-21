@@ -43,8 +43,8 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		camera.update();
-		game.batch.setProjectionMatrix(camera.combined);
 		game.shapeRenderer.setProjectionMatrix(camera.combined);
+		game.batch.setProjectionMatrix(camera.combined);
 		
 		game.batch.begin();
 		
@@ -57,6 +57,8 @@ public class GameScreen implements Screen {
 		
 		
 		game.batch.end();
+		
+		gameService.render(delta);
 		
 		game.stage.act(delta);
 		game.stage.draw();
