@@ -249,14 +249,6 @@ public class GameService {
 		return false;
 	}
 	
-	public void render(float delta) {
-		game.shapeRenderer.begin(ShapeType.Filled);
-		for(Border side : sides) {
-			game.shapeRenderer.rect(side.position.x, side.position.y, side.getWidth(), side.getHeight(), side.getColor(), side.getColor(), side.getColor(), side.getColor());
-		}
-		game.shapeRenderer.end();
-	}
-	
 	public void update(float delta) {
 		/*Particle.explossionEffect.draw(game.batch, delta);
 		
@@ -264,6 +256,11 @@ public class GameService {
 			Particle.explossionEffect.reset();
 		}*/
 		
+		game.shapeRenderer.begin(ShapeType.Filled);
+		for(Border side : sides) {
+			game.shapeRenderer.rect(side.position.x, side.position.y, side.getWidth(), side.getHeight(), side.getColor(), side.getColor(), side.getColor(), side.getColor());
+		}
+		game.shapeRenderer.end();
 		
 		for(Ball ball : balls) {
 			ballUpdate(ball);

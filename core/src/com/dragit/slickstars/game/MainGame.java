@@ -82,6 +82,7 @@ public class MainGame extends Game {
 		batch.dispose();
 		font.dispose();
 		stage.dispose();
+		shapeRenderer.dispose();
 		Art.dispose();
 		//Particle.dispose();
 		

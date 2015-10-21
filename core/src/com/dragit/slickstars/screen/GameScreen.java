@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.service.GameService;
@@ -43,10 +44,7 @@ public class GameScreen implements Screen {
 		
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
-		
-		if(!MainGame.isPause) {
-			gameService.render(delta);
-		}
+		game.shapeRenderer.setProjectionMatrix(camera.combined);
 		
 		game.batch.begin();
 		
@@ -56,6 +54,8 @@ public class GameScreen implements Screen {
 		else {
 			game.font.draw(game.batch, "PAUSE", game.WIDTH / 2, game.HEIGHT / 2);
 		}
+		
+		
 		game.batch.end();
 		
 		game.stage.act(delta);
