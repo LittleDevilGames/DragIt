@@ -3,6 +3,7 @@ package com.dragit.slickstars.entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.dragit.slickstars.game.MainGame.Direction;
+import com.dragit.slickstars.game.MainGame.ObjectType;
 
 public class Border {
 	private Color color;
@@ -10,12 +11,14 @@ public class Border {
 	private float height;
 	public Vector2 position;
 	private Direction side;
+	private ObjectType type;
 	
-	public Border(Vector2 position, float w, float h, Direction side, Color color) {
+	public Border(Vector2 position, float w, float h, Direction side, ObjectType type) {
 		this.position = position;
 		this.setWidth(w);
 		this.setHeight(h);
-		this.color = color;
+		this.type = type;
+		setColor(type);
 	}
 	
 	public Color getColor() {
@@ -24,6 +27,15 @@ public class Border {
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+	
+	public void setColor(ObjectType type) {
+		switch(type) {
+		case RED: color = Color.RED;
+			break;
+		case GREEN: color = Color.GREEN;
+			break;
+		}
 	}
 
 	public float getWidth() {
@@ -48,5 +60,13 @@ public class Border {
 
 	public void setSide(Direction side) {
 		this.side = side;
+	}
+	
+	public ObjectType getType() {
+		return type;
+	}
+
+	public void setType(ObjectType type) {
+		this.type = type;
 	}
 }

@@ -17,6 +17,7 @@ import com.dragit.slickstars.game.Countdown;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.GameStatus;
+import com.dragit.slickstars.game.MainGame.ObjectType;
 import com.dragit.slickstars.listener.DragingListener;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Logger;
@@ -53,8 +54,8 @@ public class GameService {
 		this.maxBalls = game.getDifficult() * 5;
 		
 		this.sides = new ArrayList<Border>();
-		this.sides.add(new Border(new Vector2(0, 0), 10, game.HEIGHT, Direction.LEFT, Color.GREEN));
-		this.sides.add(new Border(new Vector2(game.WIDTH - 10, 0), 10, game.HEIGHT, Direction.RIGHT, Color.RED));
+		this.sides.add(new Border(new Vector2(0, 0), 10, game.HEIGHT, Direction.LEFT, ObjectType.GREEN));
+		this.sides.add(new Border(new Vector2(game.WIDTH - 10, 0), 10, game.HEIGHT, Direction.RIGHT, ObjectType.RED));
 		
 		Gdx.input.setInputProcessor(game.stage);
 		
@@ -80,8 +81,7 @@ public class GameService {
 		Ball ball = null;
 		if(balls.size() < maxBalls) {
 			Sprite sprite = new Sprite(Art.get("ballTexture"));
-			Color color = Color.GREEN;
-			ball = new Ball(getRandomPos(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, color, sprite);
+			ball = new Ball(getRandomPos(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, ObjectType.GREEN, sprite);
 			ball.addListener(new DragingListener()); 
 			game.stage.addActor(ball);
 			balls.add(ball);
@@ -147,14 +147,17 @@ public class GameService {
 			if(!ball.isDragged) return 0;
 			
 			for(Border side : sides) {
-				if(side.getSide() == Direction.LEFT && ball.getDirection() == Direction.LEFT) {
-					game.score += DRAG_SCORE * game.getDifficult();
+				if(ball.getX() > side.position.x && side.getSide() == Direction.RIGHT) {
+					if(ball.getType() == side.getType()) {
+						game.score += DRAG_SCORE * game.getDifficult();
+					}
+					ball.isAlive = false;
 				}
-				else if(side.getSide() == Direction.RIGHT && ball.getDirection() == Direction.RIGHT) {
-					game.score += DRAG_SCORE * game.getDifficult();
-				}
-				else {
-					game.score -= DRAG_SCORE * game.getDifficult();
+				else if(ball.getX() < side.position.x && side.getSide() == Direction.LEFT) {
+					if(ball.getType() == side.getType()) {
+						game.score += DRAG_SCORE * game.getDifficult();
+					}
+					ball.isAlive = false;
 				}
 			}
 			return 1;

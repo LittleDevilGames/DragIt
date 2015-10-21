@@ -33,6 +33,11 @@ public class MainGame extends Game {
 	public int score;
 	public static boolean isPause;
 	
+	public enum ObjectType {
+		RED,
+		GREEN
+	}
+	
 	public enum GameStatus {
 		GAME_NONE,
 		GAME_PLAY,
