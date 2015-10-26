@@ -18,6 +18,7 @@ public class Border {
 		this.setWidth(w);
 		this.setHeight(h);
 		this.type = type;
+		this.side = side;
 		setColor(type);
 	}
 	
@@ -54,11 +55,11 @@ public class Border {
 		this.height = height;
 	}
 
-	public Direction getSide() {
+	public Direction getState() {
 		return side;
 	}
 
-	public void setSide(Direction side) {
+	public void setState(Direction side) {
 		this.side = side;
 	}
 	

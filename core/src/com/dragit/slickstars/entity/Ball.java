@@ -20,8 +20,7 @@ public class Ball extends Actor {
 	public Ball(float x, float y, float w, float h, ObjectType type, Sprite sprite) {
 		this.sprite = sprite;
 		this.sprite.setBounds(x, y, w, h);
-		this.type = type;
-		setColor(type);
+		setType(type);
 		this.setBounds(x, y, w, h);
 		this.defaultColor = sprite.getColor();
 		this.isDragged = false;
@@ -33,12 +32,11 @@ public class Ball extends Actor {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		sprite.setColor(color);
 		if(isDragged) {
-			sprite.setColor(Color.LIME);
+			sprite.setColor(Color.YELLOW);
 		}
-		else {
-			sprite.setColor(defaultColor);
-		}
+		
 		sprite.draw(batch);
 	}
 	
@@ -72,15 +70,6 @@ public class Ball extends Actor {
 	public Color getColor() {
 		return color;
 	}
-
-	public void setColor(ObjectType type) {
-		switch(type) {
-		case RED: color = Color.RED;
-			break;
-		case GREEN: color = Color.GREEN;
-			break;
-		}
-	}
 	
 	public void setColor(Color color) {
 		this.color = color;
@@ -92,5 +81,12 @@ public class Ball extends Actor {
 
 	public void setType(ObjectType type) {
 		this.type = type;
+		
+		switch(type) {
+		case RED: color = Color.RED;
+			break;
+		case GREEN: color = Color.GREEN;
+			break;
+		}
 	}
 }

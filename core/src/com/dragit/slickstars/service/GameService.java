@@ -32,9 +32,12 @@ public class GameService {
 	private final float LINE_HEIGHT = 48f;
 	private final int TIME_CREATE_BALL = 1000;
 	private final int TIME_CREATE_LINE = 4500;
+	private final int CHANGE_SIDE_TIME = 5000;
 	private final int DRAG_SCORE = 50;
+	private final int COUNT_OBJ_TYPES = 2;
 	
 	private Timer ballTimer;
+	private Timer sideTimer;
 	private Timer lineTimer;
 	private Timer countDownTimer;
 	private int maxBalls;
@@ -51,17 +54,17 @@ public class GameService {
 		startCountdown();
 		this.ballTimer = new Timer();
 		this.lineTimer = new Timer();
+		this.sideTimer = new Timer();
 		this.maxBalls = game.getDifficult() * 5;
 		
-		this.sides = new ArrayList<Border>();
-		this.sides.add(new Border(new Vector2(0, 0), 10, game.HEIGHT, Direction.LEFT, ObjectType.GREEN));
-		this.sides.add(new Border(new Vector2(game.WIDTH - 10, 0), 10, game.HEIGHT, Direction.RIGHT, ObjectType.RED));
+		createSides();
 		
 		Gdx.input.setInputProcessor(game.stage);
 		
 		//lineAdd();
 		//lineTimer();
-		ballTimer();
+		startBallTimer();
+		//startSideTimer();
 		
 		pause(false);
 		game.score = 0;
@@ -76,12 +79,42 @@ public class GameService {
 		countDownTimer = new Timer();
 		countDownTimer.schedule(countdown, 0, 1000);
 	}
+	
+	private void createSides() {
+		this.sides = new ArrayList<Border>();
+		this.sides.add(new Border(new Vector2(0, 0), 10, game.HEIGHT, Direction.LEFT, ObjectType.GREEN));
+		this.sides.add(new Border(new Vector2(game.WIDTH - 10, 0), 10, game.HEIGHT, Direction.RIGHT, ObjectType.RED));
+	}
+	
+	private int changeSides() {
+		if(sides.isEmpty()) return 0;
+		
+		for(Border side : sides) {
+			switch(side.getState()) {
+				case LEFT: {
+					side.setState(Direction.RIGHT);
+					side.position.x = game.WIDTH - 10;
+					side.position.y = 0;
+					break;
+				}
+				case RIGHT: {
+					side.setState(Direction.LEFT);
+					side.position.x = 0;
+					side.position.y = 0;
+				}
+			default:
+				break;
+			}
+			
+		}
+		return 1;
+	}
 
 	private Ball ballPush() {
 		Ball ball = null;
 		if(balls.size() < maxBalls) {
 			Sprite sprite = new Sprite(Art.get("ballTexture"));
-			ball = new Ball(getRandomPos(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, ObjectType.GREEN, sprite);
+			ball = new Ball(getRandomRange(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, getRandObjectType(COUNT_OBJ_TYPES), sprite);
 			ball.addListener(new DragingListener()); 
 			game.stage.addActor(ball);
 			balls.add(ball);
@@ -91,10 +124,11 @@ public class GameService {
 	}
 	
 	private Ball ballPush(Ball ball) {
-		ball.setPosition(getRandomPos(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2);
+		ball.setPosition(getRandomRange(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2);
 		ball.isAlive = true;
 		ball.isDragged = false;
 		ball.setDirection(Direction.NONE);
+		ball.setType(getRandObjectType(COUNT_OBJ_TYPES));
 		return ball;
 	}
 	
@@ -125,14 +159,23 @@ public class GameService {
 		return 1;
 	}
 	
-	private void ballTimer() {
+	private void startSideTimer() {
+		sideTimer.schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				changeSides();
+			}
+		}, 0, CHANGE_SIDE_TIME);
+	}
+	
+	private void startBallTimer() {
 		ballTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				ballPush();
 				
 				for(Ball ball : balls) {
-					Logger.log("INFO", "ball alive: " + ball.isAlive);
 					if(ball.isAlive == false) { 
 						ballPush(ball);
 						
@@ -148,16 +191,20 @@ public class GameService {
 			if(!ball.isDragged) return 0;
 			
 			for(Border side : sides) {
-				if(ball.getX() > side.position.x && side.getSide() == Direction.RIGHT) {
+				if(ball.getX() > side.position.x && side.getState() == Direction.RIGHT) {
 					if(ball.getType() == side.getType()) {
 						game.score += DRAG_SCORE * game.getDifficult();
 					}
+					else 
+						changeSides();
 					ball.isAlive = false;
 				}
-				else if(ball.getX() < side.position.x && side.getSide() == Direction.LEFT) {
+				else if(ball.getX() < side.position.x && side.getState() == Direction.LEFT) {
 					if(ball.getType() == side.getType()) {
 						game.score += DRAG_SCORE * game.getDifficult();
 					}
+					else 
+						changeSides();
 					ball.isAlive = false;
 				}
 			}
@@ -181,9 +228,9 @@ public class GameService {
 			}
 		}
 		
-		ballCheckSide(ball);
-		
 		if(ball.isAlive) {
+			ballCheckSide(ball);
+			
 			if(isBallOut(ball)) {
 				ball.isDragged = false;
 				ball.isAlive = false;
@@ -217,7 +264,7 @@ public class GameService {
 		int minPos = (int) (game.HEIGHT / 4);
 		int maxPos = (int) ((game.HEIGHT - (game.HEIGHT / 4)) - LINE_HEIGHT);
 		
-		linePos = getRandomPos(minPos, maxPos);
+		linePos = getRandomRange(minPos, maxPos);
 		
 		moveLine(line, linePos);
 		return line;
@@ -236,8 +283,8 @@ public class GameService {
 		}
 	}
 	
-	private float getRandomPos(int min, int max) {
-		float pos = 0;
+	private int getRandomRange(int min, int max) {
+		int pos = 0;
 		pos = new Random().nextInt(max - min) + min;
 		return pos;
 	}
@@ -303,6 +350,15 @@ public class GameService {
 		game.font.draw(game.batch, "Score " + game.score, game.WIDTH - (game.WIDTH / 4), game.HEIGHT - 30f);
 		game.font.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 4, game.HEIGHT - 30f);
 		
+	}
+	
+	private ObjectType getRandObjectType(int max) {
+		int type = getRandomRange(0, max);
+		switch(type) {
+			case 0: return ObjectType.RED;
+			case 1: return ObjectType.GREEN;
+			default: return ObjectType.GREEN;
+		}
 	}
 	
 	public void pause(boolean pause) {
