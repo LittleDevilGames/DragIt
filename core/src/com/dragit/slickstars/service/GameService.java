@@ -6,13 +6,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Border;
-import com.dragit.slickstars.entity.Line;
 import com.dragit.slickstars.game.Countdown;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
@@ -27,18 +25,12 @@ public class GameService {
 	
 	private MainGame game;
 	private ArrayList<Ball> balls;
-	private ArrayList<Line> lines;
 	
-	private final float LINE_HEIGHT = 48f;
 	private final int TIME_CREATE_BALL = 1000;
-	private final int TIME_CREATE_LINE = 4500;
-	private final int CHANGE_SIDE_TIME = 5000;
 	private final int DRAG_SCORE = 50;
 	private final int COUNT_OBJ_TYPES = 2;
 	
 	private Timer ballTimer;
-	private Timer sideTimer;
-	private Timer lineTimer;
 	private Timer countDownTimer;
 	private int maxBalls;
 	protected Countdown countdown;
@@ -48,25 +40,17 @@ public class GameService {
 	public GameService(MainGame game) {
 		this.game = game;
 		this.balls = new ArrayList<Ball>();
-		this.lines = new ArrayList<Line>();
 		
 		game.setDifficult(1);
 		startCountdown();
 		this.ballTimer = new Timer();
-		this.lineTimer = new Timer();
-		this.sideTimer = new Timer();
 		this.maxBalls = game.getDifficult() * 5;
-		
 		createSides();
 		
 		Gdx.input.setInputProcessor(game.stage);
 		
-		//lineAdd();
-		//lineTimer();
-		startBallTimer();
-		//startSideTimer();
-		
 		pause(false);
+		startBallTimer();
 		game.score = 0;
 		game.status = GameStatus.GAME_PLAY;
 		
@@ -130,43 +114,6 @@ public class GameService {
 		ball.setDirection(Direction.NONE);
 		ball.setType(getRandObjectType(COUNT_OBJ_TYPES));
 		return ball;
-	}
-	
-	private int ballReset() {
-		if(lines.isEmpty()) return 0;
-		
-		try {
-			Line line = lines.get(lines.size()-1);
-			for(Ball ball : balls) {
-				if(!ball.isDragged) {
-					if((line.getY() + LINE_HEIGHT) > ball.getY()) {
-						ball.isAlive = false;
-						//Particle.explossionEffect.getEmitters().first().setPosition(ball.getX(), ball.getY());
-						ball.setY((0 - game.BALL_SIZE) * 2);
-					}
-				}
-			}
-		}
-		catch(NullPointerException e) {
-			Gdx.app.error("ERROR", "Error null: " + e);
-		}
-		catch(ArrayIndexOutOfBoundsException e) {
-			Gdx.app.error("ERROR", "Error array: " + e);
-		}
-		catch(Exception e) {
-			Gdx.app.error("ERROR", "Error: " + e);
-		}
-		return 1;
-	}
-	
-	private void startSideTimer() {
-		sideTimer.schedule(new TimerTask() {
-			
-			@Override
-			public void run() {
-				changeSides();
-			}
-		}, 0, CHANGE_SIDE_TIME);
 	}
 	
 	private void startBallTimer() {
@@ -238,51 +185,7 @@ public class GameService {
 		}
 		return 1;
 	}
-	
-	private void lineAdd() {
-		Line line = new Line(0f, 0f, game.WIDTH, LINE_HEIGHT, new Sprite(Art.get("lineTexture")));
-		line = lineUpdate(line);
-		lines.add(line);
-	}
-	
-	private void lineTimer() {
-		lineTimer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				for(Line line : lines) {
-					lineUpdate(line);
-				}
-				ballReset();
-			}
-		}, 0, TIME_CREATE_LINE);
-		
-		Logger.log(CLASS_NAME, "line creating..");
-	}
-	
-	private Line lineUpdate(Line line) {
-		float linePos = 0f;
-		int minPos = (int) (game.HEIGHT / 4);
-		int maxPos = (int) ((game.HEIGHT - (game.HEIGHT / 4)) - LINE_HEIGHT);
-		
-		linePos = getRandomRange(minPos, maxPos);
-		
-		moveLine(line, linePos);
-		return line;
-	}
-	
-	private void moveLine(Line line, float y) {
-		float currPosY = line.getY();
-		
-		line.target.y = y;
-		
-		if(currPosY > y) {
-			line.setDirection(Direction.DOWN);
-		}
-		else if(currPosY < y) {
-			line.setDirection(Direction.UP);
-		}
-	}
-	
+
 	private int getRandomRange(int min, int max) {
 		int pos = 0;
 		pos = new Random().nextInt(max - min) + min;
@@ -314,33 +217,10 @@ public class GameService {
 			Particle.explossionEffect.reset();
 		}*/
 		
-		
-		
 		for(Ball ball : balls) {
 			ballUpdate(ball);
 		}
 		
-		/*for(Line line : lines) {
-			line.draw(game.batch);
-				
-			if(line.getDirection() == Direction.UP) {
-				if(line.getY() < line.target.y) {
-					line.setY(line.getY() + (game.DRAG_SPEED * 2));
-				}
-				else {
-					line.setDirection(Direction.NONE);
-				}
-			}
-			else if(line.getDirection() == Direction.DOWN) {
-				if(line.getY() > line.target.y) {
-					line.setY(line.getY() - (game.DRAG_SPEED * 2));
-				}
-				else {
-					line.setDirection(Direction.NONE);
-				}
-			}
-		}*/
-			
 		if(countdown.getPartOfTime() < 1 && !countdown.isPause()) {
 			game.setDifficult(game.getDifficult() + 1);
 			countdown.setPartOfTime(partOfTime);
@@ -369,7 +249,6 @@ public class GameService {
 	
 	public void dispose() {
 		balls.clear();
-		lines.clear();
 		Logger.log(CLASS_NAME, "disposed");
 	}
 }

@@ -10,7 +10,6 @@ import com.dragit.slickstars.game.MainGame.ObjectType;
 
 public class Ball extends Actor {
 	public boolean isDragged;
-	private Color defaultColor;
 	private Sprite sprite;
 	public boolean isAlive;
 	private Direction direction;
@@ -22,7 +21,6 @@ public class Ball extends Actor {
 		this.sprite.setBounds(x, y, w, h);
 		setType(type);
 		this.setBounds(x, y, w, h);
-		this.defaultColor = sprite.getColor();
 		this.isDragged = false;
 		this.isAlive = true;
 		this.setTouchable(Touchable.enabled);
