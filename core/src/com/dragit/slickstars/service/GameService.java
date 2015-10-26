@@ -132,9 +132,10 @@ public class GameService {
 				ballPush();
 				
 				for(Ball ball : balls) {
+					Logger.log("INFO", "ball alive: " + ball.isAlive);
 					if(ball.isAlive == false) { 
 						ballPush(ball);
-						break;
+						
 					}
 				}
 			}
@@ -180,14 +181,13 @@ public class GameService {
 			}
 		}
 		
-		if(ball.isDragged && ball.isAlive) {
-			
+		ballCheckSide(ball);
+		
+		if(ball.isAlive) {
 			if(isBallOut(ball)) {
 				ball.isDragged = false;
 				ball.isAlive = false;
 			}
-			
-			ballCheckSide(ball);
 		}
 		return 1;
 	}
@@ -246,8 +246,8 @@ public class GameService {
 		if(ball.getY() < (0 - game.BALL_SIZE))
 			return true;
 		
-		if(ball.getX() > (game.WIDTH + game.BALL_SIZE) || ball.getX() < (0 - game.BALL_SIZE)) 
-			return true;
+		/*if(ball.getX() > (game.WIDTH + game.BALL_SIZE) || ball.getX() < (0 - game.BALL_SIZE)) 
+			return true;*/
 		
 		return false;
 	}
