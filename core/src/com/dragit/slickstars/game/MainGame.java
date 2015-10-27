@@ -1,6 +1,7 @@
 package com.dragit.slickstars.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,8 +16,8 @@ public class MainGame extends Game {
 	
 	public final int WIDTH = 480;
 	public final int HEIGHT = 800;
-	public final float BALL_SIZE = 56f;
-	public final int BALL_SPEED = 4;
+	public final float BALL_SIZE = 64f;
+	public final int BALL_SPEED = 3;
 	public final int DRAG_SPEED = 15;
 	public final int GAME_TIME = 60;
 	public final int MAX_DIFFICULTS = 4;
@@ -58,7 +59,7 @@ public class MainGame extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		font = new BitmapFont();
+		font = new BitmapFont(Gdx.files.internal("data/font/px.fnt"));
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
 		stage = new Stage();

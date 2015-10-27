@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Border;
+import com.dragit.slickstars.entity.Hint;
 import com.dragit.slickstars.game.Countdown;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
@@ -89,7 +90,6 @@ public class GameService {
 			default:
 				break;
 			}
-			
 		}
 		return 1;
 	}
@@ -134,13 +134,21 @@ public class GameService {
 		Logger.log(CLASS_NAME, "balls creating..");
 	}
 	
+	private void scoreAction(float score, float x, float y) {
+		Hint scoreHint = new Hint(x, y, "+" + score, game.font);
+		game.stage.addActor(scoreHint);
+		scoreHint.startAction();
+		game.score += score;
+		
+	}
+	
 	private int ballCheckSide(Ball ball) {
 			if(!ball.isDragged) return 0;
 			
 			for(Border side : sides) {
 				if(ball.getX() > side.position.x && side.getState() == Direction.RIGHT) {
 					if(ball.getType() == side.getType()) {
-						game.score += DRAG_SCORE * game.getDifficult();
+						scoreAction(DRAG_SCORE * game.getDifficult(), ball.getX(), ball.getY());
 					}
 					else 
 						changeSides();
@@ -148,7 +156,7 @@ public class GameService {
 				}
 				else if(ball.getX() < side.position.x && side.getState() == Direction.LEFT) {
 					if(ball.getType() == side.getType()) {
-						game.score += DRAG_SCORE * game.getDifficult();
+						scoreAction(DRAG_SCORE * game.getDifficult(), ball.getX(), ball.getY());
 					}
 					else 
 						changeSides();
@@ -226,9 +234,9 @@ public class GameService {
 			countdown.setPartOfTime(partOfTime);
 			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
 		}
-		
-		game.font.draw(game.batch, "Score " + game.score, game.WIDTH - (game.WIDTH / 4), game.HEIGHT - 30f);
-		game.font.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 4, game.HEIGHT - 30f);
+
+		game.font.draw(game.batch, "Score " + game.score, game.WIDTH - (game.WIDTH / 5), game.HEIGHT - 30f);
+		game.font.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 6, game.HEIGHT - 30f);
 		
 	}
 	
