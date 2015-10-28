@@ -19,6 +19,7 @@ import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.game.MainGame.ObjectType;
 import com.dragit.slickstars.listener.DragingListener;
 import com.dragit.slickstars.util.Art;
+import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 
 public class GameService {
@@ -30,6 +31,8 @@ public class GameService {
 	private final int TIME_CREATE_BALL = 1000;
 	private final int DRAG_SCORE = 50;
 	private final int COUNT_OBJ_TYPES = 2;
+	private final float UI_LABEL_SIZE = 120f;
+	private final float UI_LABEL_OFFSET = 30f;
 	
 	private Timer ballTimer;
 	private Timer countDownTimer;
@@ -53,6 +56,7 @@ public class GameService {
 		pause(false);
 		startBallTimer();
 		game.score = 0;
+		game.points = 3;
 		game.status = GameStatus.GAME_PLAY;
 		
 		Logger.log(CLASS_NAME, "started");
@@ -113,6 +117,7 @@ public class GameService {
 		ball.isDragged = false;
 		ball.setDirection(Direction.NONE);
 		ball.setType(getRandObjectType(COUNT_OBJ_TYPES));
+
 		return ball;
 	}
 	
@@ -134,36 +139,47 @@ public class GameService {
 		Logger.log(CLASS_NAME, "balls creating..");
 	}
 	
-	private void scoreAction(float score, float x, float y) {
-		Hint scoreHint = new Hint(x, y, "+" + score, game.font);
+	private void pointAction(float x, float y, boolean take) {
+		Hint pointHint = new Hint(x, y, (take) ? "+1" : "-1", Font.mainFont);
+		game.stage.addActor(pointHint);
+		pointHint.startAction();
+		if(take) {
+			game.points++;
+		}
+		else {
+			game.points--;
+		}
+	}
+	
+	private void scoreAction(int score, float x, float y) {
+		Hint scoreHint = new Hint(x, y, "+" + score, Font.mainFont);
 		game.stage.addActor(scoreHint);
 		scoreHint.startAction();
 		game.score += score;
-		
 	}
 	
 	private int ballCheckSide(Ball ball) {
-			if(!ball.isDragged) return 0;
-			
-			for(Border side : sides) {
-				if(ball.getX() > side.position.x && side.getState() == Direction.RIGHT) {
-					if(ball.getType() == side.getType()) {
-						scoreAction(DRAG_SCORE * game.getDifficult(), ball.getX(), ball.getY());
-					}
-					else 
-						changeSides();
-					ball.isAlive = false;
+		if(!ball.isDragged) return 0;
+		
+		for(Border side : sides) {
+			if((ball.getX() > side.position.x && side.getState() == Direction.RIGHT) 
+				|| (ball.getX() < side.position.x && side.getState() == Direction.LEFT)) {
+				
+				ball.isAlive = false;
+				
+				if(ball.getType() == side.getType()) {
+					scoreAction(DRAG_SCORE * game.getDifficult(), ball.getX(), ball.getY());
+					pointAction(game.WIDTH / 2, game.HEIGHT - UI_LABEL_OFFSET, true);
+					return 1;
 				}
-				else if(ball.getX() < side.position.x && side.getState() == Direction.LEFT) {
-					if(ball.getType() == side.getType()) {
-						scoreAction(DRAG_SCORE * game.getDifficult(), ball.getX(), ball.getY());
-					}
-					else 
-						changeSides();
-					ball.isAlive = false;
+				else {
+					changeSides();
+					pointAction(game.WIDTH / 2, game.HEIGHT / 2, false);
+					return 1;
 				}
 			}
-			return 1;
+		}
+		return 1;
 	}
 	
 	private int ballUpdate(Ball ball) {
@@ -235,9 +251,9 @@ public class GameService {
 			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
 		}
 
-		game.font.draw(game.batch, "Score " + game.score, game.WIDTH - (game.WIDTH / 5), game.HEIGHT - 30f);
-		game.font.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 6, game.HEIGHT - 30f);
-		
+//		Font.mainFont.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 6, game.HEIGHT - 30f);
+		Font.mainFont.draw(game.batch, "Score " + game.score, UI_LABEL_OFFSET, game.HEIGHT - UI_LABEL_OFFSET);
+		Font.mainFont.draw(game.batch, "Points " + game.points, UI_LABEL_SIZE + (UI_LABEL_OFFSET * 2) , game.HEIGHT - UI_LABEL_OFFSET);
 	}
 	
 	private ObjectType getRandObjectType(int max) {
@@ -245,8 +261,8 @@ public class GameService {
 		switch(type) {
 			case 0: return ObjectType.RED;
 			case 1: return ObjectType.GREEN;
-			default: return ObjectType.GREEN;
 		}
+		return ObjectType.GREEN;
 	}
 	
 	public void pause(boolean pause) {

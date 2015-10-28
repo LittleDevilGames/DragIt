@@ -1,14 +1,13 @@
 package com.dragit.slickstars.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
+import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 
 public class MainGame extends Game {
@@ -28,10 +27,10 @@ public class MainGame extends Game {
 	
 	public SpriteBatch batch;
 	public Stage stage;
-	public BitmapFont font;
 	public ShapeRenderer shapeRenderer;
 	
 	public int score;
+	public int points;
 	public static boolean isPause;
 	
 	public enum ObjectType {
@@ -59,11 +58,14 @@ public class MainGame extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		font = new BitmapFont(Gdx.files.internal("data/font/px.fnt"));
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
 		stage = new Stage();
 		shapeRenderer = new ShapeRenderer();
+		
+		Art.load();
+		Font.load();
+		//Particle.load();
 		
 		this.setScreen(new MenuScreen(this));
 		Logger.log(CLASS_NAME, "started");
@@ -86,10 +88,10 @@ public class MainGame extends Game {
 		super.dispose();
 		
 		batch.dispose();
-		font.dispose();
 		stage.dispose();
 		shapeRenderer.dispose();
 		Art.dispose();
+		Font.dispose();
 		//Particle.dispose();
 		
 		Logger.log(CLASS_NAME, "disposed");
