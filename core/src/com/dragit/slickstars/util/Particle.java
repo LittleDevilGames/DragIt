@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 public class Particle {
-public static final String PARTICLE_PATH = "data/particle";
+	public static final String PARTICLE_PATH = "data/particle";
 	
 	public static ParticleEffect fireParticle;
 	

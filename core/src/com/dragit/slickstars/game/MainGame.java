@@ -67,6 +67,7 @@ public class MainGame extends Game {
 		Art.load();
 		Font.load();
 		//Particle.load();
+		//Audio.load();
 	}
 	
 	@Override
