@@ -171,12 +171,12 @@ public class GameService {
 				
 				if(ball.getType() == side.getType()) {
 					scoreAction(DRAG_SCORE * game.getDifficult(), ball.getX(), ball.getY());
-					pointAction(game.WIDTH / 2, game.HEIGHT - UI_LABEL_OFFSET, true);
+					pointAction(game.WIDTH / 2, game.HEIGHT, true);
 					return 1;
 				}
 				else {
 					changeSides();
-					pointAction(game.WIDTH / 2, game.HEIGHT / 2, false);
+					pointAction(game.WIDTH / 2, game.HEIGHT, false);
 					return 1;
 				}
 			}
