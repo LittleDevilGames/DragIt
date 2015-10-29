@@ -23,6 +23,7 @@ import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Particle;
 
 public class GameService {
 	private final String CLASS_NAME = "GameService";
@@ -222,9 +223,6 @@ public class GameService {
 		if(ball.getY() < (0 - game.BALL_SIZE))
 			return true;
 		
-		/*if(ball.getX() > (game.WIDTH + game.BALL_SIZE) || ball.getX() < (0 - game.BALL_SIZE)) 
-			return true;*/
-		
 		return false;
 	}
 	
@@ -237,10 +235,10 @@ public class GameService {
 	}
 	
 	public int update(float delta) {
-		/*Particle.explossionEffect.draw(game.batch, delta);
+		/*Particle.fireParticle.draw(game.batch, delta);
 		
-		if(Particle.explossionEffect.isComplete()) {
-			Particle.explossionEffect.reset();
+		if(Particle.fireParticle.isComplete()) {
+			Particle.fireParticle.reset();
 		}*/
 		
 		if(game.status == GameStatus.GAME_END) {

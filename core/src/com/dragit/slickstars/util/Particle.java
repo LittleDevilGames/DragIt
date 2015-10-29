@@ -9,11 +9,11 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 public class Particle {
 public static final String PARTICLE_PATH = "data/particle";
 	
-	public static ParticleEffect explossionEffect;
+	public static ParticleEffect fireParticle;
 	
 	public static void load() {
 		try {
-			explossionEffect = loadEffect(PARTICLE_PATH + File.separator + "explosion.p");
+			fireParticle = loadEffect(PARTICLE_PATH + File.separator + "fire.p");
 			
 			Logger.log("Particle", "particles loaded");
 		}
@@ -34,6 +34,6 @@ public static final String PARTICLE_PATH = "data/particle";
 	}
 	
 	public static void dispose() {
-		explossionEffect.dispose();
+		fireParticle.dispose();
 	}
 }

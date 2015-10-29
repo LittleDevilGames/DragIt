@@ -40,7 +40,8 @@ public class MenuScreen implements Screen {
 		game.batch.setProjectionMatrix(camera.combined);
 		
 		game.batch.begin();
-		Font.mainFont.draw(game.batch, "Main menu screen", game.WIDTH / 2, game.HEIGHT / 2);
+		Font.titleFont.draw(game.batch, "DragIt", (game.WIDTH / 2) - 90f, game.HEIGHT - 200f);
+		Font.mainFont.draw(game.batch, "Tap to start", (game.WIDTH / 2) - 45f, game.HEIGHT / 2);
 		game.batch.end();
 		
 		if(Gdx.input.isTouched()) {

@@ -3,6 +3,7 @@ package com.dragit.slickstars.util;
 import java.io.File;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
@@ -10,10 +11,15 @@ public class Font {
 public static final String TEXTURE_PATH = "data/font";
 	
 	public static BitmapFont mainFont;
+	public static BitmapFont titleFont;
 	
 	public static void load() {
 		try {
 			mainFont = loadFont(TEXTURE_PATH + File.separator + "px.fnt");
+			titleFont = loadFont(TEXTURE_PATH + File.separator + "px.fnt");
+			
+			titleFont.getData().setScale(3.5f);
+			titleFont.setColor(Color.SKY);
 			
 			Logger.log("Font", "fonts loaded");
 		}

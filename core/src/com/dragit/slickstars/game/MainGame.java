@@ -10,6 +10,7 @@ import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Particle;
 
 public class MainGame extends Game {
 	private final String CLASS_NAME = "MainGame";
