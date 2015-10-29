@@ -3,29 +3,21 @@ package com.dragit.slickstars.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.service.GameService;
-import com.dragit.slickstars.util.Art;
+import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 
 public class GameScreen implements Screen {
 	private final String CLASS_NAME = "GameScreen";
 	
 	private MainGame game;
-	private OrthographicCamera camera;
 	private GameService gameService;
 	
 	public GameScreen(MainGame game) {
 		this.game = game;
 		game.status = GameStatus.GAME_PLAY;
-		
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, game.WIDTH, game.HEIGHT);
-		Art.load();
-		//Particle.load();
 		
 		gameService = new GameService(game);
 		Logger.log(CLASS_NAME, "started");
@@ -42,9 +34,9 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		camera.update();
-		game.shapeRenderer.setProjectionMatrix(camera.combined);
-		game.batch.setProjectionMatrix(camera.combined);
+		game.camera.update();
+		game.shapeRenderer.setProjectionMatrix(game.camera.combined);
+		game.batch.setProjectionMatrix(game.camera.combined);
 		
 		game.batch.begin();
 		
@@ -52,10 +44,8 @@ public class GameScreen implements Screen {
 			gameService.update(delta);
 		}
 		else {
-			game.font.draw(game.batch, "PAUSE", game.WIDTH / 2, game.HEIGHT / 2);
+			Font.mainFont.draw(game.batch, "PAUSE", game.WIDTH / 2, game.HEIGHT / 2);
 		}
-		
-		
 		game.batch.end();
 		
 		gameService.render(delta);

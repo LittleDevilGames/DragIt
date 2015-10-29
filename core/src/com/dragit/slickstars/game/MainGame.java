@@ -1,14 +1,14 @@
 package com.dragit.slickstars.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
+import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 
 public class MainGame extends Game {
@@ -22,16 +22,16 @@ public class MainGame extends Game {
 	public final int GAME_TIME = 60;
 	public final int MAX_DIFFICULTS = 4;
 	
-	private OrthographicCamera camera;
-	
 	private int difficult;
 	
+	public OrthographicCamera camera;
 	public SpriteBatch batch;
 	public Stage stage;
-	public BitmapFont font;
 	public ShapeRenderer shapeRenderer;
+	public Screen screen;
 	
 	public int score;
+	public int points;
 	public static boolean isPause;
 	
 	public enum ObjectType {
@@ -56,16 +56,24 @@ public class MainGame extends Game {
 	
 	public GameStatus status = GameStatus.GAME_NONE;
 	
-	@Override
-	public void create () {
+	public void init() {
 		batch = new SpriteBatch();
-		font = new BitmapFont(Gdx.files.internal("data/font/px.fnt"));
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
 		stage = new Stage();
 		shapeRenderer = new ShapeRenderer();
 		
-		this.setScreen(new MenuScreen(this));
+		Art.load();
+		Font.load();
+		//Particle.load();
+		//Audio.load();
+	}
+	
+	@Override
+	public void create () {
+		init();
+		
+		setGameScreen(new MenuScreen(this));
 		Logger.log(CLASS_NAME, "started");
 	}
 
@@ -82,14 +90,22 @@ public class MainGame extends Game {
 		this.difficult = difficult;
 	}
 	
+	public void setGameScreen(Screen screen) {
+		if(this.screen != null) {
+			this.screen.dispose();
+		}
+		this.screen = screen;
+		this.setScreen(this.screen);
+	}
+	
 	public void dispose() {
 		super.dispose();
 		
 		batch.dispose();
-		font.dispose();
 		stage.dispose();
 		shapeRenderer.dispose();
 		Art.dispose();
+		Font.dispose();
 		//Particle.dispose();
 		
 		Logger.log(CLASS_NAME, "disposed");

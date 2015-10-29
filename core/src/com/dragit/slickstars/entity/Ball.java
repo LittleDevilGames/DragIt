@@ -32,7 +32,7 @@ public class Ball extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		sprite.setColor(color);
 		if(isDragged) {
-			sprite.setColor(Color.YELLOW);
+			sprite.setAlpha(0.5f);
 		}
 		
 		sprite.draw(batch);
@@ -86,5 +86,8 @@ public class Ball extends Actor {
 		case GREEN: color = Color.GREEN;
 			break;
 		}
+	}
+	
+	public void dispose() {
 	}
 }

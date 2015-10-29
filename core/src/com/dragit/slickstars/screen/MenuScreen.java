@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
+import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 
 public class MenuScreen implements Screen {
@@ -39,12 +40,12 @@ public class MenuScreen implements Screen {
 		game.batch.setProjectionMatrix(camera.combined);
 		
 		game.batch.begin();
-		game.font.draw(game.batch, "Main menu screen", game.WIDTH / 2, game.HEIGHT / 2);
+		Font.titleFont.draw(game.batch, "DragIt", (game.WIDTH / 2) - 90f, game.HEIGHT - 200f);
+		Font.mainFont.draw(game.batch, "Tap to start", (game.WIDTH / 2) - 45f, game.HEIGHT / 2);
 		game.batch.end();
 		
 		if(Gdx.input.isTouched()) {
-			game.setScreen(new GameScreen(game));
-			dispose();
+			game.setGameScreen(new GameScreen(game));
 		}
 	}
 
