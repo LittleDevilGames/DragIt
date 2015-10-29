@@ -18,6 +18,8 @@ import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.game.MainGame.ObjectType;
 import com.dragit.slickstars.listener.DragingListener;
+import com.dragit.slickstars.screen.GameScreen;
+import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
@@ -234,12 +236,24 @@ public class GameService {
 		game.shapeRenderer.end();
 	}
 	
-	public void update(float delta) {
+	public int update(float delta) {
 		/*Particle.explossionEffect.draw(game.batch, delta);
 		
 		if(Particle.explossionEffect.isComplete()) {
 			Particle.explossionEffect.reset();
 		}*/
+		
+		if(game.status == GameStatus.GAME_END) {
+			Font.mainFont.draw(game.batch, "GAME OVER\nYour score: " + game.score, game.WIDTH / 3, game.HEIGHT / 2);
+			if(Gdx.input.isTouched()) {
+				restart();
+				return 0;
+			}
+		}
+			
+		if(game.points < 1) {
+			game.status = GameStatus.GAME_END;
+		}
 		
 		for(Ball ball : balls) {
 			ballUpdate(ball);
@@ -250,10 +264,16 @@ public class GameService {
 			countdown.setPartOfTime(partOfTime);
 			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
 		}
-
+		
 //		Font.mainFont.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 6, game.HEIGHT - 30f);
 		Font.mainFont.draw(game.batch, "Score " + game.score, UI_LABEL_OFFSET, game.HEIGHT - UI_LABEL_OFFSET);
 		Font.mainFont.draw(game.batch, "Points " + game.points, UI_LABEL_SIZE + (UI_LABEL_OFFSET * 2) , game.HEIGHT - UI_LABEL_OFFSET);
+		
+		if(game.status == GameStatus.GAME_PAUSE) {
+			Font.mainFont.draw(game.batch, "Pause", game.WIDTH / 2, game.HEIGHT / 2);
+		}
+		
+		return 1;
 	}
 	
 	private ObjectType getRandObjectType(int max) {
@@ -268,11 +288,21 @@ public class GameService {
 	public void pause(boolean pause) {
 		MainGame.isPause = pause;
 		countdown.setPause(pause);
+		game.status = GameStatus.GAME_PAUSE;
+		
 		Logger.log(CLASS_NAME, "game pause " + pause);
+	}
+	
+	public void restart() {
+		game.stage.clear();
+		game.batch.flush();
+		game.setGameScreen(new GameScreen(game));
 	}
 	
 	public void dispose() {
 		balls.clear();
+		countDownTimer.cancel();
+		ballTimer.cancel();
 		Logger.log(CLASS_NAME, "disposed");
 	}
 }

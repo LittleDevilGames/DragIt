@@ -87,4 +87,7 @@ public class Ball extends Actor {
 			break;
 		}
 	}
+	
+	public void dispose() {
+	}
 }

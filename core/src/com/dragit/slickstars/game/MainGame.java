@@ -1,6 +1,7 @@
 package com.dragit.slickstars.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -21,13 +22,13 @@ public class MainGame extends Game {
 	public final int GAME_TIME = 60;
 	public final int MAX_DIFFICULTS = 4;
 	
-	private OrthographicCamera camera;
-	
 	private int difficult;
 	
+	public OrthographicCamera camera;
 	public SpriteBatch batch;
 	public Stage stage;
 	public ShapeRenderer shapeRenderer;
+	public Screen screen;
 	
 	public int score;
 	public int points;
@@ -55,8 +56,7 @@ public class MainGame extends Game {
 	
 	public GameStatus status = GameStatus.GAME_NONE;
 	
-	@Override
-	public void create () {
+	public void init() {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
@@ -66,8 +66,13 @@ public class MainGame extends Game {
 		Art.load();
 		Font.load();
 		//Particle.load();
+	}
+	
+	@Override
+	public void create () {
+		init();
 		
-		this.setScreen(new MenuScreen(this));
+		setGameScreen(new MenuScreen(this));
 		Logger.log(CLASS_NAME, "started");
 	}
 
@@ -82,6 +87,14 @@ public class MainGame extends Game {
 
 	public void setDifficult(int difficult) {
 		this.difficult = difficult;
+	}
+	
+	public void setGameScreen(Screen screen) {
+		if(this.screen != null) {
+			this.screen.dispose();
+		}
+		this.screen = screen;
+		this.setScreen(this.screen);
 	}
 	
 	public void dispose() {
