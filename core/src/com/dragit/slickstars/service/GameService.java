@@ -19,11 +19,9 @@ import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.game.MainGame.ObjectType;
 import com.dragit.slickstars.listener.DragingListener;
 import com.dragit.slickstars.screen.GameScreen;
-import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
-import com.dragit.slickstars.util.Particle;
 
 public class GameService {
 	private final String CLASS_NAME = "GameService";
