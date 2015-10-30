@@ -91,9 +91,10 @@ public class GameService {
 					side.setState(Direction.LEFT);
 					side.position.x = 0;
 					side.position.y = 0;
+					break;
 				}
-			default:
-				break;
+				default:
+					break;
 			}
 		}
 		return 1;
@@ -204,6 +205,7 @@ public class GameService {
 			ballCheckSide(ball);
 			
 			if(isBallOut(ball)) {
+				pointAction(game.WIDTH / 2, game.HEIGHT, false);
 				ball.isDragged = false;
 				ball.isAlive = false;
 			}
