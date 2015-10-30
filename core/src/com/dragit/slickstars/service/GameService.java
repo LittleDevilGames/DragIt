@@ -6,7 +6,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.dragit.slickstars.entity.Ball;
@@ -17,9 +16,7 @@ import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.game.MainGame.ObjectType;
-import com.dragit.slickstars.listener.DragingListener;
 import com.dragit.slickstars.screen.GameScreen;
-import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 
@@ -27,29 +24,28 @@ public class GameService {
 	private final String CLASS_NAME = "GameService";
 	
 	private MainGame game;
-	private ArrayList<Ball> balls;
 	
-	private final int TIME_CREATE_BALL = 1000;
+	private final int TIME_CREATE_BALL = 5000;
 	private final int DRAG_SCORE = 50;
 	private final int COUNT_OBJ_TYPES = 2;
 	private final float UI_LABEL_SIZE = 120f;
 	private final float UI_LABEL_OFFSET = 30f;
 	
+	private LevelService level;
 	private Timer ballTimer;
 	private Timer countDownTimer;
-	private int maxBalls;
 	protected Countdown countdown;
 	private int partOfTime;
 	private ArrayList<Border> sides;
 	
 	public GameService(MainGame game) {
 		this.game = game;
-		this.balls = new ArrayList<Ball>();
 		
+		level = new LevelService(game);
 		game.setDifficult(1);
 		startCountdown();
 		this.ballTimer = new Timer();
-		this.maxBalls = game.getDifficult() * 5;
+		//this.maxBalls = game.getDifficult() * 5;
 		createSides();
 		
 		Gdx.input.setInputProcessor(game.stage);
@@ -100,45 +96,34 @@ public class GameService {
 		return 1;
 	}
 
-	private Ball ballPush() {
-		Ball ball = null;
-		if(balls.size() < maxBalls) {
-			Sprite sprite = new Sprite(Art.get("ballTexture"));
-			ball = new Ball(getRandomRange(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, getRandObjectType(COUNT_OBJ_TYPES), sprite);
-			ball.addListener(new DragingListener()); 
-			game.stage.addActor(ball);
-			balls.add(ball);
-		}
-
-		return ball;
-	}
-	
-	private Ball ballPush(Ball ball) {
-		ball.setPosition(getRandomRange(0, (int) (game.WIDTH - game.BALL_SIZE)), game.HEIGHT + game.BALL_SIZE * 2);
-		ball.isAlive = true;
-		ball.isDragged = false;
-		ball.setDirection(Direction.NONE);
-		ball.setType(getRandObjectType(COUNT_OBJ_TYPES));
-
-		return ball;
-	}
-	
 	private void startBallTimer() {
 		ballTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				ballPush();
-				
-				for(Ball ball : balls) {
-					if(ball.isAlive == false) { 
-						ballPush(ball);
-						
-					}
-				}
+				startGenerateStrategy();
 			}
 		}, 0, TIME_CREATE_BALL);
 		
 		Logger.log(CLASS_NAME, "balls creating..");
+	}
+	
+	private void startGenerateStrategy() {
+		float start, end;
+		Direction direction;
+		
+		Random rand = new Random();
+		if(rand.nextInt(2) == 0) {
+			start = game.WIDTH;
+			end = game.BALL_SIZE + 5f;
+			direction = Direction.LEFT;
+		}
+		else {
+			start = game.BALL_SIZE + 5f;
+			end = game.WIDTH;
+			direction = Direction.RIGHT;
+		}
+		
+		level.generate(start, end, game.BALL_SIZE + 5f, direction);
 	}
 	
 	private void pointAction(float x, float y, boolean take) {
@@ -186,6 +171,7 @@ public class GameService {
 	
 	private int ballUpdate(Ball ball) {
 		
+		if(ball == null) return 0;
 		if(game.status != GameStatus.GAME_PLAY) return 0;
 		
 		if(ball.isAlive && ball.isDragged == false) {
@@ -205,7 +191,7 @@ public class GameService {
 			ballCheckSide(ball);
 			
 			if(isBallOut(ball)) {
-				pointAction(game.WIDTH / 2, game.HEIGHT, false);
+				//pointAction(game.WIDTH / 2, game.HEIGHT, false);
 				ball.isDragged = false;
 				ball.isAlive = false;
 			}
@@ -253,7 +239,7 @@ public class GameService {
 			game.status = GameStatus.GAME_END;
 		}
 		
-		for(Ball ball : balls) {
+		for(Ball ball : level.balls) {
 			ballUpdate(ball);
 		}
 		
@@ -298,7 +284,7 @@ public class GameService {
 	}
 	
 	public void dispose() {
-		balls.clear();
+		//balls.clear();
 		countDownTimer.cancel();
 		ballTimer.cancel();
 		Logger.log(CLASS_NAME, "disposed");
