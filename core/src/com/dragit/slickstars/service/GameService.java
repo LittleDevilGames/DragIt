@@ -19,24 +19,26 @@ import com.dragit.slickstars.game.MainGame.ObjectType;
 import com.dragit.slickstars.screen.GameScreen;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Util;
 
 public class GameService {
 	private final String CLASS_NAME = "GameService";
 	
 	private MainGame game;
 	
-	private final int TIME_CREATE_BALL = 5000;
 	private final int DRAG_SCORE = 50;
-	private final int COUNT_OBJ_TYPES = 2;
 	private final float UI_LABEL_SIZE = 120f;
 	private final float UI_LABEL_OFFSET = 30f;
+	private final int GENERATES_COUNT = 5;
 	
+	private int generateCount;
 	private LevelService level;
 	private Timer ballTimer;
 	private Timer countDownTimer;
 	protected Countdown countdown;
 	private int partOfTime;
 	private ArrayList<Border> sides;
+	private int timeCreateBall;
 	
 	public GameService(MainGame game) {
 		this.game = game;
@@ -44,13 +46,13 @@ public class GameService {
 		level = new LevelService(game);
 		game.setDifficult(1);
 		startCountdown();
-		this.ballTimer = new Timer();
 		//this.maxBalls = game.getDifficult() * 5;
 		createSides();
 		
 		Gdx.input.setInputProcessor(game.stage);
 		
 		pause(false);
+		generateCount = GENERATES_COUNT;
 		startBallTimer();
 		game.score = 0;
 		game.points = 3;
@@ -97,30 +99,38 @@ public class GameService {
 	}
 
 	private void startBallTimer() {
+		ballTimer = new Timer();
+		timeCreateBall = Util.getRandomRange(1000, 5000);
+
 		ballTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				startGenerateStrategy();
+				generateCount--;
+				generateLevel();
 			}
-		}, 0, TIME_CREATE_BALL);
-		
-		Logger.log(CLASS_NAME, "balls creating..");
+		}, 0, timeCreateBall);
 	}
 	
-	private void startGenerateStrategy() {
+	private void generateLevel() {
 		float start, end;
 		Direction direction;
 		
 		Random rand = new Random();
-		if(rand.nextInt(2) == 0) {
-			start = game.WIDTH;
-			end = game.BALL_SIZE + 5f;
+		int method = rand.nextInt(3);
+		if(method == 0) {
+			start = game.WIDTH - game.BALL_SIZE;
+			end = game.BALL_SIZE;
 			direction = Direction.LEFT;
 		}
-		else {
-			start = game.BALL_SIZE + 5f;
-			end = game.WIDTH;
+		else if(method == 1) {
+			start = game.BALL_SIZE;
+			end = game.WIDTH - game.BALL_SIZE;
 			direction = Direction.RIGHT;
+		}
+		else {
+			start = Util.getRandomRange((int) game.BALL_SIZE, (int) (game.WIDTH - game.BALL_SIZE));
+			end = 0f;
+			direction = Direction.NONE;
 		}
 		
 		level.generate(start, end, game.BALL_SIZE + 5f, direction);
@@ -191,7 +201,7 @@ public class GameService {
 			ballCheckSide(ball);
 			
 			if(isBallOut(ball)) {
-				//pointAction(game.WIDTH / 2, game.HEIGHT, false);
+				pointAction(game.WIDTH / 2, game.HEIGHT, false);
 				ball.isDragged = false;
 				ball.isAlive = false;
 			}
@@ -199,12 +209,6 @@ public class GameService {
 		return 1;
 	}
 
-	private int getRandomRange(int min, int max) {
-		int pos = 0;
-		pos = new Random().nextInt(max - min) + min;
-		return pos;
-	}
-	
 	private boolean isBallOut(Ball ball) {
 		if(ball.getY() < (0 - game.BALL_SIZE))
 			return true;
@@ -239,6 +243,12 @@ public class GameService {
 			game.status = GameStatus.GAME_END;
 		}
 		
+		if(generateCount < 1) {
+			ballTimer.cancel();
+			startBallTimer();
+			generateCount = GENERATES_COUNT;
+		}
+		
 		for(Ball ball : level.balls) {
 			ballUpdate(ball);
 		}
@@ -258,15 +268,6 @@ public class GameService {
 		}
 		
 		return 1;
-	}
-	
-	private ObjectType getRandObjectType(int max) {
-		int type = getRandomRange(0, max);
-		switch(type) {
-			case 0: return ObjectType.RED;
-			case 1: return ObjectType.GREEN;
-		}
-		return ObjectType.GREEN;
 	}
 	
 	public void pause(boolean pause) {

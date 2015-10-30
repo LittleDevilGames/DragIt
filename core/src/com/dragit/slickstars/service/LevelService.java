@@ -12,13 +12,15 @@ import com.dragit.slickstars.game.MainGame.ObjectType;
 import com.dragit.slickstars.listener.DragingListener;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Util;
 
 public class LevelService {
 	
 	private final String CLASS_NAME = "LevelService";
 	
-	private final int COUNT_LEVEL_BALLS = 30;
-	private final int CREATING_PERIOD = 700;
+	private final int COUNT_LEVEL_BALLS = 25;
+	private final int CREATING_PERIOD = 600;
+	private final int COUNT_OBJ_TYPES = 2;
 
 	public ArrayList<Ball> balls;
 	private MainGame game;
@@ -67,7 +69,6 @@ public class LevelService {
 						if(currPos >= end) timerState = false;
 						currPos += offset;
 					}
-					
 					pushBall(currPos);
 				}
 			}
@@ -77,6 +78,7 @@ public class LevelService {
 	private void pushBall(float x) {
 		Sprite sprite = new Sprite(Art.get("ballTexture"));
 		
+		ObjectType type = getRandObjectType(COUNT_OBJ_TYPES);
 		if(balls.size() >= maxBalls) {
 			for(Ball b : balls) {
 				if(b.isAlive == false) {
@@ -84,19 +86,27 @@ public class LevelService {
 					b.isAlive = true;
 					b.isDragged = false;
 					b.setDirection(Direction.NONE);
-					b.setType(ObjectType.GREEN);
+					b.setType(type);
 					break;
 				}
 			}
 		}
 		else {
-			Ball ball = new Ball(x, game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, ObjectType.RED, sprite);
+			Ball ball = new Ball(x, game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, type, sprite);
 			ball.addListener(new DragingListener()); 
 			game.stage.addActor(ball);
 			balls.add(ball);
 		}
 	}
 	
+	private ObjectType getRandObjectType(int max) {
+		int type = Util.getRandomRange(0, max);
+		switch(type) {
+			case 0: return ObjectType.RED;
+			case 1: return ObjectType.GREEN;
+		}
+		return ObjectType.GREEN;
+	}
 	
 	public void dispose() {
 		balls.clear();
