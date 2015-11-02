@@ -50,6 +50,7 @@ public class GameScreen implements Screen {
 		
 		gameService.render(delta);
 		
+		game.stage.getViewport().setCamera(game.camera);
 		game.stage.act(delta);
 		game.stage.draw();
 	}

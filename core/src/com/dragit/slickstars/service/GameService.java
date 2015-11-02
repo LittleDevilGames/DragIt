@@ -178,13 +178,13 @@ public class GameService {
 				
 				if(ball.getType() == side.getType()) {
 					scoreAction(DRAG_SCORE * game.getDifficult(), ball.getX(), ball.getY());
-					pointAction(game.WIDTH / 2, game.HEIGHT, true, this.combo);
+					pointAction(game.WIDTH / 2, game.HEIGHT - UI_LABEL_OFFSET, true, this.combo);
 					return 1;
 				}
 				else {
 					this.combo = 1;
 					changeSides();
-					pointAction(game.WIDTH / 2, game.HEIGHT, false, CHANGE_SIDE_POINT);
+					pointAction(game.WIDTH / 2, game.HEIGHT - UI_LABEL_OFFSET, false, CHANGE_SIDE_POINT);
 					return 1;
 				}
 			}
@@ -215,7 +215,7 @@ public class GameService {
 			
 			if(isBallOut(ball)) {
 				this.combo = 1;
-				pointAction(game.WIDTH / 2, game.HEIGHT, false, BALL_OUT_POINT);
+				pointAction(game.WIDTH / 2, game.HEIGHT - UI_LABEL_OFFSET, false, BALL_OUT_POINT);
 				ball.isDragged = false;
 				ball.isAlive = false;
 			}
