@@ -40,7 +40,6 @@ public class LevelService {
 		this.maxBalls = COUNT_LEVEL_BALLS;
 		initTimer();
 		this.timerState = false;
-		
 		Logger.log(CLASS_NAME, "started");
 	}
 	

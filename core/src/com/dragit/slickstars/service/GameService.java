@@ -30,9 +30,12 @@ public class GameService {
 	private final float UI_LABEL_SIZE = 120f;
 	private final float UI_LABEL_OFFSET = 30f;
 	private final int GENERATES_COUNT = 5;
+	private final int CHANGE_SIDE_POINT = 2;
+	private final int BALL_OUT_POINT = 2;
 	
 	private int generateCount;
 	private LevelService level;
+	private int combo;
 	private Timer ballTimer;
 	private Timer countDownTimer;
 	protected Countdown countdown;
@@ -51,6 +54,7 @@ public class GameService {
 		
 		Gdx.input.setInputProcessor(game.stage);
 		
+		this.combo = 1;
 		pause(false);
 		generateCount = GENERATES_COUNT;
 		startBallTimer();
@@ -117,34 +121,42 @@ public class GameService {
 		
 		Random rand = new Random();
 		int method = rand.nextInt(3);
-		if(method == 0) {
-			start = game.WIDTH - game.BALL_SIZE;
-			end = game.BALL_SIZE;
-			direction = Direction.LEFT;
-		}
-		else if(method == 1) {
-			start = game.BALL_SIZE;
-			end = game.WIDTH - game.BALL_SIZE;
-			direction = Direction.RIGHT;
-		}
-		else {
-			start = Util.getRandomRange((int) game.BALL_SIZE, (int) (game.WIDTH - game.BALL_SIZE));
-			end = 0f;
-			direction = Direction.NONE;
+		switch(method) {
+			case 0:
+				start = game.WIDTH - game.BALL_SIZE;
+				end = game.BALL_SIZE;
+				direction = Direction.LEFT;
+				break;
+			case 1:
+				start = game.BALL_SIZE;
+				end = game.WIDTH - game.BALL_SIZE;
+				direction = Direction.RIGHT;
+				break;
+			case 2:
+				start = Util.getRandomRange((int) game.BALL_SIZE, (int) (game.WIDTH - game.BALL_SIZE));
+				end = 0f;
+				direction = Direction.NONE;
+				break;
+			default:
+				start = Util.getRandomRange((int) game.BALL_SIZE, (int) (game.WIDTH - game.BALL_SIZE));
+				end = 0f;
+				direction = Direction.NONE;
+				break;
 		}
 		
 		level.generate(start, end, game.BALL_SIZE + 5f, direction);
 	}
 	
-	private void pointAction(float x, float y, boolean take) {
-		Hint pointHint = new Hint(x, y, (take) ? "+1" : "-1", Font.mainFont);
+	private void pointAction(float x, float y, boolean take, int value) {
+		String pointMessage = (take) ? ("+" + value) : ("-" + value);
+		Hint pointHint = new Hint(x, y, pointMessage, Font.mainFont);
 		game.stage.addActor(pointHint);
 		pointHint.startAction();
 		if(take) {
-			game.points++;
+			game.points += value;
 		}
 		else {
-			game.points--;
+			game.points -= value;
 		}
 	}
 	
@@ -166,12 +178,13 @@ public class GameService {
 				
 				if(ball.getType() == side.getType()) {
 					scoreAction(DRAG_SCORE * game.getDifficult(), ball.getX(), ball.getY());
-					pointAction(game.WIDTH / 2, game.HEIGHT, true);
+					pointAction(game.WIDTH / 2, game.HEIGHT, true, this.combo);
 					return 1;
 				}
 				else {
+					this.combo = 1;
 					changeSides();
-					pointAction(game.WIDTH / 2, game.HEIGHT, false);
+					pointAction(game.WIDTH / 2, game.HEIGHT, false, CHANGE_SIDE_POINT);
 					return 1;
 				}
 			}
@@ -201,7 +214,8 @@ public class GameService {
 			ballCheckSide(ball);
 			
 			if(isBallOut(ball)) {
-				pointAction(game.WIDTH / 2, game.HEIGHT, false);
+				this.combo = 1;
+				pointAction(game.WIDTH / 2, game.HEIGHT, false, BALL_OUT_POINT);
 				ball.isDragged = false;
 				ball.isAlive = false;
 			}
