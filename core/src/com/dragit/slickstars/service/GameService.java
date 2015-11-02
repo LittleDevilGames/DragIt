@@ -52,8 +52,6 @@ public class GameService {
 		//this.maxBalls = game.getDifficult() * 5;
 		createSides();
 		
-		Gdx.input.setInputProcessor(game.stage);
-		
 		this.combo = 1;
 		pause(false);
 		generateCount = GENERATES_COUNT;
@@ -253,7 +251,7 @@ public class GameService {
 			}
 		}
 			
-		if(game.points < 1) {
+		if(game.points <= 0) {
 			game.status = GameStatus.GAME_END;
 		}
 		

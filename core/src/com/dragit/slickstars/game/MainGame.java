@@ -1,6 +1,7 @@
 package com.dragit.slickstars.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,6 +22,7 @@ public class MainGame extends Game {
 	public final int DRAG_SPEED = 15;
 	public final int GAME_TIME = 60;
 	public final int MAX_DIFFICULTS = 4;
+	public final String UI_SKIN_PATH = "data/skin/uiskin.json";
 	
 	private int difficult;
 	
@@ -63,6 +65,7 @@ public class MainGame extends Game {
 		stage = new Stage();
 		shapeRenderer = new ShapeRenderer();
 		
+		Gdx.input.setInputProcessor(stage);
 		Art.load();
 		Font.load();
 		//Particle.load();

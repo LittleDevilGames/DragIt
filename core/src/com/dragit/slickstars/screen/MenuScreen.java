@@ -4,6 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.util.Font;
@@ -22,6 +27,9 @@ public class MenuScreen implements Screen {
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, this.game.WIDTH, this.game.HEIGHT);
+		
+		//createUI();
+		
 		Logger.log(CLASS_NAME, "started");
 	}
 
@@ -29,6 +37,19 @@ public class MenuScreen implements Screen {
 	public void show() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void createUI() {
+		// Todo
+		Skin skin = new Skin(Gdx.files.internal(game.UI_SKIN_PATH));
+		
+		Button buttonStart = new Button(skin);
+		//button.addListener(new TextTooltip("This is a tooltip!", skin));
+		Table table = new Table();
+		table = new Table();
+		table.setFillParent(true);
+		table.setDebug(true);
+		game.stage.addActor(table);
 	}
 
 	@Override
@@ -47,6 +68,10 @@ public class MenuScreen implements Screen {
 		if(Gdx.input.isTouched()) {
 			game.setGameScreen(new GameScreen(game));
 		}
+		
+		game.stage.getViewport().setCamera(game.camera);
+		game.stage.act(delta);
+		game.stage.draw();
 	}
 
 	@Override
