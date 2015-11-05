@@ -4,11 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.util.Font;
@@ -39,6 +36,7 @@ public class MenuScreen implements Screen {
 	}
 	
 	private void createUI() {
+		Logger.log(CLASS_NAME, "creating ui");
 		Skin skin = new Skin(Gdx.files.internal(game.UI_SKIN_PATH));
 		
 		float pad = 30f;
@@ -50,6 +48,7 @@ public class MenuScreen implements Screen {
 		game.stage.addActor(start);
 		game.stage.addActor(records);
 		game.stage.addActor(quit);
+		
 		//button.addListener(new TextTooltip("This is a tooltip!", skin));
 	}
 	
@@ -62,7 +61,7 @@ public class MenuScreen implements Screen {
 		game.batch.setProjectionMatrix(camera.combined);
 		
 		game.batch.begin();
-		Font.titleFont.draw(game.batch, "DragIt", (game.WIDTH / 2) - 90f, game.HEIGHT - 200f);
+		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - 90f, game.HEIGHT - 200f);
 		Font.mainFont.draw(game.batch, "Tap to start", (game.WIDTH / 2) - 45f, (game.HEIGHT / 2) + 40f);
 		game.batch.end();
 		

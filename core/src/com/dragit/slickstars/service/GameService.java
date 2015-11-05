@@ -64,6 +64,7 @@ public class GameService {
 	}
 	
 	private void startCountdown() {
+		Logger.log(CLASS_NAME, "starting countdown");
 		partOfTime = game.GAME_TIME / 4;
 		countdown = new Countdown(game.GAME_TIME, partOfTime);
 		countDownTimer = new Timer();

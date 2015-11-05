@@ -8,7 +8,7 @@ import com.dragit.slickstars.game.MainGame.Direction;
 
 public class DragingListener extends DragListener {
 	
-	private final float DRAG_POWER = 0.5f;
+	private final float DRAG_POWER = 0.1f;
 	
 	public DragingListener() {
 		this.setTapSquareSize(128f);
@@ -26,7 +26,6 @@ public class DragingListener extends DragListener {
 					b.isDragged = true;
 				}
 			}
-			Gdx.app.log("DEBUG", "Pressed: " + pointer);
 		}
 	}
 	

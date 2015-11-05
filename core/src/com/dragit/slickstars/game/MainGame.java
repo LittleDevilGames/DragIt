@@ -24,6 +24,7 @@ public class MainGame extends Game {
 	public final int DRAG_SPEED = 15;
 	public final int GAME_TIME = 60;
 	public final int MAX_DIFFICULTS = 4;
+	public final String GAME_TITLE = "DragIt";
 	public final String UI_SKIN_PATH = "data/skin/uiskin.json";
 	
 	private int difficult;
