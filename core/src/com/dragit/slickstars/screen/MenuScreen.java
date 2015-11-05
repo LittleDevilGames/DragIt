@@ -28,7 +28,7 @@ public class MenuScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, this.game.WIDTH, this.game.HEIGHT);
 		
-		//createUI();
+		createUI();
 		
 		Logger.log(CLASS_NAME, "started");
 	}
@@ -36,22 +36,23 @@ public class MenuScreen implements Screen {
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	private void createUI() {
-		// Todo
 		Skin skin = new Skin(Gdx.files.internal(game.UI_SKIN_PATH));
 		
-		Button buttonStart = new Button(skin);
+		float pad = 30f;
+		float bh = game.HEIGHT / 2 - pad * 2;
+		
+		TextButton start = createButton("Start", skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh);
+		TextButton records = createButton("Records", skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh -= game.BUTTON_HEIGHT + pad);
+		TextButton quit = createButton("Quit", skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh -= game.BUTTON_HEIGHT + pad);
+		game.stage.addActor(start);
+		game.stage.addActor(records);
+		game.stage.addActor(quit);
 		//button.addListener(new TextTooltip("This is a tooltip!", skin));
-		Table table = new Table();
-		table = new Table();
-		table.setFillParent(true);
-		table.setDebug(true);
-		game.stage.addActor(table);
 	}
-
+	
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
@@ -62,7 +63,7 @@ public class MenuScreen implements Screen {
 		
 		game.batch.begin();
 		Font.titleFont.draw(game.batch, "DragIt", (game.WIDTH / 2) - 90f, game.HEIGHT - 200f);
-		Font.mainFont.draw(game.batch, "Tap to start", (game.WIDTH / 2) - 45f, game.HEIGHT / 2);
+		Font.mainFont.draw(game.batch, "Tap to start", (game.WIDTH / 2) - 45f, (game.HEIGHT / 2) + 40f);
 		game.batch.end();
 		
 		if(Gdx.input.isTouched()) {
@@ -96,6 +97,13 @@ public class MenuScreen implements Screen {
 	public void hide() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public TextButton createButton(String text, Skin skin, float x, float y) {
+		TextButton button = new TextButton(text, skin, "toggle");
+		button.setBounds(x, y, game.BUTTON_WIDTH, game.BUTTON_HEIGHT);
+		button.padTop(game.BUTTON_HEIGHT / 2);
+		return button;
 	}
 
 	@Override

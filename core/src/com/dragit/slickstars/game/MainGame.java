@@ -17,6 +17,8 @@ public class MainGame extends Game {
 	
 	public final int WIDTH = 480;
 	public final int HEIGHT = 800;
+	public final int BUTTON_WIDTH = 165;
+	public final int BUTTON_HEIGHT = 65;
 	public final float BALL_SIZE = 64f;
 	public final int BALL_SPEED = 3;
 	public final int DRAG_SPEED = 15;
