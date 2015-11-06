@@ -81,7 +81,7 @@ public class MenuScreen extends BaseScreen implements Screen {
 		game.batch.setProjectionMatrix(game.camera.combined);
 		
 		game.batch.begin();
-		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - 70f, game.HEIGHT - 200f);
+		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - 110f, game.HEIGHT - 200f);
 		game.batch.end();
 
 		game.stage.getViewport().setCamera(game.camera);

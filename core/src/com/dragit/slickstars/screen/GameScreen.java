@@ -3,6 +3,9 @@ package com.dragit.slickstars.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.service.GameService;
@@ -18,7 +21,8 @@ public class GameScreen extends BaseScreen implements Screen {
 		super(game);
 		
 		game.status = GameStatus.GAME_PLAY;
-		
+
+		createUI();
 		gameService = new GameService(game);
 		Logger.log(CLASS_NAME, "started");
 	}
@@ -46,6 +50,8 @@ public class GameScreen extends BaseScreen implements Screen {
 		else {
 			Font.mainFont.draw(game.batch, "PAUSE", game.WIDTH / 2, game.HEIGHT / 2);
 		}
+		
+		Font.mainFont.draw(game.batch, "Alpha", game.WIDTH - game.UI_PADDING * 2, game.HEIGHT - game.UI_PADDING * 2);
 		game.batch.end();
 		
 		gameService.render(delta);
@@ -77,6 +83,21 @@ public class GameScreen extends BaseScreen implements Screen {
 	public void hide() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	protected void createUI() {
+		final TextButton pauseBtn = createButton("pause", game.skin, game.WIDTH - game.UI_PADDING * 2, game.HEIGHT - game.UI_PADDING * 2);
+		pauseBtn.setVisible(true);
+		pauseBtn.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				gameService.pause(!MainGame.isPause);
+				pauseBtn.setChecked(false);
+			}
+		});
+		
+		game.stage.addActor(pauseBtn);
 	}
 
 	@Override
