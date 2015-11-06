@@ -1,11 +1,14 @@
 package com.dragit.slickstars.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Font;
@@ -16,11 +19,17 @@ public class MainGame extends Game {
 	
 	public final int WIDTH = 480;
 	public final int HEIGHT = 800;
+	public final int BUTTON_WIDTH = 200;
+	public final int BUTTON_HEIGHT = 65;
 	public final float BALL_SIZE = 64f;
 	public final int BALL_SPEED = 3;
 	public final int DRAG_SPEED = 15;
 	public final int GAME_TIME = 60;
 	public final int MAX_DIFFICULTS = 4;
+	
+	public final String GAME_TITLE = "DragIt";
+	public final String UI_SKIN_PATH = "data/skin/uiskin.json";
+	public final String UI_SKINATLAS_PATH = "data/skin/uiskin.atlas";
 	
 	private int difficult;
 	
@@ -29,6 +38,7 @@ public class MainGame extends Game {
 	public Stage stage;
 	public ShapeRenderer shapeRenderer;
 	public Screen screen;
+	public Skin skin;
 	
 	public int score;
 	public int points;
@@ -63,6 +73,9 @@ public class MainGame extends Game {
 		stage = new Stage();
 		shapeRenderer = new ShapeRenderer();
 		
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(UI_SKINATLAS_PATH));
+		skin = new Skin(Gdx.files.internal(UI_SKIN_PATH), atlas);
+		Gdx.input.setInputProcessor(stage);
 		Art.load();
 		Font.load();
 		//Particle.load();
