@@ -18,21 +18,15 @@ public abstract class BaseScreen {
 		buttons = new ArrayList<Button>();
 	}
 	
-	public TextButton createButton(String text, Skin skin, float x, float y) {
+	public TextButton createButton(String name, String text, Skin skin, float x, float y, float w, float h) {
 		TextButton button = new TextButton(text, skin, "toggle");
-		button.setBounds(x, y, game.BUTTON_WIDTH, game.BUTTON_HEIGHT);
-		button.padTop(game.BUTTON_HEIGHT / 2);
+		button.setBounds(x, y, w, h);
+		button.padTop(h / 2);
+		button.setName(name);
 		return button;
 	}
 	
 	protected void createUI() {
-	}
-	
-	protected void visibleUI(boolean isVisible) {
-		for(Actor a : game.stage.getActors()) {
-			if(a instanceof Button) {
-				a.setVisible(false);
-			}
-		}
+		
 	}
 }

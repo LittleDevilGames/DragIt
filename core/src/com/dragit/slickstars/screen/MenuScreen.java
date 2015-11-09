@@ -36,25 +36,25 @@ public class MenuScreen extends BaseScreen implements Screen {
 		float pad = 30f;
 		float bh = game.HEIGHT / 2 - pad * 2;
 		
-		final TextButton start = createButton("Start", game.skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh);
-		final TextButton records = createButton("Records", game.skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh -= game.BUTTON_HEIGHT + pad);
-		final TextButton quit = createButton("Quit", game.skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh -= game.BUTTON_HEIGHT + pad);
+		final TextButton start = createButton(CLASS_NAME, "Start", game.skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh, game.BUTTON_WIDTH, game.BUTTON_HEIGHT);
+		final TextButton records = createButton(CLASS_NAME, "Records", game.skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh -= game.BUTTON_HEIGHT + pad, game.BUTTON_WIDTH, game.BUTTON_HEIGHT);
+		final TextButton quit = createButton(CLASS_NAME, "Quit", game.skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh -= game.BUTTON_HEIGHT + pad, game.BUTTON_WIDTH, game.BUTTON_HEIGHT);
 
 		start.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				game.uiGroup.clearChildren();
 				game.setGameScreen(new GameScreen(game));
 				start.setChecked(false);
-				visibleUI(false);
 			}
 		});
 		
 		records.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				game.uiGroup.clearChildren();
 				game.setGameScreen(new RecordsScreen(game));
 				records.setChecked(false);
-				visibleUI(false);
 			}
 		});
 		
@@ -65,9 +65,9 @@ public class MenuScreen extends BaseScreen implements Screen {
 			}
 		});
 
-		game.stage.addActor(start);
-		game.stage.addActor(records);
-		game.stage.addActor(quit);
+		game.uiGroup.addActor(start);
+		game.uiGroup.addActor(records);
+		game.uiGroup.addActor(quit);
 		
 		//button.addListener(new TextTooltip("This is a tooltip!", skin));
 	}
@@ -81,7 +81,8 @@ public class MenuScreen extends BaseScreen implements Screen {
 		game.batch.setProjectionMatrix(game.camera.combined);
 		
 		game.batch.begin();
-		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - 70f, game.HEIGHT - 200f);
+		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - 110f, game.HEIGHT - 200f);
+		Font.mainFont.draw(game.batch, "ver. " + game.VERSION + " Alpha", game.UI_PADDING, game.UI_PADDING);
 		game.batch.end();
 
 		game.stage.getViewport().setCamera(game.camera);
