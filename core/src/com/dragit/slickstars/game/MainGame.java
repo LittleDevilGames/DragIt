@@ -22,8 +22,8 @@ public class MainGame extends Game {
 	public final int BUTTON_WIDTH = 200;
 	public final int BUTTON_HEIGHT = 65;
 	public final float BALL_SIZE = 64f;
-	public final int BALL_SPEED = 3;
 	public final int DRAG_SPEED = 15;
+	public final float ACCELERATE_VALUE = 0.5f;
 	public final int GAME_TIME = 60;
 	public final int MAX_DIFFICULTS = 4;
 	public final float UI_PADDING = 30f;
@@ -32,6 +32,7 @@ public class MainGame extends Game {
 	public final String UI_SKIN_PATH = "data/skin/uiskin.json";
 	public final String UI_SKINATLAS_PATH = "data/skin/uiskin.atlas";
 	
+	public float ballSpeed = 1f;
 	private int difficult;
 	
 	public OrthographicCamera camera;

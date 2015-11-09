@@ -34,7 +34,7 @@ public class GameService {
 	private final int BALL_OUT_POINT = 2;
 	
 	private int generateCount;
-	private LevelService level;
+	private LevelService levelService;
 	private int combo;
 	private Timer ballTimer;
 	private Timer countDownTimer;
@@ -46,7 +46,7 @@ public class GameService {
 	public GameService(MainGame game) {
 		this.game = game;
 		
-		level = new LevelService(game);
+		levelService = new LevelService(game);
 		game.setDifficult(1);
 		startCountdown();
 		//this.maxBalls = game.getDifficult() * 5;
@@ -143,7 +143,7 @@ public class GameService {
 				break;
 		}
 		
-		level.generate(start, end, game.BALL_SIZE + 5f, direction);
+		levelService.generate(start, end, game.BALL_SIZE + 5f, direction);
 	}
 	
 	private void pointAction(float x, float y, boolean take, int value) {
@@ -197,7 +197,7 @@ public class GameService {
 		if(game.status != GameStatus.GAME_PLAY) return 0;
 		
 		if(ball.isAlive && ball.isDragged == false) {
-			ball.setY(ball.getY() - game.BALL_SPEED);
+			ball.setY(ball.getY() - game.ballSpeed);
 		}
 		
 		if(ball.isDragged && ball.getDirection() != Direction.NONE) {
@@ -262,12 +262,13 @@ public class GameService {
 			generateCount = GENERATES_COUNT;
 		}
 		
-		for(Ball ball : level.balls) {
+		for(Ball ball : levelService.balls) {
 			ballUpdate(ball);
 		}
 		
 		if(countdown.getPartOfTime() < 1 && !countdown.isPause()) {
 			game.setDifficult(game.getDifficult() + 1);
+			game.ballSpeed += game.ACCELERATE_VALUE;
 			countdown.setPartOfTime(partOfTime);
 			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
 		}
@@ -298,7 +299,7 @@ public class GameService {
 	}
 	
 	public void dispose() {
-		//balls.clear();
+		levelService.dispose();
 		countDownTimer.cancel();
 		ballTimer.cancel();
 		Logger.log(CLASS_NAME, "disposed");
