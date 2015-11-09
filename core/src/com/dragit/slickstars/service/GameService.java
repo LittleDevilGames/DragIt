@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Border;
 import com.dragit.slickstars.entity.Hint;
@@ -48,14 +49,14 @@ public class GameService {
 		
 		levelService = new LevelService(game);
 		game.setDifficult(1);
-		startCountdown();
-		//this.maxBalls = game.getDifficult() * 5;
-		createSides();
-		
 		this.combo = 1;
+		startCountdown();
 		pause(false);
+		createSides();
 		generateCount = GENERATES_COUNT;
 		startBallTimer();
+
+		game.ballSpeed = game.DEFAULT_BALL_SPEED;
 		game.score = 0;
 		game.points = 3;
 		game.status = GameStatus.GAME_PLAY;
@@ -108,8 +109,10 @@ public class GameService {
 		ballTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				generateCount--;
-				generateLevel();
+				if(!MainGame.isPause) {
+					generateCount--;
+					generateLevel();
+				}
 			}
 		}, 0, timeCreateBall);
 	}
@@ -271,15 +274,12 @@ public class GameService {
 			game.ballSpeed += game.ACCELERATE_VALUE;
 			countdown.setPartOfTime(partOfTime);
 			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
+			Logger.log(CLASS_NAME, "speed changed to " + game.ballSpeed);
 		}
 		
 //		Font.mainFont.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 6, game.HEIGHT - 30f);
 		Font.mainFont.draw(game.batch, "Score " + game.score, UI_LABEL_OFFSET, game.HEIGHT - UI_LABEL_OFFSET);
-		Font.mainFont.draw(game.batch, "Points " + game.points, UI_LABEL_SIZE + (UI_LABEL_OFFSET * 2) , game.HEIGHT - UI_LABEL_OFFSET);
-		
-		if(game.status == GameStatus.GAME_PAUSE) {
-			Font.mainFont.draw(game.batch, "Pause", game.WIDTH / 2, game.HEIGHT / 2);
-		}
+		Font.mainFont.draw(game.batch, "Points " + game.points, UI_LABEL_OFFSET , game.HEIGHT - (UI_LABEL_OFFSET * 2));
 		
 		return 1;
 	}
@@ -287,14 +287,18 @@ public class GameService {
 	public void pause(boolean pause) {
 		MainGame.isPause = pause;
 		countdown.setPause(pause);
-		game.status = GameStatus.GAME_PAUSE;
 		
+		if(pause) {
+			game.status = GameStatus.GAME_PAUSE;
+		}
+		else {
+			game.status = GameStatus.GAME_PLAY;
+		}
 		Logger.log(CLASS_NAME, "game pause " + pause);
 	}
 	
 	public void restart() {
-		game.stage.clear();
-		game.batch.flush();
+		game.ballGroup.clearChildren();
 		game.setGameScreen(new GameScreen(game));
 	}
 	

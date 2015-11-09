@@ -7,8 +7,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.dragit.slickstars.entity.Ball;
+import com.dragit.slickstars.screen.GameScreen;
 import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Font;
@@ -21,8 +25,11 @@ public class MainGame extends Game {
 	public final int HEIGHT = 800;
 	public final int BUTTON_WIDTH = 200;
 	public final int BUTTON_HEIGHT = 65;
+	public final int MIN_BUTTON_WIDTH = 100;
+	public final int MIN_BUTTON_HEIGHT = 30;
 	public final float BALL_SIZE = 64f;
 	public final int DRAG_SPEED = 15;
+	public final float DEFAULT_BALL_SPEED = 1f;
 	public final float ACCELERATE_VALUE = 0.5f;
 	public final int GAME_TIME = 60;
 	public final int MAX_DIFFICULTS = 4;
@@ -41,6 +48,8 @@ public class MainGame extends Game {
 	public ShapeRenderer shapeRenderer;
 	public Screen screen;
 	public Skin skin;
+	public Group uiGroup;
+	public Group ballGroup;
 	
 	public int score;
 	public int points;
@@ -73,8 +82,12 @@ public class MainGame extends Game {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
 		stage = new Stage();
+		uiGroup = new Group();
+		ballGroup = new Group();
 		shapeRenderer = new ShapeRenderer();
 		
+		stage.addActor(uiGroup);
+		stage.addActor(ballGroup);
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(UI_SKINATLAS_PATH));
 		skin = new Skin(Gdx.files.internal(UI_SKIN_PATH), atlas);
 		Gdx.input.setInputProcessor(stage);
@@ -115,7 +128,6 @@ public class MainGame extends Game {
 	
 	public void dispose() {
 		super.dispose();
-		
 		batch.dispose();
 		stage.dispose();
 		shapeRenderer.dispose();

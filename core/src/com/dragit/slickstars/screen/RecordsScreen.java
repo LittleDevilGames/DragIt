@@ -3,10 +3,15 @@ package com.dragit.slickstars.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
+
+import sun.security.krb5.internal.PAData;
 
 public class RecordsScreen extends BaseScreen implements Screen {
 
@@ -44,7 +49,7 @@ public class RecordsScreen extends BaseScreen implements Screen {
 		game.batch.begin();
 		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - 90f, game.HEIGHT - 200f);
 		Font.mainFont.draw(game.batch, "RECORDS", (game.WIDTH / 2) - 45f, game.HEIGHT - 250f);
-		Font.mainFont.draw(game.batch, scoreList, 200f, game.HEIGHT - 290f);
+		Font.mainFont.draw(game.batch, scoreList, 50f, game.HEIGHT - 290f);
 		game.batch.end();
 		
 		game.stage.getViewport().setCamera(game.camera);
@@ -78,7 +83,20 @@ public class RecordsScreen extends BaseScreen implements Screen {
 	
 	@Override
 	protected void createUI() {
+		Logger.log(CLASS_NAME, "creating ui");
 		
+		final TextButton backButton = createButton(CLASS_NAME, "back", game.skin, (game.WIDTH - game.MIN_BUTTON_WIDTH) - game.UI_PADDING, game.HEIGHT - (game.UI_PADDING * 2), game.MIN_BUTTON_WIDTH, game.MIN_BUTTON_HEIGHT);
+
+		backButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				game.uiGroup.clearChildren();
+				game.setGameScreen(new MenuScreen(game));
+				backButton.setChecked(false);
+			}
+		});
+		
+		game.uiGroup.addActor(backButton);
 	}
 
 	@Override

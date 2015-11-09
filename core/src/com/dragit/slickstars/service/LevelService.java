@@ -59,7 +59,7 @@ public class LevelService {
 			@Override
 			public void run() {
 				
-				if(timerState) {
+				if(timerState && !MainGame.isPause) {
 					if(direction == Direction.LEFT) {
 						if(currPos <= end) timerState = false;
 						currPos -= offset;
@@ -93,7 +93,7 @@ public class LevelService {
 		else {
 			Ball ball = new Ball(x, game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, type, sprite);
 			ball.addListener(new DragingListener()); 
-			game.stage.addActor(ball);
+			game.ballGroup.addActor(ball);
 			balls.add(ball);
 		}
 	}
