@@ -35,11 +35,18 @@ public class MainGame extends Game {
 	public final int GAME_TIME = 60;
 	public final int MAX_DIFFICULTS = 4;
 	public final float UI_PADDING = 30f;
+	public final int CHANGE_SIDE_POINT = 2;
+	public final int BALL_OUT_POINT = 2;
+	
+	public final int DRAG_SCORE = 50;
+	public final float UI_LABEL_SIZE = 120f;
+	public final float UI_LABEL_OFFSET = 30f;
 	
 	public final String GAME_TITLE = "DragIt";
 	public final String UI_SKIN_PATH = "data/skin/uiskin.json";
 	public final String UI_SKINATLAS_PATH = "data/skin/uiskin.atlas";
 	
+	public int combo;
 	public float ballSpeed = 1f;
 	private int difficult;
 	
