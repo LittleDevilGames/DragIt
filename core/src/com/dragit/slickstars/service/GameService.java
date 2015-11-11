@@ -1,23 +1,14 @@
 package com.dragit.slickstars.service;
 
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.dragit.slickstars.entity.Ball;
-import com.dragit.slickstars.entity.Border;
-import com.dragit.slickstars.entity.Hint;
 import com.dragit.slickstars.game.Countdown;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.GameStatus;
-import com.dragit.slickstars.game.MainGame.ObjectType;
 import com.dragit.slickstars.screen.GameScreen;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
@@ -124,9 +115,6 @@ public class GameService {
 		if(Particle.fireParticle.isComplete()) {
 			Particle.fireParticle.reset();
 		}*/
-		//Font.mainFont.draw(game.batch, "Score " + game.score, game.UI_LABEL_OFFSET, game.HEIGHT / 2);
-		//Font.mainFont.draw(game.batch, "Score " + game.score, game.UI_LABEL_OFFSET, game.HEIGHT / 3);
-		
 		
 		if(game.status == GameStatus.GAME_END) {
 			Font.mainFont.draw(game.batch, "GAME OVER\nYour score: " + game.score, game.WIDTH / 3, game.HEIGHT / 2);
@@ -165,9 +153,8 @@ public class GameService {
 			Logger.log(CLASS_NAME, "speed changed to " + game.ballSpeed);
 		}
 		
-//		Font.mainFont.draw(game.batch, "Time " + countdown.getTime(), game.WIDTH / 6, game.HEIGHT - 30f);
-		
-		//Font.mainFont.draw(game.batch, "Points " + game.points, game.UI_LABEL_OFFSET , game.HEIGHT - (game.UI_LABEL_OFFSET * 2));
+		Font.mainFont.draw(game.batch, "Score " + game.score, game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET);
+		Font.mainFont.draw(game.batch, "Points " + game.points, game.UI_LABEL_OFFSET , game.HEIGHT - (game.UI_LABEL_OFFSET * 2));
 		return 1;
 	}
 	

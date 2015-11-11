@@ -5,7 +5,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Border;
@@ -222,11 +221,9 @@ public class LevelService {
 	}
 	
 	public void render(float delta) {
-		game.shapeRenderer.begin(ShapeType.Filled);
 		for(Border side : sides) {
 			game.shapeRenderer.rect(side.position.x, side.position.y, side.getWidth(), side.getHeight(), side.getColor(), side.getColor(), side.getColor(), side.getColor());
 		}
-		game.shapeRenderer.end();
 	}
 	
 	public void update(float delta) {
