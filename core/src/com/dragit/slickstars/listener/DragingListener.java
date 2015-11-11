@@ -28,9 +28,9 @@ public class DragingListener extends DragListener {
 		}
 	}
 	
-	public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+	public void dragStart (InputEvent event, float x, float y, int pointer) {
 		if(!MainGame.isPause) {
-			super.touchUp(event, x, y, pointer, button);
+			super.dragStart(event, x, y, pointer);
 		}
 	}
 	

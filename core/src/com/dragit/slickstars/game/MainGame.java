@@ -7,12 +7,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.dragit.slickstars.entity.Ball;
-import com.dragit.slickstars.screen.GameScreen;
 import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Font;
@@ -23,7 +20,7 @@ public class MainGame extends Game {
 	
 	public final int WIDTH = 480;
 	public final int HEIGHT = 800;
-	public final String VERSION = "0.7";
+	public final String VERSION = "0.7 alpha";
 	public final int BUTTON_WIDTH = 200;
 	public final int BUTTON_HEIGHT = 65;
 	public final int MIN_BUTTON_WIDTH = 100;
@@ -35,11 +32,18 @@ public class MainGame extends Game {
 	public final int GAME_TIME = 60;
 	public final int MAX_DIFFICULTS = 4;
 	public final float UI_PADDING = 30f;
+	public final int CHANGE_SIDE_POINT = 2;
+	public final int BALL_OUT_POINT = 2;
+	
+	public final int DRAG_SCORE = 50;
+	public final float UI_LABEL_SIZE = 120f;
+	public final float UI_LABEL_OFFSET = 30f;
 	
 	public final String GAME_TITLE = "DragIt";
 	public final String UI_SKIN_PATH = "data/skin/uiskin.json";
 	public final String UI_SKINATLAS_PATH = "data/skin/uiskin.atlas";
 	
+	public int combo;
 	public float ballSpeed = 1f;
 	private int difficult;
 	

@@ -11,8 +11,6 @@ import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 
-import sun.security.krb5.internal.PAData;
-
 public class RecordsScreen extends BaseScreen implements Screen {
 
 	private final String CLASS_NAME = "RecordsScreen";

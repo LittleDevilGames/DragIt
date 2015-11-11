@@ -31,6 +31,48 @@ public class MenuScreen extends BaseScreen implements Screen {
 	}
 	
 	@Override
+	public void render(float delta) {
+		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		game.camera.update();
+		game.batch.setProjectionMatrix(game.camera.combined);
+		
+		game.batch.begin();
+		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - 110f, game.HEIGHT - 200f);
+		Font.mainFont.draw(game.batch, "ver. " + game.VERSION, game.UI_PADDING, game.UI_PADDING);
+		game.batch.end();
+
+		game.stage.getViewport().setCamera(game.camera);
+		game.stage.act(delta);
+		game.stage.draw();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	protected void createUI() {
 		Logger.log(CLASS_NAME, "creating ui");
 		float pad = 30f;
@@ -70,48 +112,6 @@ public class MenuScreen extends BaseScreen implements Screen {
 		game.uiGroup.addActor(quit);
 		
 		//button.addListener(new TextTooltip("This is a tooltip!", skin));
-	}
-	
-	@Override
-	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		game.camera.update();
-		game.batch.setProjectionMatrix(game.camera.combined);
-		
-		game.batch.begin();
-		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - 110f, game.HEIGHT - 200f);
-		Font.mainFont.draw(game.batch, "ver. " + game.VERSION + " Alpha", game.UI_PADDING, game.UI_PADDING);
-		game.batch.end();
-
-		game.stage.getViewport().setCamera(game.camera);
-		game.stage.act(delta);
-		game.stage.draw();
-	}
-
-	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
