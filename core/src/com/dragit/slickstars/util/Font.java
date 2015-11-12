@@ -13,14 +13,19 @@ public class Font {
 	
 	public static BitmapFont mainFont;
 	public static BitmapFont titleFont;
+	public static BitmapFont scoreFont;
 	
 	public static void load() {
 		try {
 			mainFont = loadFont(FONT_PATH + File.separator + "px.fnt");
 			titleFont = loadFont(FONT_PATH + File.separator + "px.fnt");
+			scoreFont = loadFont(FONT_PATH + File.separator + "px.fnt");
 			
 			titleFont.getData().setScale(3.5f);
 			titleFont.setColor(Color.SKY);
+			
+			scoreFont.getData().setScale(1.5f);
+			scoreFont.setColor(Color.SKY);
 			
 			Logger.log("Font", "fonts loaded");
 		}
@@ -39,5 +44,7 @@ public class Font {
 	
 	public static void dispose() {
 		mainFont.dispose();
+		titleFont.dispose();
+		scoreFont.dispose();
 	}
 }

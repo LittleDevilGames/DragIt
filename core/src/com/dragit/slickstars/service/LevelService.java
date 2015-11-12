@@ -186,7 +186,7 @@ public class LevelService {
 		Hint scoreHint = new Hint(x, y, "+" + score, Font.mainFont);
 		game.stage.addActor(scoreHint);
 		scoreHint.startAction();
-		game.score += score;
+		game.score.set(game.score.get() + score);
 	}
 
 	private boolean isBallOut(Ball ball) {

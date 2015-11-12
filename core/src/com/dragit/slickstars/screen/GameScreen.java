@@ -2,6 +2,7 @@ package com.dragit.slickstars.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -22,7 +23,7 @@ public class GameScreen extends BaseScreen implements Screen {
 		super(game);
 		
 		game.status = GameStatus.GAME_PLAY;
-
+		
 		createUI();
 		gameService = new GameService(game);
 		Logger.log(CLASS_NAME, "started");
@@ -42,6 +43,10 @@ public class GameScreen extends BaseScreen implements Screen {
 		game.camera.update();
 		game.shapeRenderer.setProjectionMatrix(game.camera.combined);
 		game.batch.setProjectionMatrix(game.camera.combined);
+
+		game.stage.getViewport().setCamera(game.camera);
+		game.stage.act(delta);
+		game.stage.draw();
 		
 		if(!MainGame.isPause) {
 			game.batch.begin();
@@ -57,10 +62,6 @@ public class GameScreen extends BaseScreen implements Screen {
 			Font.mainFont.draw(game.batch, "PAUSE", (game.WIDTH / 2) - (Font.mainFont.getSpaceWidth() * 5), game.HEIGHT / 2);
 			game.batch.end();
 		}
-		
-		game.stage.getViewport().setCamera(game.camera);
-		game.stage.act(delta);
-		game.stage.draw();
 	}
 
 	@Override

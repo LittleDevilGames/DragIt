@@ -43,7 +43,7 @@ public class GameService {
 		startBallTimer();
 
 		game.ballSpeed = game.DEFAULT_BALL_SPEED;
-		game.score = 0;
+		game.score.set(0);
 		game.points = 3;
 		game.status = GameStatus.GAME_PLAY;
 		
@@ -117,8 +117,9 @@ public class GameService {
 		}*/
 		
 		if(game.status == GameStatus.GAME_END) {
-			Font.mainFont.draw(game.batch, "GAME OVER\nYour score: " + game.score, game.WIDTH / 3, game.HEIGHT / 2);
+			Font.scoreFont.draw(game.batch, "GAME OVER\nYour score: " + game.score.get(), game.WIDTH / 3.5f, game.HEIGHT / 2);
 			if(Gdx.input.isTouched()) {
+				game.score.writeRecord(game.score.get());
 				restart();
 				return 0;
 			}
@@ -153,7 +154,7 @@ public class GameService {
 			Logger.log(CLASS_NAME, "speed changed to " + game.ballSpeed);
 		}
 		
-		Font.mainFont.draw(game.batch, "Score " + game.score, game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET);
+		Font.mainFont.draw(game.batch, "Score " + game.score.get(), game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET);
 		Font.mainFont.draw(game.batch, "Points " + game.points, game.UI_LABEL_OFFSET , game.HEIGHT - (game.UI_LABEL_OFFSET * 2));
 		return 1;
 	}
