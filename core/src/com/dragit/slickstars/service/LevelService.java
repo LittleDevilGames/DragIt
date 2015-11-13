@@ -136,7 +136,7 @@ public class LevelService {
 			
 			if(isBallOut(ball)) {
 				game.combo = 1;
-				pointAction(game.WIDTH / 2, game.HEIGHT - game.UI_LABEL_OFFSET, false, game.BALL_OUT_POINT);
+				pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, false, game.BALL_OUT_POINT);
 				ball.isDragged = false;
 				ball.isAlive = false;
 			}
@@ -154,14 +154,24 @@ public class LevelService {
 				ball.isAlive = false;
 				
 				if(ball.getType() == side.getType()) {
-					scoreAction(game.DRAG_SCORE * game.getDifficult(), ball.getX(), ball.getY());
-					pointAction(game.WIDTH / 2, game.HEIGHT - game.UI_LABEL_OFFSET, true, game.combo);
+					float px = ball.getX();
+					float py = ball.getY();
+					
+					if(side.getState() == Direction.RIGHT) {
+						px -= game.UI_LABEL_OFFSET * 2.2f;
+					}
+					else if(side.getState() == Direction.LEFT) {
+						px += game.UI_LABEL_OFFSET;
+					}
+					
+					scoreAction(game.DRAG_SCORE * game.getDifficult(), px, py);
+					pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, game.combo);
 					return 1;
 				}
 				else {
 					game.combo = 1;
 					changeSides();
-					pointAction(game.WIDTH / 2, game.HEIGHT - game.UI_LABEL_OFFSET, false, game.CHANGE_SIDE_POINT);
+					pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, false, game.CHANGE_SIDE_POINT);
 					return 1;
 				}
 			}
