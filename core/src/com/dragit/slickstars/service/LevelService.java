@@ -157,27 +157,9 @@ public class LevelService {
 				ball.isAlive = false;
 				
 				if(ball.getType() == side.getType()) {
-					float px = ball.getX();
-					float py = ball.getY();
-					
-					if(side.getState() == Direction.RIGHT) {
-						px -= game.UI_LABEL_OFFSET * 2.2f;
-					}
-					else if(side.getState() == Direction.LEFT) {
-						px += game.UI_LABEL_OFFSET;
-					}
-					
-					if(comboCount >= DRAGS_FOR_COMBO) {
-						comboCount = 0;
-						game.setCombo(game.getCombo() + 1);
-						pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, game.getCombo(), "x" + game.getCombo());
-					}
-					else {
-						comboCount++;
-					}
-					
+					checkCombo();
+					showScore(ball.getX(), ball.getY(), side);
 					game.dragged++;
-					scoreAction(game.DRAG_SCORE * game.getDifficult(), px, py);
 					return 1;
 				}
 				else {
@@ -189,6 +171,28 @@ public class LevelService {
 			}
 		}
 		return 1;
+	}
+	
+	private void checkCombo() {
+		if(comboCount >= DRAGS_FOR_COMBO) {
+			comboCount = 0;
+			game.setCombo(game.getCombo() + 1);
+			pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, game.getCombo(), "x" + game.getCombo());
+		}
+		else {
+			comboCount++;
+		}
+	}
+	
+	private void showScore(float x, float y, Border side) {
+		if(side.getState() == Direction.RIGHT) {
+			x -= game.UI_LABEL_OFFSET * 2.2f;
+		}
+		else if(side.getState() == Direction.LEFT) {
+			x += game.UI_LABEL_OFFSET;
+		}
+		
+		scoreAction(game.DRAG_SCORE * game.getDifficult(), x, y);
 	}
 	
 	private void pointAction(float x, float y, boolean take, int value, String str) {
