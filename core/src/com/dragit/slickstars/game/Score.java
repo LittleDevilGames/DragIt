@@ -38,17 +38,18 @@ public class Score {
 		return scoreList;
 	}
 	
-	public void loadRecords() {
+	public boolean loadRecords() {
 		Json json = new Json();
 		FileHandle file = Gdx.files.local(RECORDS_FILE);
 		Logger.log(CLASS_NAME, "Loading records from file " + file.name());
-		if(file.exists()) {
-			scoreList = json.fromJson(ArrayList.class, Integer.class, file);
-			Logger.log(CLASS_NAME, "Records file " + file.name() + " successfuly loaded!");
-		}
-		else {
+		if(!file.exists()) {
 			Logger.log(CLASS_NAME, "Records file " + file.name() + " not found");
+			return false;
 		}
+		
+		scoreList = json.fromJson(ArrayList.class, Integer.class, file);
+		Logger.log(CLASS_NAME, "Records file " + file.name() + " successfuly loaded!");
+		return true;
 	}
 	
 	public boolean writeRecord(int value) {

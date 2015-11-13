@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.SortedIntList;
 import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Font;
@@ -61,7 +60,6 @@ public class MainGame extends Game {
 	public Group uiGroup;
 	public Group ballGroup;
 	
-	public SortedIntList<Integer> recordList;
 	public int points;
 	public static boolean isPause;
 	public Score score;
