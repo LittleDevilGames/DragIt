@@ -21,19 +21,25 @@ public class MainGame extends Game {
 	public final int WIDTH = 480;
 	public final int HEIGHT = 800;
 	public final String VERSION = "0.7 alpha";
+	
 	public final int BUTTON_WIDTH = 200;
 	public final int BUTTON_HEIGHT = 65;
 	public final int MIN_BUTTON_WIDTH = 100;
 	public final int MIN_BUTTON_HEIGHT = 30;
+	
 	public final float BALL_SIZE = 64f;
+	public final int BALL_OUT_POINT = 2;
+	public final float DEFAULT_BALL_SPEED = 1.5f;
+	
 	public final int DRAG_SPEED = 15;
-	public final float DEFAULT_BALL_SPEED = 1f;
 	public final float ACCELERATE_VALUE = 0.5f;
 	public final int GAME_TIME = 60;
 	public final int MAX_DIFFICULTS = 4;
 	public final float UI_PADDING = 30f;
 	public final int CHANGE_SIDE_POINT = 2;
-	public final int BALL_OUT_POINT = 2;
+	
+	public final static String COLOR_RED = "f8212e";
+	public final static String COLOR_GREEN = "00a8b6";
 	
 	public final int DRAG_SCORE = 50;
 	public final float UI_LABEL_SIZE = 120f;
@@ -43,7 +49,7 @@ public class MainGame extends Game {
 	public final String UI_SKIN_PATH = "data/skin/uiskin.json";
 	public final String UI_SKINATLAS_PATH = "data/skin/uiskin.atlas";
 	
-	public int combo;
+	private int combo;
 	public float ballSpeed = 1f;
 	private int difficult;
 	
@@ -56,9 +62,11 @@ public class MainGame extends Game {
 	public Group uiGroup;
 	public Group ballGroup;
 	
-	public int score;
 	public int points;
 	public static boolean isPause;
+	public Score score;
+	public int dragged;
+	public int maxCombo;
 	
 	public enum ObjectType {
 		RED,
@@ -90,11 +98,15 @@ public class MainGame extends Game {
 		uiGroup = new Group();
 		ballGroup = new Group();
 		shapeRenderer = new ShapeRenderer();
+		score = new Score();
+		score.loadRecords();
 		
 		stage.addActor(uiGroup);
 		stage.addActor(ballGroup);
+		
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(UI_SKINATLAS_PATH));
 		skin = new Skin(Gdx.files.internal(UI_SKIN_PATH), atlas);
+		
 		Gdx.input.setInputProcessor(stage);
 		Art.load();
 		Font.load();
@@ -131,8 +143,20 @@ public class MainGame extends Game {
 		this.setScreen(this.screen);
 	}
 	
+	public void setCombo(int value) {
+		if(maxCombo < value) {
+			maxCombo = value;
+		}
+		this.combo = value;
+	}
+	
+	public int getCombo() {
+		return this.combo;
+	}
+	
 	public void dispose() {
 		super.dispose();
+		score.dispose();
 		batch.dispose();
 		stage.dispose();
 		shapeRenderer.dispose();

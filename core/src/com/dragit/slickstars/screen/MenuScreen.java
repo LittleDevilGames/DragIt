@@ -32,14 +32,14 @@ public class MenuScreen extends BaseScreen implements Screen {
 	
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClearColor(21/225f, 46/225f, 66/225f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		game.camera.update();
 		game.batch.setProjectionMatrix(game.camera.combined);
 		
 		game.batch.begin();
-		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - 110f, game.HEIGHT - 200f);
+		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - (game.UI_LABEL_OFFSET * 4), game.HEIGHT - 150f);
 		Font.mainFont.draw(game.batch, "ver. " + game.VERSION, game.UI_PADDING, game.UI_PADDING);
 		game.batch.end();
 
@@ -76,7 +76,7 @@ public class MenuScreen extends BaseScreen implements Screen {
 	protected void createUI() {
 		Logger.log(CLASS_NAME, "creating ui");
 		float pad = 30f;
-		float bh = game.HEIGHT / 2 - pad * 2;
+		float bh = game.HEIGHT / 1.7f - pad * 2;
 		
 		final TextButton start = createButton(CLASS_NAME, "Start", game.skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh, game.BUTTON_WIDTH, game.BUTTON_HEIGHT);
 		final TextButton records = createButton(CLASS_NAME, "Records", game.skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh -= game.BUTTON_HEIGHT + pad, game.BUTTON_WIDTH, game.BUTTON_HEIGHT);

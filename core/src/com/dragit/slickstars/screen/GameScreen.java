@@ -22,7 +22,7 @@ public class GameScreen extends BaseScreen implements Screen {
 		super(game);
 		
 		game.status = GameStatus.GAME_PLAY;
-
+		
 		createUI();
 		gameService = new GameService(game);
 		Logger.log(CLASS_NAME, "started");
@@ -36,12 +36,16 @@ public class GameScreen extends BaseScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClearColor(21/225f, 46/225f, 66/225f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		game.camera.update();
 		game.shapeRenderer.setProjectionMatrix(game.camera.combined);
 		game.batch.setProjectionMatrix(game.camera.combined);
+
+		game.stage.getViewport().setCamera(game.camera);
+		game.stage.act(delta);
+		game.stage.draw();
 		
 		if(!MainGame.isPause) {
 			game.batch.begin();
@@ -57,10 +61,6 @@ public class GameScreen extends BaseScreen implements Screen {
 			Font.mainFont.draw(game.batch, "PAUSE", (game.WIDTH / 2) - (Font.mainFont.getSpaceWidth() * 5), game.HEIGHT / 2);
 			game.batch.end();
 		}
-		
-		game.stage.getViewport().setCamera(game.camera);
-		game.stage.act(delta);
-		game.stage.draw();
 	}
 
 	@Override
@@ -90,8 +90,8 @@ public class GameScreen extends BaseScreen implements Screen {
 	@Override
 	protected void createUI() {
 		float bx = (game.WIDTH - (game.MIN_BUTTON_WIDTH * 2)) - (game.UI_PADDING * 2);
-		final TextButton pauseBtn = createButton(CLASS_NAME, "pause", game.skin, bx, game.HEIGHT - game.UI_PADDING, game.MIN_BUTTON_WIDTH, game.MIN_BUTTON_HEIGHT);
-		final TextButton menuBtn = createButton(CLASS_NAME, "menu", game.skin, bx += (game.MIN_BUTTON_WIDTH + game.UI_PADDING), game.HEIGHT - game.UI_PADDING, game.MIN_BUTTON_WIDTH, game.MIN_BUTTON_HEIGHT);
+		final TextButton pauseBtn = createButton(CLASS_NAME, "pause", game.skin, bx, game.HEIGHT - (game.UI_PADDING * 1.5f), game.MIN_BUTTON_WIDTH, game.MIN_BUTTON_HEIGHT);
+		final TextButton menuBtn = createButton(CLASS_NAME, "menu", game.skin, bx += (game.MIN_BUTTON_WIDTH + game.UI_PADDING), game.HEIGHT - (game.UI_PADDING * 1.5f), game.MIN_BUTTON_WIDTH, game.MIN_BUTTON_HEIGHT);
 		
 		pauseBtn.addListener(new ClickListener() {
 			@Override
@@ -111,7 +111,7 @@ public class GameScreen extends BaseScreen implements Screen {
 				menuBtn.setChecked(false);
 			}
 		});
-		
+		game.uiGroup.setZIndex(2);
 		game.uiGroup.addActor(pauseBtn);
 		game.uiGroup.addActor(menuBtn);
 	}

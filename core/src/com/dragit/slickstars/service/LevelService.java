@@ -26,6 +26,7 @@ public class LevelService {
 	private final int COUNT_LEVEL_BALLS = 25;
 	private final int CREATING_PERIOD = 600;
 	private final int COUNT_OBJ_TYPES = 2;
+	private final int DRAGS_FOR_COMBO = 3;
 
 	public ArrayList<Ball> balls;
 	private ArrayList<Ball> tempBalls;
@@ -38,6 +39,7 @@ public class LevelService {
 	private int maxBalls;
 	private boolean timerState;
 	private ArrayList<Border> sides;
+	private int comboCount;
 	
 	public LevelService(MainGame game) {
 		this.game = game;
@@ -45,6 +47,7 @@ public class LevelService {
 		this.tempBalls = new ArrayList<Ball>();
 		this.delayTimer = new Timer();
 		
+		this.comboCount = 0;
 		createSides();
 		this.maxBalls = COUNT_LEVEL_BALLS;
 		initTimer();
@@ -135,8 +138,8 @@ public class LevelService {
 			ballCheckSide(ball);
 			
 			if(isBallOut(ball)) {
-				game.combo = 1;
-				pointAction(game.WIDTH / 2, game.HEIGHT - game.UI_LABEL_OFFSET, false, game.BALL_OUT_POINT);
+				game.setCombo(1);
+				pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, false, game.BALL_OUT_POINT);
 				ball.isDragged = false;
 				ball.isAlive = false;
 			}
@@ -154,19 +157,55 @@ public class LevelService {
 				ball.isAlive = false;
 				
 				if(ball.getType() == side.getType()) {
-					scoreAction(game.DRAG_SCORE * game.getDifficult(), ball.getX(), ball.getY());
-					pointAction(game.WIDTH / 2, game.HEIGHT - game.UI_LABEL_OFFSET, true, game.combo);
+					checkCombo();
+					showScore(ball.getX(), ball.getY(), side);
+					game.dragged++;
 					return 1;
 				}
 				else {
-					game.combo = 1;
+					comboCount = 0;
+					game.setCombo(1);
 					changeSides();
-					pointAction(game.WIDTH / 2, game.HEIGHT - game.UI_LABEL_OFFSET, false, game.CHANGE_SIDE_POINT);
+					pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, false, game.CHANGE_SIDE_POINT);
 					return 1;
 				}
 			}
 		}
 		return 1;
+	}
+	
+	private void checkCombo() {
+		if(comboCount >= DRAGS_FOR_COMBO) {
+			comboCount = 0;
+			game.setCombo(game.getCombo() + 1);
+			pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, game.getCombo(), "x" + game.getCombo());
+		}
+		else {
+			comboCount++;
+		}
+	}
+	
+	private void showScore(float x, float y, Border side) {
+		if(side.getState() == Direction.RIGHT) {
+			x -= game.UI_LABEL_OFFSET * 2.2f;
+		}
+		else if(side.getState() == Direction.LEFT) {
+			x += game.UI_LABEL_OFFSET;
+		}
+		
+		scoreAction(game.DRAG_SCORE * game.getDifficult(), x, y);
+	}
+	
+	private void pointAction(float x, float y, boolean take, int value, String str) {
+		Hint pointHint = new Hint(x, y, str, Font.mainFont);
+		game.stage.addActor(pointHint);
+		pointHint.startAction();
+		if(take) {
+			game.points += value;
+		}
+		else {
+			game.points -= value;
+		}
 	}
 	
 	private void pointAction(float x, float y, boolean take, int value) {
@@ -186,7 +225,7 @@ public class LevelService {
 		Hint scoreHint = new Hint(x, y, "+" + score, Font.mainFont);
 		game.stage.addActor(scoreHint);
 		scoreHint.startAction();
-		game.score += score;
+		game.score.set(game.score.get() + score);
 	}
 
 	private boolean isBallOut(Ball ball) {

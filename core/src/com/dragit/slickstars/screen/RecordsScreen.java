@@ -15,19 +15,27 @@ public class RecordsScreen extends BaseScreen implements Screen {
 
 	private final String CLASS_NAME = "RecordsScreen";
 	
-	private String scoreList;
+	private StringBuilder scoreList;
 	
 	public RecordsScreen(MainGame game) {
 		super(game);
 		
 		this.game.status = GameStatus.GAME_NONE;
+		this.scoreList = new StringBuilder();
 		
-		String delimiter = ".........................";
-		scoreList = "Username" + delimiter + "1234567" + "\nUsername" + delimiter + "12345"
-				+ "\nUsername" + delimiter + "1234123" + "\nUsername" + delimiter + "1234512345";
-		createUI();
+		printScores();
 		
 		Logger.log(CLASS_NAME, "started");
+	}
+	
+	private void printScores() {
+		String delimiter = ". . . . . . . . . . . . . . . . . . . . .";
+		int idx = 1;
+		for(int v : game.score.getList()) {
+			scoreList.append(idx + delimiter + v + "\n");
+			idx++;
+		}
+		createUI();
 	}
 	
 	@Override
@@ -38,16 +46,16 @@ public class RecordsScreen extends BaseScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClearColor(21/225f, 46/225f, 66/225f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		game.camera.update();
 		game.batch.setProjectionMatrix(game.camera.combined);
 		
 		game.batch.begin();
-		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - 90f, game.HEIGHT - 200f);
-		Font.mainFont.draw(game.batch, "RECORDS", (game.WIDTH / 2) - 45f, game.HEIGHT - 250f);
-		Font.mainFont.draw(game.batch, scoreList, 50f, game.HEIGHT - 290f);
+		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - (game.UI_LABEL_OFFSET * 4), game.HEIGHT - 150f);
+		Font.mainFont.draw(game.batch, "RECORDS", (game.WIDTH / 2) - 45f, game.HEIGHT - 200f);
+		Font.scoreFont.draw(game.batch, scoreList.toString(), 50f, game.HEIGHT - 290f);
 		game.batch.end();
 		
 		game.stage.getViewport().setCamera(game.camera);
