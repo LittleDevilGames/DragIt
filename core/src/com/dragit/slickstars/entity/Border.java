@@ -2,6 +2,7 @@ package com.dragit.slickstars.entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.ObjectType;
 
@@ -32,9 +33,9 @@ public class Border {
 	
 	public void setColor(ObjectType type) {
 		switch(type) {
-		case RED: color = Color.RED;
+		case RED: color = Color.valueOf(MainGame.COLOR_RED);
 			break;
-		case GREEN: color = Color.GREEN;
+		case GREEN: color = Color.valueOf(MainGame.COLOR_GREEN);
 			break;
 		}
 	}

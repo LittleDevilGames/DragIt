@@ -38,6 +38,8 @@ public class MainGame extends Game {
 	public final float UI_PADDING = 30f;
 	public final int CHANGE_SIDE_POINT = 2;
 	
+	public final static String COLOR_RED = "f8212e";
+	public final static String COLOR_GREEN = "00a8b6";
 	
 	public final int DRAG_SCORE = 50;
 	public final float UI_LABEL_SIZE = 120f;
