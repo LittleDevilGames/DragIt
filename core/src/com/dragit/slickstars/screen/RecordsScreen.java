@@ -29,7 +29,7 @@ public class RecordsScreen extends BaseScreen implements Screen {
 	}
 	
 	private void printScores() {
-		String delimiter = ".........................................";
+		String delimiter = ". . . . . . . . . . . . . . . . . . . . .";
 		int idx = 1;
 		for(int v : game.score.getList()) {
 			scoreList.append(idx + delimiter + v + "\n");
@@ -53,8 +53,8 @@ public class RecordsScreen extends BaseScreen implements Screen {
 		game.batch.setProjectionMatrix(game.camera.combined);
 		
 		game.batch.begin();
-		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - 90f, game.HEIGHT - 200f);
-		Font.mainFont.draw(game.batch, "RECORDS", (game.WIDTH / 2) - 45f, game.HEIGHT - 250f);
+		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - (game.UI_LABEL_OFFSET * 4), game.HEIGHT - 150f);
+		Font.mainFont.draw(game.batch, "RECORDS", (game.WIDTH / 2) - 45f, game.HEIGHT - 200f);
 		Font.scoreFont.draw(game.batch, scoreList.toString(), 50f, game.HEIGHT - 290f);
 		game.batch.end();
 		

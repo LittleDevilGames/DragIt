@@ -163,6 +163,7 @@ public class LevelService {
 					return 1;
 				}
 				else {
+					comboCount = 0;
 					game.setCombo(1);
 					changeSides();
 					pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, false, game.CHANGE_SIDE_POINT);
