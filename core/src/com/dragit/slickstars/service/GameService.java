@@ -35,7 +35,9 @@ public class GameService {
 		
 		levelService = new LevelService(game);
 		game.setDifficult(1);
-		game.combo = 1;
+		game.setCombo(1);
+		game.dragged = 0;
+		game.maxCombo = 1;
 		startCountdown();
 		pause(false);
 		
@@ -117,7 +119,7 @@ public class GameService {
 		}*/
 		
 		if(game.status == GameStatus.GAME_END) {
-			Font.scoreFont.draw(game.batch, "GAME OVER\nYour score: " + game.score.get(), game.WIDTH / 3.5f, game.HEIGHT / 2);
+			Font.scoreFont.draw(game.batch, "GAME OVER\nYour score: " + game.score.get() + "\nDragged: " + game.dragged + "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f);
 			if(Gdx.input.isTouched()) {
 				game.score.writeRecord(game.score.get());
 				restart();

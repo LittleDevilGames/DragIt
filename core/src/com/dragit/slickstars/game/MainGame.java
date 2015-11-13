@@ -49,7 +49,7 @@ public class MainGame extends Game {
 	public final String UI_SKIN_PATH = "data/skin/uiskin.json";
 	public final String UI_SKINATLAS_PATH = "data/skin/uiskin.atlas";
 	
-	public int combo;
+	private int combo;
 	public float ballSpeed = 1f;
 	private int difficult;
 	
@@ -65,6 +65,8 @@ public class MainGame extends Game {
 	public int points;
 	public static boolean isPause;
 	public Score score;
+	public int dragged;
+	public int maxCombo;
 	
 	public enum ObjectType {
 		RED,
@@ -139,6 +141,17 @@ public class MainGame extends Game {
 		}
 		this.screen = screen;
 		this.setScreen(this.screen);
+	}
+	
+	public void setCombo(int value) {
+		if(maxCombo < value) {
+			maxCombo = value;
+		}
+		this.combo = value;
+	}
+	
+	public int getCombo() {
+		return this.combo;
 	}
 	
 	public void dispose() {

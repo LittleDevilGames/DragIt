@@ -26,6 +26,7 @@ public class LevelService {
 	private final int COUNT_LEVEL_BALLS = 25;
 	private final int CREATING_PERIOD = 600;
 	private final int COUNT_OBJ_TYPES = 2;
+	private final int DRAGS_FOR_COMBO = 3;
 
 	public ArrayList<Ball> balls;
 	private ArrayList<Ball> tempBalls;
@@ -38,6 +39,7 @@ public class LevelService {
 	private int maxBalls;
 	private boolean timerState;
 	private ArrayList<Border> sides;
+	private int comboCount;
 	
 	public LevelService(MainGame game) {
 		this.game = game;
@@ -45,6 +47,7 @@ public class LevelService {
 		this.tempBalls = new ArrayList<Ball>();
 		this.delayTimer = new Timer();
 		
+		this.comboCount = 0;
 		createSides();
 		this.maxBalls = COUNT_LEVEL_BALLS;
 		initTimer();
@@ -135,7 +138,7 @@ public class LevelService {
 			ballCheckSide(ball);
 			
 			if(isBallOut(ball)) {
-				game.combo = 1;
+				game.setCombo(1);
 				pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, false, game.BALL_OUT_POINT);
 				ball.isDragged = false;
 				ball.isAlive = false;
@@ -164,12 +167,21 @@ public class LevelService {
 						px += game.UI_LABEL_OFFSET;
 					}
 					
+					if(comboCount >= DRAGS_FOR_COMBO) {
+						comboCount = 0;
+						game.setCombo(game.getCombo() + 1);
+						pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, game.getCombo(), "x" + game.getCombo());
+					}
+					else {
+						comboCount++;
+					}
+					
+					game.dragged++;
 					scoreAction(game.DRAG_SCORE * game.getDifficult(), px, py);
-					pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, game.combo);
 					return 1;
 				}
 				else {
-					game.combo = 1;
+					game.setCombo(1);
 					changeSides();
 					pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, false, game.CHANGE_SIDE_POINT);
 					return 1;
@@ -177,6 +189,18 @@ public class LevelService {
 			}
 		}
 		return 1;
+	}
+	
+	private void pointAction(float x, float y, boolean take, int value, String str) {
+		Hint pointHint = new Hint(x, y, str, Font.mainFont);
+		game.stage.addActor(pointHint);
+		pointHint.startAction();
+		if(take) {
+			game.points += value;
+		}
+		else {
+			game.points -= value;
+		}
 	}
 	
 	private void pointAction(float x, float y, boolean take, int value) {
