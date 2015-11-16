@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Border;
 import com.dragit.slickstars.entity.Hint;
@@ -26,7 +28,8 @@ public class LevelService {
 	private final int COUNT_LEVEL_BALLS = 25;
 	private final int CREATING_PERIOD = 600;
 	private final int COUNT_OBJ_TYPES = 2;
-	private final int DRAGS_FOR_COMBO = 3;
+	private final int DRAGS_FOR_COMBO = 5;
+	private final int DRAG_DELAY = 200;
 
 	public ArrayList<Ball> balls;
 	private ArrayList<Ball> tempBalls;
@@ -40,6 +43,7 @@ public class LevelService {
 	private boolean timerState;
 	private ArrayList<Border> sides;
 	private int comboCount;
+	private long lastDragTime;
 	
 	public LevelService(MainGame game) {
 		this.game = game;
@@ -61,7 +65,6 @@ public class LevelService {
 		this.end = endPos;
 		this.offset = offsetPos;
 		this.direction = ballDirection;
-		
 		this.currPos = startPos;
 		timerState = true;
 	}
@@ -254,7 +257,7 @@ public class LevelService {
 		}
 		else {
 			Ball ball = new Ball(x, game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, type, sprite);
-			ball.addListener(new DragingListener()); 
+			//ball.addListener(new DragingListener()); 
 			game.ballGroup.addActor(ball);
 			tempBalls.add(ball);
 		}
@@ -268,6 +271,7 @@ public class LevelService {
 	
 	public void update(float delta) {
 		for(Ball ball : balls) {
+			checkDrag(ball);
 			ballUpdate(ball);
 		}
 		if(!tempBalls.isEmpty()) {
@@ -283,6 +287,38 @@ public class LevelService {
 			case 1: return ObjectType.GREEN;
 		}
 		return ObjectType.GREEN;
+	}
+
+	private Direction getDragDirection(Ball ball, float power) {
+		if(Gdx.input.getDeltaX() > power) {
+			return Direction.RIGHT;
+		}
+		else if(Gdx.input.getDeltaX() < -power) {
+			return Direction.LEFT;
+		}
+		return Direction.NONE;
+	}
+	
+	private void checkDrag(Ball ball) {
+		if(Gdx.input.isTouched() && !MainGame.isPause) {
+			if(!ball.isDragged) {
+				Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+				game.camera.unproject(pos);
+				
+				Gdx.app.error("UPD", "x: " + pos.x + " y: " + pos.y + " | deltaX: " + Gdx.input.getDeltaX() + " deltaY: " + Gdx.input.getDeltaY());
+				
+				if((System.currentTimeMillis() - lastDragTime) >= DRAG_DELAY) {
+					if((pos.x > ball.getX() && pos.x < (ball.getX() + ball.getWidth()) && (pos.y > ball.getY() && pos.y < (ball.getY() + ball.getHeight())))) {
+						Direction direction = getDragDirection(ball, 0.5f);
+						if(direction != Direction.NONE) {
+							ball.setDirection(direction);
+							ball.isDragged = true;
+							lastDragTime = System.currentTimeMillis();
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public void dispose() {
