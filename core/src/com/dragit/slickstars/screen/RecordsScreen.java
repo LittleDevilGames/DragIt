@@ -107,8 +107,6 @@ public class RecordsScreen extends BaseScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
 		Logger.log(CLASS_NAME, "disposed");
 	}
 
