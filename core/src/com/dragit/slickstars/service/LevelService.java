@@ -181,6 +181,7 @@ public class LevelService {
 			pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, game.getCombo(), "x" + game.getCombo());
 		}
 		else {
+			pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, 1);
 			comboCount++;
 		}
 	}
