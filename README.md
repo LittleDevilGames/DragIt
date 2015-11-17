@@ -4,4 +4,5 @@
 
 ### Introduction
 This is 2D game Arcade, based on cross-platform [LibGDX](https://libgdx.badlogicgames.com/) game engine.
+
 Now supported only Android version.
