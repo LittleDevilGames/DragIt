@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.ObjectType;
 
@@ -32,7 +33,7 @@ public class Ball extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		sprite.setColor(color);
 		if(isDragged) {
-			sprite.setColor(Color.YELLOW);
+			sprite.setAlpha(0.5f);
 		}
 		
 		sprite.draw(batch);
@@ -81,9 +82,9 @@ public class Ball extends Actor {
 		this.type = type;
 		
 		switch(type) {
-		case RED: color = Color.RED;
+		case RED: color = Color.valueOf(MainGame.COLOR_RED);
 			break;
-		case GREEN: color = Color.GREEN;
+		case GREEN: color = Color.valueOf(MainGame.COLOR_GREEN);
 			break;
 		}
 	}

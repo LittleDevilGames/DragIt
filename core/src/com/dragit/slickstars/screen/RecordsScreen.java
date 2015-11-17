@@ -11,23 +11,36 @@ import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 
-public class MenuScreen extends BaseScreen implements Screen {
-		
-	private final String CLASS_NAME = "MenuScreen";
+public class RecordsScreen extends BaseScreen implements Screen {
+
+	private final String CLASS_NAME = "RecordsScreen";
 	
-	public MenuScreen(MainGame game) {
+	private StringBuilder scoreList;
+	
+	public RecordsScreen(MainGame game) {
 		super(game);
 		
 		this.game.status = GameStatus.GAME_NONE;
+		this.scoreList = new StringBuilder();
+		printScores();
 		createUI();
 		Logger.log(CLASS_NAME, "started");
 	}
-
+	
+	private void printScores() {
+		String delimiter = ". . . . . . . . . . . . . . . . . . . . .";
+		int idx = 1;
+		for(int v : game.score.getList()) {
+			scoreList.append(idx + delimiter + v + "\n");
+			idx++;
+		}
+	}
+	
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(21/225f, 46/225f, 66/225f, 1);
@@ -38,9 +51,10 @@ public class MenuScreen extends BaseScreen implements Screen {
 		
 		game.batch.begin();
 		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - (game.UI_LABEL_OFFSET * 4), game.HEIGHT - 150f);
-		Font.mainFont.draw(game.batch, "ver. " + game.VERSION, game.UI_PADDING, game.UI_PADDING);
+		Font.mainFont.draw(game.batch, "RECORDS", (game.WIDTH / 2) - 45f, game.HEIGHT - 200f);
+		Font.scoreFont.draw(game.batch, scoreList.toString(), 50f, game.HEIGHT - 290f);
 		game.batch.end();
-
+		
 		game.stage.getViewport().setCamera(game.camera);
 		game.stage.act(delta);
 		game.stage.draw();
@@ -73,43 +87,18 @@ public class MenuScreen extends BaseScreen implements Screen {
 	@Override
 	protected void createUI() {
 		Logger.log(CLASS_NAME, "creating ui");
-		float pad = 30f;
-		float bh = game.HEIGHT / 1.7f - pad * 2;
-		
-		final TextButton start = createButton(CLASS_NAME, "Start", game.skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh, game.BUTTON_WIDTH, game.BUTTON_HEIGHT);
-		final TextButton records = createButton(CLASS_NAME, "Records", game.skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh -= game.BUTTON_HEIGHT + pad, game.BUTTON_WIDTH, game.BUTTON_HEIGHT);
-		final TextButton quit = createButton(CLASS_NAME, "Quit", game.skin, (game.WIDTH / 2) - (game.BUTTON_WIDTH / 2), bh -= game.BUTTON_HEIGHT + pad, game.BUTTON_WIDTH, game.BUTTON_HEIGHT);
+		final TextButton backButton = createButton(CLASS_NAME, "back", game.skin, (game.WIDTH - game.MIN_BUTTON_WIDTH) - game.UI_PADDING, game.HEIGHT - (game.UI_PADDING * 2), game.MIN_BUTTON_WIDTH, game.MIN_BUTTON_HEIGHT);
 
-		start.addListener(new ClickListener() {
+		backButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				game.uiGroup.clearChildren();
-				game.setGameScreen(new GameScreen(game));
-				start.setChecked(false);
+				game.setGameScreen(new MenuScreen(game));
+				backButton.setChecked(false);
 			}
 		});
 		
-		records.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				game.uiGroup.clearChildren();
-				game.setGameScreen(new RecordsScreen(game));
-				records.setChecked(false);
-			}
-		});
-		
-		quit.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Gdx.app.exit();
-			}
-		});
-
-		game.uiGroup.addActor(start);
-		game.uiGroup.addActor(records);
-		game.uiGroup.addActor(quit);
-		
-		//button.addListener(new TextTooltip("This is a tooltip!", skin));
+		game.uiGroup.addActor(backButton);
 	}
 
 	@Override
