@@ -288,7 +288,7 @@ public class LevelService {
 		return ObjectType.GREEN;
 	}
 
-	private Direction getDragDirection(Ball ball, float power) {
+	private Direction getDragDirection(float power) {
 		if(Gdx.input.getDeltaX() > power) {
 			return Direction.RIGHT;
 		}
@@ -308,7 +308,7 @@ public class LevelService {
 				
 				if((System.currentTimeMillis() - lastDragTime) >= DRAG_DELAY) {
 					if((pos.x > ball.getX() && pos.x < (ball.getX() + ball.getWidth()) && (pos.y > ball.getY() && pos.y < (ball.getY() + ball.getHeight())))) {
-						Direction direction = getDragDirection(ball, 0.5f);
+						Direction direction = getDragDirection(0.5f);
 						if(direction != Direction.NONE) {
 							ball.setDirection(direction);
 							ball.isDragged = true;
