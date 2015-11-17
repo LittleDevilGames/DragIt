@@ -22,7 +22,6 @@ public class GameScreen extends BaseScreen implements Screen {
 		super(game);
 		
 		game.status = GameStatus.GAME_PLAY;
-		
 		createUI();
 		gameService = new GameService(game);
 		Logger.log(CLASS_NAME, "started");
@@ -121,5 +120,4 @@ public class GameScreen extends BaseScreen implements Screen {
 		gameService.dispose();
 		Logger.log(CLASS_NAME, "disposed");
 	}
-	
 }

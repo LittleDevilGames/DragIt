@@ -19,9 +19,7 @@ public class MenuScreen extends BaseScreen implements Screen {
 		super(game);
 		
 		this.game.status = GameStatus.GAME_NONE;
-		
 		createUI();
-		
 		Logger.log(CLASS_NAME, "started");
 	}
 

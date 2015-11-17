@@ -133,15 +133,6 @@ public class GameService {
 			startBallTimer();
 			generateCount = GENERATES_COUNT;
 		}
-
-		/*try{
-		for(Ball ball : levelService.balls) {
-			ballUpdate(ball);
-		}
-		}
-		catch(ConcurrentModificationException e) {
-			Gdx.app.error("ERROR", "Error: " + e.getMessage());
-		}*/
 		
 		if(countdown.getPartOfTime() < 1 && !countdown.isPause()) {
 			game.setDifficult(game.getDifficult() + 1);

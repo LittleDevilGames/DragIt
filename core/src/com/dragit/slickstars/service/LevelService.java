@@ -303,9 +303,6 @@ public class LevelService {
 			if(!ball.isDragged) {
 				Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 				game.camera.unproject(pos);
-				
-				Gdx.app.error("UPD", "x: " + pos.x + " y: " + pos.y + " | deltaX: " + Gdx.input.getDeltaX() + " deltaY: " + Gdx.input.getDeltaY());
-				
 				if((System.currentTimeMillis() - lastDragTime) >= DRAG_DELAY) {
 					if((pos.x > ball.getX() && pos.x < (ball.getX() + ball.getWidth()) && (pos.y > ball.getY() && pos.y < (ball.getY() + ball.getHeight())))) {
 						Direction direction = getDragDirection(0.5f);

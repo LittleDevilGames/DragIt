@@ -22,9 +22,8 @@ public class RecordsScreen extends BaseScreen implements Screen {
 		
 		this.game.status = GameStatus.GAME_NONE;
 		this.scoreList = new StringBuilder();
-		
 		printScores();
-		
+		createUI();
 		Logger.log(CLASS_NAME, "started");
 	}
 	
@@ -35,13 +34,11 @@ public class RecordsScreen extends BaseScreen implements Screen {
 			scoreList.append(idx + delimiter + v + "\n");
 			idx++;
 		}
-		createUI();
 	}
 	
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -90,7 +87,6 @@ public class RecordsScreen extends BaseScreen implements Screen {
 	@Override
 	protected void createUI() {
 		Logger.log(CLASS_NAME, "creating ui");
-		
 		final TextButton backButton = createButton(CLASS_NAME, "back", game.skin, (game.WIDTH - game.MIN_BUTTON_WIDTH) - game.UI_PADDING, game.HEIGHT - (game.UI_PADDING * 2), game.MIN_BUTTON_WIDTH, game.MIN_BUTTON_HEIGHT);
 
 		backButton.addListener(new ClickListener() {
@@ -109,5 +105,4 @@ public class RecordsScreen extends BaseScreen implements Screen {
 	public void dispose() {
 		Logger.log(CLASS_NAME, "disposed");
 	}
-
 }
