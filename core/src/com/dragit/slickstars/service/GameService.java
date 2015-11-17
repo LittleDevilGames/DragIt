@@ -5,7 +5,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.badlogic.gdx.Gdx;
-import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.game.Countdown;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
@@ -92,11 +91,6 @@ public class GameService {
 				start = game.BALL_SIZE;
 				end = game.WIDTH - game.BALL_SIZE;
 				direction = Direction.RIGHT;
-				break;
-			case 2:
-				start = Util.getRandomRange((int) game.BALL_SIZE, (int) (game.WIDTH - game.BALL_SIZE));
-				end = 0f;
-				direction = Direction.NONE;
 				break;
 			default:
 				start = Util.getRandomRange((int) game.BALL_SIZE, (int) (game.WIDTH - game.BALL_SIZE));

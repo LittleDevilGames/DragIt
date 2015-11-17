@@ -20,7 +20,7 @@ public class MainGame extends Game {
 	
 	public final int WIDTH = 480;
 	public final int HEIGHT = 800;
-	public final String VERSION = "0.7 alpha";
+	public final String VERSION = "0.8 alpha";
 	
 	public final int BUTTON_WIDTH = 200;
 	public final int BUTTON_HEIGHT = 65;
