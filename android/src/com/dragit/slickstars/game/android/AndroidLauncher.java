@@ -34,9 +34,11 @@ public class AndroidLauncher extends AndroidApplication {
 
         iad = new InterstitialAd(this);
         iad.setAdUnitId(getString(R.string.banner_ad_unit_id));
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder()
+				.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+				.addTestDevice(getString(R.string.device_id))
+                .build();
         iad.loadAd(adRequest);
-
         iad.setAdListener(new AdListener(){
             public void onAdLoaded(){
                 iad.show();
