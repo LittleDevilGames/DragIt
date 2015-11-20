@@ -162,6 +162,7 @@ public class GameService {
 	
 	public void restart() {
 		game.ballGroup.clearChildren();
+		dispose();
 		game.setGameScreen(new GameScreen(game));
 	}
 	

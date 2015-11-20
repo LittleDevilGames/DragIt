@@ -5,11 +5,9 @@ import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.dragit.slickstars.game.MainGame;
-import com.google.android.gms.ads.AdView;
 
 public class AndroidLauncher extends AndroidApplication {
 	
-	protected AdView adView;
 	//private InterstitialAd iad;
 
 	@Override
