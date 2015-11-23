@@ -5,10 +5,13 @@ import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.dragit.slickstars.game.MainGame;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 public class AndroidLauncher extends AndroidApplication {
 	
-	//private InterstitialAd iad;
+	private InterstitialAd iad;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -20,7 +23,7 @@ public class AndroidLauncher extends AndroidApplication {
 		config.useAccelerometer = false;
 		initialize(new MainGame(), config);
 
-        /*iad = new InterstitialAd(this);
+        iad = new InterstitialAd(this);
         iad.setAdUnitId(getString(R.string.banner_ad_unit_id));
         AdRequest adRequest = new AdRequest.Builder()
 				.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
@@ -31,6 +34,6 @@ public class AndroidLauncher extends AndroidApplication {
             public void onAdLoaded(){
                 iad.show();
             }
-        });*/
+        });
     }
 }

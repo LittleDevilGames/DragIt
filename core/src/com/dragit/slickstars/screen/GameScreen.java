@@ -13,7 +13,7 @@ import com.dragit.slickstars.service.GameService;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 
-public class GameScreen extends BaseScreen implements Screen {
+public class GameScreen extends BaseScreen {
 	private final String CLASS_NAME = "GameScreen";
 	
 	private GameService gameService;
@@ -35,10 +35,7 @@ public class GameScreen extends BaseScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(21/225f, 46/225f, 66/225f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		game.camera.update();
+		super.render(delta);
 		game.shapeRenderer.setProjectionMatrix(game.camera.combined);
 		game.batch.setProjectionMatrix(game.camera.combined);
 

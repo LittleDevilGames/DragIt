@@ -10,10 +10,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.dragit.slickstars.screen.LoadScreen;
 import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
+
+import de.tomgrill.gdxdialogs.core.GDXDialogs;
+import de.tomgrill.gdxdialogs.core.GDXDialogsSystem;
 
 public class MainGame extends Game {
 	private final String CLASS_NAME = "MainGame";
@@ -56,6 +60,7 @@ public class MainGame extends Game {
 	public Skin skin;
 	public Group uiGroup;
 	public Group ballGroup;
+	public GDXDialogs dialogs;
 	
 	public static boolean isPause;
 	public int points;
@@ -95,6 +100,7 @@ public class MainGame extends Game {
 		stage = new Stage();
 		uiGroup = new Group();
 		ballGroup = new Group();
+		dialogs = GDXDialogsSystem.install();
 		shapeRenderer = new ShapeRenderer();
 		score = new Score();
 		
@@ -121,7 +127,7 @@ public class MainGame extends Game {
 	public void create () {
 		init();
 		
-		setGameScreen(new MenuScreen(this));
+		setGameScreen(new LoadScreen(this));
 		Logger.log(CLASS_NAME, "started");
 	}
 

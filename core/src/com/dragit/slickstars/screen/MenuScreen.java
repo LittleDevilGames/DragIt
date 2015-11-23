@@ -11,10 +11,14 @@ import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 
-public class MenuScreen extends BaseScreen implements Screen {
+import de.tomgrill.gdxdialogs.core.dialogs.GDXButtonDialog;
+import de.tomgrill.gdxdialogs.core.listener.ButtonClickListener;
+
+public class MenuScreen extends BaseScreen {
 		
 	private final String CLASS_NAME = "MenuScreen";
-	
+	private GDXButtonDialog exitDialog;
+
 	public MenuScreen(MainGame game) {
 		super(game);
 		
@@ -30,10 +34,8 @@ public class MenuScreen extends BaseScreen implements Screen {
 	
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(21/225f, 46/225f, 66/225f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		game.camera.update();
+		super.render(delta);
+
 		game.batch.setProjectionMatrix(game.camera.combined);
 		
 		game.batch.begin();
@@ -101,7 +103,25 @@ public class MenuScreen extends BaseScreen implements Screen {
 		quit.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Gdx.app.exit();
+				exitDialog = game.dialogs.newDialog(GDXButtonDialog.class);
+				exitDialog.setTitle("Quit");
+				exitDialog.setMessage("Do you want quit?");
+
+				exitDialog.setClickListener(new ButtonClickListener() {
+					@Override
+					public void click(int button) {
+						if(button == 0) {
+							Gdx.app.exit();
+						}
+						else {
+							exitDialog.dismiss();
+						}
+					}
+				});
+
+				exitDialog.addButton("Quit");
+				exitDialog.addButton("Cancel");
+				exitDialog.build().show();
 			}
 		});
 
