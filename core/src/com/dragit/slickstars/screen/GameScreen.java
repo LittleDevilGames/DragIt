@@ -1,8 +1,5 @@
 package com.dragit.slickstars.screen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -15,7 +12,7 @@ import com.dragit.slickstars.util.Logger;
 
 public class GameScreen extends BaseScreen {
 	private final String CLASS_NAME = "GameScreen";
-	
+
 	private GameService gameService;
 	
 	public GameScreen(MainGame game) {

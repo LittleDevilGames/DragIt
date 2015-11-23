@@ -1,14 +1,11 @@
 package com.dragit.slickstars.screen;
 
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-import de.tomgrill.gdxdialogs.core.dialogs.GDXProgressDialog;
 
 /**
  * Created by slick on 23.11.15.
