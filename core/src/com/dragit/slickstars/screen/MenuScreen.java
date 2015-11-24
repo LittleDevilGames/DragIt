@@ -100,6 +100,7 @@ public class MenuScreen extends BaseScreen {
 		start.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				game.uiGroup.clearChildren();
 				dispose();
 				game.setGameScreen(new GameScreen(game));
 				start.setChecked(false);
@@ -125,10 +126,9 @@ public class MenuScreen extends BaseScreen {
 				exitDialog.setClickListener(new ButtonClickListener() {
 					@Override
 					public void click(int button) {
-						if(button == 0) {
+						if (button == 0) {
 							Gdx.app.exit();
-						}
-						else {
+						} else {
 							exitDialog.dismiss();
 						}
 					}
@@ -140,10 +140,11 @@ public class MenuScreen extends BaseScreen {
 			}
 		});
 
+		game.uiGroup.setZIndex(2);
 		game.uiGroup.addActor(start);
 		game.uiGroup.addActor(records);
 		game.uiGroup.addActor(quit);
-		
+
 		//button.addListener(new TextTooltip("This is a tooltip!", skin));
 	}
 
@@ -170,7 +171,6 @@ public class MenuScreen extends BaseScreen {
 
 	@Override
 	public void dispose() {
-		game.uiGroup.clearChildren();
 		effectsTimer.cancel();
 		game.effectsGroup.clearChildren();
 
