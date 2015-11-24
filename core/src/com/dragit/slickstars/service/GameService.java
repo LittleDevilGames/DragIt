@@ -12,7 +12,10 @@ import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.screen.GameScreen;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Particle;
 import com.dragit.slickstars.util.Util;
+
+import sun.rmi.runtime.Log;
 
 public class GameService {
 	private final String CLASS_NAME = "GameService";
@@ -29,11 +32,14 @@ public class GameService {
 	protected Countdown countdown;
 	private int partOfTime;
 	private int timeCreateBall;
-	
+	private int px, py;
+
 	public GameService(MainGame game) {
 		this.game = game;
 		
 		levelService = new LevelService(game);
+		px = 100; py = 0;
+
 		game.setDifficult(1);
 		game.setCombo(1);
 		game.dragged = 0;
@@ -67,7 +73,7 @@ public class GameService {
 		ballTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				if(!MainGame.isPause) {
+				if (!MainGame.isPause) {
 					generateCount--;
 					generateLevel();
 				}
@@ -107,12 +113,7 @@ public class GameService {
 	}
 	
 	public int update(float delta) {
-		/*Particle.fireParticle.draw(game.batch, delta);
-		
-		if(Particle.fireParticle.isComplete()) {
-			Particle.fireParticle.reset();
-		}*/
-		
+
 		if(game.status == GameStatus.GAME_END) {
 			Font.scoreFont.draw(game.batch, "GAME OVER\nYour score: " + game.score.get() + "\nDragged: " + game.dragged + "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f);
 			if(Gdx.input.isTouched()) {
@@ -125,7 +126,9 @@ public class GameService {
 		if(game.points <= 0) {
 			game.status = GameStatus.GAME_END;
 		}
-		
+
+		Particle.fireParticle.draw(game.batch, delta);
+
 		levelService.update(delta);
 		
 		if(generateCount < 1) {
@@ -144,6 +147,7 @@ public class GameService {
 		
 		Font.mainFont.draw(game.batch, "Score " + game.score.get(), game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET);
 		Font.mainFont.draw(game.batch, "Points " + game.points, game.UI_LABEL_OFFSET , game.HEIGHT - (game.UI_LABEL_OFFSET * 2));
+
 		return 1;
 	}
 	

@@ -13,7 +13,7 @@ public class Particle {
 	
 	public static void load() {
 		try {
-			fireParticle = loadEffect(PARTICLE_PATH + File.separator + "fire.p");
+			fireParticle = loadEffect(PARTICLE_PATH + File.separator + "pixel.p");
 			
 			Logger.log("Particle", "particles loaded");
 		}
@@ -27,8 +27,8 @@ public class Particle {
 	
 	public static ParticleEffect loadEffect(String path) {
 		ParticleEffect effect = new ParticleEffect();
-		effect.load(Gdx.files.internal(path), Gdx.files.internal(""));
-		effect.getEmitters().first().setPosition(-500f, -500f);
+		effect.load(Gdx.files.internal(path), Gdx.files.internal(PARTICLE_PATH));
+		effect.setPosition(-500, -500);
 		effect.start();
 		return effect;
 	}

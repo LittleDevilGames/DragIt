@@ -15,6 +15,7 @@ import com.dragit.slickstars.screen.MenuScreen;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Particle;
 
 import de.tomgrill.gdxdialogs.core.GDXDialogs;
 import de.tomgrill.gdxdialogs.core.GDXDialogsSystem;
@@ -119,7 +120,7 @@ public class MainGame extends Game {
 	private void loadAssets() {
 		Art.load();
 		Font.load();
-		//Particle.load();
+		Particle.load();
 		//Audio.load();
 	}
 	
@@ -171,8 +172,9 @@ public class MainGame extends Game {
 		shapeRenderer.dispose();
 		Art.dispose();
 		Font.dispose();
-		//Particle.dispose();
-		
+		Particle.dispose();
+		//Audio.dispose();
+
 		Logger.log(CLASS_NAME, "disposed");
 	}
 }

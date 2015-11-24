@@ -18,6 +18,7 @@ import com.dragit.slickstars.game.MainGame.ObjectType;
 import com.dragit.slickstars.util.Art;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Particle;
 import com.dragit.slickstars.util.Util;
 
 public class LevelService {
@@ -134,6 +135,7 @@ public class LevelService {
 			if(ball.getDirection() == Direction.RIGHT) {
 				ball.setX(ball.getX() + game.DRAG_SPEED);
 			}
+			Particle.fireParticle.setPosition(ball.getX() + (ball.getWidth() / 2), ball.getY() + (ball.getHeight() / 2));
 		}
 		
 		if(ball.isAlive) {
