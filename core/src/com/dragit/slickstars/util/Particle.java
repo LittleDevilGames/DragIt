@@ -10,7 +10,7 @@ public class Particle {
 	public static final String PARTICLE_PATH = "data/particle";
 	
 	public static ParticleEffect fireParticle;
-	
+
 	public static void load() {
 		try {
 			fireParticle = loadEffect(PARTICLE_PATH + File.separator + "pixel.p");

@@ -9,6 +9,7 @@ import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.service.GameService;
 import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Particle;
 
 public class GameScreen extends BaseScreen {
 	private final String CLASS_NAME = "GameScreen";
@@ -19,6 +20,7 @@ public class GameScreen extends BaseScreen {
 		super(game);
 		
 		game.status = GameStatus.GAME_PLAY;
+		resetEffects();
 		createUI();
 		gameService = new GameService(game);
 		Logger.log(CLASS_NAME, "started");
@@ -107,6 +109,10 @@ public class GameScreen extends BaseScreen {
 		game.uiGroup.setZIndex(2);
 		game.uiGroup.addActor(pauseBtn);
 		game.uiGroup.addActor(menuBtn);
+	}
+
+	private void resetEffects() {
+		Particle.fireParticle.setPosition(-500, -500);
 	}
 
 	@Override

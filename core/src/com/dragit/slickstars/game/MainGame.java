@@ -59,6 +59,7 @@ public class MainGame extends Game {
 	public Stage stage;
 	public Screen screen;
 	public Skin skin;
+	public Group effectsGroup;
 	public Group uiGroup;
 	public Group ballGroup;
 	public GDXDialogs dialogs;
@@ -101,15 +102,17 @@ public class MainGame extends Game {
 		stage = new Stage();
 		uiGroup = new Group();
 		ballGroup = new Group();
+		effectsGroup = new Group();
 		dialogs = GDXDialogsSystem.install();
 		shapeRenderer = new ShapeRenderer();
 		score = new Score();
 		
 		score.loadRecords();
-		
+
 		stage.addActor(uiGroup);
 		stage.addActor(ballGroup);
-		
+		stage.addActor(effectsGroup);
+
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(UI_SKINATLAS_PATH));
 		skin = new Skin(Gdx.files.internal(UI_SKIN_PATH), atlas);
 		

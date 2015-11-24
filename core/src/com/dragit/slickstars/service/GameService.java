@@ -1,9 +1,5 @@
 package com.dragit.slickstars.service;
 
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.badlogic.gdx.Gdx;
 import com.dragit.slickstars.game.Countdown;
 import com.dragit.slickstars.game.MainGame;
@@ -15,7 +11,9 @@ import com.dragit.slickstars.util.Logger;
 import com.dragit.slickstars.util.Particle;
 import com.dragit.slickstars.util.Util;
 
-import sun.rmi.runtime.Log;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameService {
 	private final String CLASS_NAME = "GameService";
@@ -31,14 +29,11 @@ public class GameService {
 	private Timer countDownTimer;
 	protected Countdown countdown;
 	private int partOfTime;
-	private int timeCreateBall;
-	private int px, py;
 
 	public GameService(MainGame game) {
 		this.game = game;
 		
 		levelService = new LevelService(game);
-		px = 100; py = 0;
 
 		game.setDifficult(1);
 		game.setCombo(1);
@@ -68,7 +63,7 @@ public class GameService {
 
 	private void startBallTimer() {
 		ballTimer = new Timer();
-		timeCreateBall = Util.getRandomRange(1000, 5000);
+		int timeCreateBall = Util.getRandomRange(1000, 5000);
 
 		ballTimer.schedule(new TimerTask() {
 			@Override

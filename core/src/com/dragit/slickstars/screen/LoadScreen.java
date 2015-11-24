@@ -14,7 +14,7 @@ public class LoadScreen extends BaseScreen {
 
     private final String CLASS_NAME = "LoadScreen";
 
-    private final int PROGRESS_TIME = 3000;
+    private final int LOAD_TIME = 3000;
 
     private MainGame game;
 
@@ -33,7 +33,7 @@ public class LoadScreen extends BaseScreen {
                 Logger.log(CLASS_NAME, "loaded");
                 game.setGameScreen(new MenuScreen(game));
             }
-        }, PROGRESS_TIME);
+        }, LOAD_TIME);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class LoadScreen extends BaseScreen {
         super.render(delta);
 
         game.batch.begin();
-        Font.mainFont.draw(game.batch, "Loading..", (game.WIDTH / 2) - (Font.mainFont.getSpaceWidth() * 2), game.HEIGHT - (game.HEIGHT / 3));
+        Font.mainFont.draw(game.batch, "Loading...", (game.WIDTH / 2) - (Font.mainFont.getSpaceWidth() * 2), game.HEIGHT - (game.HEIGHT / 3));
         game.batch.end();
 
         game.stage.getViewport().setCamera(game.camera);

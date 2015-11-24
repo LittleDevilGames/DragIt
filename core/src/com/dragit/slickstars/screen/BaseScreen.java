@@ -38,4 +38,8 @@ public abstract class BaseScreen implements Screen {
 	protected void createUI() {
 		
 	}
+
+	protected void createEffects() {
+
+	}
 }
