@@ -1,8 +1,8 @@
 package com.dragit.slickstars.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -11,9 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dragit.slickstars.entity.Effect;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
-import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
-import com.dragit.slickstars.util.Particle;
 import com.dragit.slickstars.util.Util;
 
 import java.util.Timer;
@@ -27,6 +25,8 @@ public class MenuScreen extends BaseScreen {
 	private final String CLASS_NAME = "MenuScreen";
 	private GDXButtonDialog exitDialog;
 	private Timer effectsTimer;
+
+	private ParticleEffect pixelParticle;
 
 	public MenuScreen(MainGame game) {
 		super(game);
@@ -58,8 +58,15 @@ public class MenuScreen extends BaseScreen {
 		game.stage.draw();
 
 		game.batch.begin();
-		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - (game.UI_LABEL_OFFSET * 4), game.HEIGHT - 150f);
-		Font.mainFont.draw(game.batch, "ver. " + game.VERSION, game.UI_PADDING, game.UI_PADDING);
+
+		gameFont.getData().setScale(4.5f);
+		gameFont.setColor(Color.SKY);
+		gameFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - (game.UI_LABEL_OFFSET * 4.3f), game.HEIGHT - 150f);
+
+		gameFont.getData().setScale(1f);
+		gameFont.setColor(Color.WHITE);
+		gameFont.draw(game.batch, "ver. " + game.VERSION, game.UI_PADDING, game.UI_PADDING);
+
 		game.batch.end();
 	}
 
@@ -149,9 +156,9 @@ public class MenuScreen extends BaseScreen {
 	}
 
 	protected void createEffects() {
-		game.effectsGroup.addActor(new Effect(Particle.pixelParticle));
-		game.effectsGroup.addActor(new Effect(Particle.pixelParticle));
-		game.effectsGroup.addActor(new Effect(Particle.pixelParticle));
+		game.effectsGroup.addActor(new Effect(pixelParticle));
+		game.effectsGroup.addActor(new Effect(pixelParticle));
+		game.effectsGroup.addActor(new Effect(pixelParticle));
 	}
 
 	private void moveEffects() {
@@ -159,7 +166,7 @@ public class MenuScreen extends BaseScreen {
 		effectsTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				for(Actor e : game.effectsGroup.getChildren()) {
+				for (Actor e : game.effectsGroup.getChildren()) {
 					int ax = Util.getRandomRange(0, game.WIDTH);
 					int ay = Util.getRandomRange(0, game.HEIGHT);
 
@@ -167,6 +174,12 @@ public class MenuScreen extends BaseScreen {
 				}
 			}
 		}, 0, 2000);
+	}
+
+	@Override
+	protected void getResources() {
+		super.getResources();
+		pixelParticle = game.res.pixelParticle;
 	}
 
 	@Override

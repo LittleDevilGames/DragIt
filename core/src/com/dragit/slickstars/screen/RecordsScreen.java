@@ -1,11 +1,11 @@
 package com.dragit.slickstars.screen;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
-import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 
 public class RecordsScreen extends BaseScreen {
@@ -44,9 +44,19 @@ public class RecordsScreen extends BaseScreen {
 		game.batch.setProjectionMatrix(game.camera.combined);
 		
 		game.batch.begin();
-		Font.titleFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - (game.UI_LABEL_OFFSET * 4), game.HEIGHT - 150f);
-		Font.mainFont.draw(game.batch, "RECORDS", (game.WIDTH / 2) - 45f, game.HEIGHT - 200f);
-		Font.scoreFont.draw(game.batch, scoreList.toString(), 50f, game.HEIGHT - 290f);
+
+		gameFont.getData().setScale(game.FONT_TITLE_SIZE);
+		gameFont.setColor(Color.SKY);
+		gameFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - (game.UI_LABEL_OFFSET * 4.3f), game.HEIGHT - 150f);
+
+		gameFont.getData().setScale(game.FONT_DEFAULT_SIZE);
+		gameFont.setColor(Color.WHITE);
+		gameFont.draw(game.batch, "RECORDS", (game.WIDTH / 2) - 45f, game.HEIGHT - 200f);
+
+		gameFont.getData().setScale(game.FONT_MID_SIZE);
+		gameFont.setColor(Color.SKY);
+		gameFont.draw(game.batch, scoreList.toString(), 50f, game.HEIGHT - 290f);
+
 		game.batch.end();
 		
 		game.stage.getViewport().setCamera(game.camera);

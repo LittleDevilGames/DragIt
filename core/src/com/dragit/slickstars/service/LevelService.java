@@ -1,10 +1,9 @@
 package com.dragit.slickstars.service;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -15,11 +14,12 @@ import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.game.MainGame.ObjectType;
-import com.dragit.slickstars.util.Art;
-import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
-import com.dragit.slickstars.util.Particle;
 import com.dragit.slickstars.util.Util;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class LevelService {
 	
@@ -44,13 +44,19 @@ public class LevelService {
 	private ArrayList<Border> sides;
 	private int comboCount;
 	private long lastDragTime;
+
+	private BitmapFont gameFont;
+	private ParticleEffect ballParticle;
+	private Texture ballTexture;
 	
 	public LevelService(MainGame game) {
 		this.game = game;
 		this.balls = new ArrayList<Ball>();
 		this.tempBalls = new ArrayList<Ball>();
 		this.delayTimer = new Timer();
-		
+
+		getResources();
+
 		this.comboCount = 0;
 		createSides();
 		this.maxBalls = COUNT_LEVEL_BALLS;
@@ -135,7 +141,7 @@ public class LevelService {
 			if(ball.getDirection() == Direction.RIGHT) {
 				ball.setX(ball.getX() + game.DRAG_SPEED);
 			}
-			Particle.ballParticle.setPosition(ball.getX() + (ball.getWidth() / 2), ball.getY() + (ball.getHeight() / 2));
+			ballParticle.setPosition(ball.getX() + (ball.getWidth() / 2), ball.getY() + (ball.getHeight() / 2));
 		}
 		
 		if(ball.isAlive) {
@@ -202,7 +208,7 @@ public class LevelService {
 	}
 	
 	private void pointAction(float x, float y, boolean take, int value, String str) {
-		Hint pointHint = new Hint(x, y, str, Font.mainFont);
+		Hint pointHint = new Hint(x, y, str, gameFont);
 		game.stage.addActor(pointHint);
 		pointHint.startAction();
 		if(take) {
@@ -215,7 +221,7 @@ public class LevelService {
 	
 	private void pointAction(float x, float y, boolean take, int value) {
 		String pointMessage = (take) ? ("+" + value) : ("-" + value);
-		Hint pointHint = new Hint(x, y, pointMessage, Font.mainFont);
+		Hint pointHint = new Hint(x, y, pointMessage, gameFont);
 		game.stage.addActor(pointHint);
 		pointHint.startAction();
 		if(take) {
@@ -227,7 +233,7 @@ public class LevelService {
 	}
 	
 	private void scoreAction(int score, float x, float y) {
-		Hint scoreHint = new Hint(x, y, "+" + score, Font.mainFont);
+		Hint scoreHint = new Hint(x, y, "+" + score, gameFont);
 		game.stage.addActor(scoreHint);
 		scoreHint.startAction();
 		game.score.set(game.score.get() + score);
@@ -241,7 +247,7 @@ public class LevelService {
 	}
 	
 	private void pushBall(float x) {
-		Sprite sprite = new Sprite(Art.get("ballTexture"));
+		Sprite sprite = new Sprite(ballTexture);
 		
 		ObjectType type = getRandObjectType(COUNT_OBJ_TYPES);
 		if(balls.size() >= maxBalls) {
@@ -317,6 +323,12 @@ public class LevelService {
 				}
 			}
 		}
+	}
+
+	private void getResources() {
+		gameFont = game.res.gameFont;
+		ballParticle = game.res.ballParticle;
+		ballTexture = game.res.ballTexture;
 	}
 	
 	public void dispose() {

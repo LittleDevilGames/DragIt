@@ -1,5 +1,6 @@
 package com.dragit.slickstars.entity;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -14,6 +15,9 @@ public class Hint extends Actor {
 		this.setY(y);
 		this.font = font;
 		this.text = text;
+
+		this.font.getData().setScale(1.5f);
+		this.font.setColor(Color.WHITE);
 	}
 	
 	public void startAction() {

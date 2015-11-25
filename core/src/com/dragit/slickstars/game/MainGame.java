@@ -11,11 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.dragit.slickstars.screen.LoadScreen;
-import com.dragit.slickstars.screen.MenuScreen;
-import com.dragit.slickstars.util.Art;
-import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
-import com.dragit.slickstars.util.Particle;
+import com.dragit.slickstars.util.Res;
 
 import de.tomgrill.gdxdialogs.core.GDXDialogs;
 import de.tomgrill.gdxdialogs.core.GDXDialogsSystem;
@@ -48,11 +45,14 @@ public class MainGame extends Game {
 	public final float UI_PADDING = 30f;
 	public final float UI_LABEL_SIZE = 120f;
 	public final float UI_LABEL_OFFSET = 30f;
+	public final float FONT_TITLE_SIZE = 3.5f;
+	public final float FONT_MID_SIZE = 1.5f;
+	public final float FONT_DEFAULT_SIZE = 1f;
 	
 	public final String GAME_TITLE = "DragIt";
 	public final String UI_SKIN_PATH = "data/skin/uiskin.json";
 	public final String UI_SKINATLAS_PATH = "data/skin/uiskin.atlas";
-	
+
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
 	public ShapeRenderer shapeRenderer;
@@ -63,6 +63,7 @@ public class MainGame extends Game {
 	public Group uiGroup;
 	public Group ballGroup;
 	public GDXDialogs dialogs;
+	public Res res;
 	
 	public static boolean isPause;
 	public int points;
@@ -96,6 +97,7 @@ public class MainGame extends Game {
 	public GameStatus status = GameStatus.GAME_NONE;
 	
 	public void init() {
+		res = new Res();
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
@@ -121,9 +123,12 @@ public class MainGame extends Game {
 	}
 	
 	private void loadAssets() {
+
+
+		/*
 		Art.load();
 		Font.load();
-		Particle.load();
+		Particle.load();*/
 		//Audio.load();
 	}
 	
@@ -173,9 +178,7 @@ public class MainGame extends Game {
 		batch.dispose();
 		stage.dispose();
 		shapeRenderer.dispose();
-		Art.dispose();
-		Font.dispose();
-		Particle.dispose();
+		res.dispose();
 		//Audio.dispose();
 
 		Logger.log(CLASS_NAME, "disposed");

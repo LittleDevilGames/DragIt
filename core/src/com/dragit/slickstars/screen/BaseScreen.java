@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -14,10 +16,13 @@ public abstract class BaseScreen implements Screen {
 	
 	protected MainGame game;
 	protected ArrayList<Button> buttons;
-	
+
+	protected BitmapFont gameFont;
+
 	public BaseScreen(MainGame game) {
 		this.game = game;
 		buttons = new ArrayList<Button>();
+		getResources();
 	}
 
 	public void render(float delta) {
@@ -41,5 +46,9 @@ public abstract class BaseScreen implements Screen {
 
 	protected void createEffects() {
 
+	}
+
+	protected void getResources() {
+		gameFont = game.res.gameFont;
 	}
 }

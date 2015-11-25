@@ -1,5 +1,7 @@
 package com.dragit.slickstars.screen;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -7,14 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.service.GameService;
-import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
-import com.dragit.slickstars.util.Particle;
 
 public class GameScreen extends BaseScreen {
 	private final String CLASS_NAME = "GameScreen";
 
 	private GameService gameService;
+	private ParticleEffect pixelParticle;
 	
 	public GameScreen(MainGame game) {
 		super(game);
@@ -53,7 +54,11 @@ public class GameScreen extends BaseScreen {
 		}
 		else {
 			game.batch.begin();
-			Font.mainFont.draw(game.batch, "PAUSE", (game.WIDTH / 2) - (Font.mainFont.getSpaceWidth() * 5), game.HEIGHT / 2);
+
+			gameFont.getData().setScale(game.FONT_MID_SIZE);
+			gameFont.setColor(Color.WHITE);
+			gameFont.draw(game.batch, "PAUSE", (game.WIDTH / 2) - (gameFont.getSpaceWidth() * 5), game.HEIGHT / 2);
+
 			game.batch.end();
 		}
 	}
@@ -112,7 +117,13 @@ public class GameScreen extends BaseScreen {
 	}
 
 	private void resetEffects() {
-		Particle.pixelParticle.setPosition(-500, -500);
+		pixelParticle.setPosition(-500, -500);
+	}
+
+	@Override
+	protected void getResources() {
+		super.getResources();
+		pixelParticle = game.res.pixelParticle;
 	}
 
 	@Override
