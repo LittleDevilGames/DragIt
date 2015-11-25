@@ -112,7 +112,7 @@ public class GameScreen extends BaseScreen {
 	}
 
 	private void resetEffects() {
-		Particle.fireParticle.setPosition(-500, -500);
+		Particle.pixelParticle.setPosition(-500, -500);
 	}
 
 	@Override

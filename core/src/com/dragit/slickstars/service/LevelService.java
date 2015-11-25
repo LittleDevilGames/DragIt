@@ -135,7 +135,7 @@ public class LevelService {
 			if(ball.getDirection() == Direction.RIGHT) {
 				ball.setX(ball.getX() + game.DRAG_SPEED);
 			}
-			Particle.fireParticle.setPosition(ball.getX() + (ball.getWidth() / 2), ball.getY() + (ball.getHeight() / 2));
+			Particle.ballParticle.setPosition(ball.getX() + (ball.getWidth() / 2), ball.getY() + (ball.getHeight() / 2));
 		}
 		
 		if(ball.isAlive) {

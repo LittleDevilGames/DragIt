@@ -122,7 +122,7 @@ public class GameService {
 			game.status = GameStatus.GAME_END;
 		}
 
-		Particle.fireParticle.draw(game.batch, delta);
+		Particle.ballParticle.draw(game.batch, delta);
 
 		levelService.update(delta);
 		

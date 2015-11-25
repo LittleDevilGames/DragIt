@@ -9,12 +9,14 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 public class Particle {
 	public static final String PARTICLE_PATH = "data/particle";
 	
-	public static ParticleEffect fireParticle;
+	public static ParticleEffect pixelParticle;
+	public static ParticleEffect ballParticle;
 
 	public static void load() {
 		try {
-			fireParticle = loadEffect(PARTICLE_PATH + File.separator + "pixel.p");
-			
+			pixelParticle = loadEffect(PARTICLE_PATH + File.separator + "pixel.p");
+			ballParticle = loadEffect(PARTICLE_PATH + File.separator + "ball.p");
+
 			Logger.log("Particle", "particles loaded");
 		}
 		catch(GdxRuntimeException e) {
@@ -34,6 +36,7 @@ public class Particle {
 	}
 	
 	public static void dispose() {
-		fireParticle.dispose();
+		ballParticle.dispose();
+		pixelParticle.dispose();
 	}
 }

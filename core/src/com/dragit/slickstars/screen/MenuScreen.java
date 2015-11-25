@@ -149,9 +149,9 @@ public class MenuScreen extends BaseScreen {
 	}
 
 	protected void createEffects() {
-		game.effectsGroup.addActor(new Effect(Particle.fireParticle));
-		game.effectsGroup.addActor(new Effect(Particle.fireParticle));
-		game.effectsGroup.addActor(new Effect(Particle.fireParticle));
+		game.effectsGroup.addActor(new Effect(Particle.pixelParticle));
+		game.effectsGroup.addActor(new Effect(Particle.pixelParticle));
+		game.effectsGroup.addActor(new Effect(Particle.pixelParticle));
 	}
 
 	private void moveEffects() {
