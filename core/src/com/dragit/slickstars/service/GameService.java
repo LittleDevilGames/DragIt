@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.utils.Disposable;
 import com.dragit.slickstars.game.Countdown;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
@@ -16,7 +17,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class GameService {
+public class GameService implements Disposable {
 	private final String CLASS_NAME = "GameService";
 	
 	private MainGame game;
@@ -180,7 +181,8 @@ public class GameService {
 		gameFont = game.res.gameFont;
 		ballParticle = game.res.ballParticle;
 	}
-	
+
+	@Override
 	public void dispose() {
 		levelService.dispose();
 		countDownTimer.cancel();

@@ -5,13 +5,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.utils.Disposable;
 
 import java.io.File;
 
 /**
  * Created by slick on 25.11.15.
  */
-public class Res {
+public class Res implements Disposable {
 
     private final String CLASS_NAME = "Res";
 
@@ -76,6 +77,7 @@ public class Res {
         return manager;
     }
 
+    @Override
     public void dispose() {
         manager.dispose();
     }

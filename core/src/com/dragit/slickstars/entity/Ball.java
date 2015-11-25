@@ -2,21 +2,23 @@ package com.dragit.slickstars.entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.utils.Disposable;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.ObjectType;
 
-public class Ball extends Actor {
+public class Ball extends Actor implements Disposable {
 	public boolean isDragged;
 	private Sprite sprite;
 	public boolean isAlive;
 	private Direction direction;
 	private Color color;
 	private ObjectType type;
-	
+
 	public Ball(float x, float y, float w, float h, ObjectType type, Sprite sprite) {
 		this.sprite = sprite;
 		this.sprite.setBounds(x, y, w, h);
@@ -30,12 +32,12 @@ public class Ball extends Actor {
 	}
 	
 	@Override
-	public void draw(Batch batch, float parentAlpha) {
+	public void draw(Batch batch, float delta) {
 		sprite.setColor(color);
 		if(isDragged) {
 			sprite.setAlpha(0.5f);
 		}
-		
+
 		sprite.draw(batch);
 	}
 	
@@ -57,7 +59,7 @@ public class Ball extends Actor {
 	public void setSprite(Sprite sprite) {
 		this.sprite = sprite;
 	}
-	
+
 	public Direction getDirection() {
 		return direction;
 	}
@@ -87,5 +89,10 @@ public class Ball extends Actor {
 		case GREEN: color = Color.valueOf(MainGame.COLOR_GREEN);
 			break;
 		}
+	}
+
+	@Override
+	public void dispose() {
+
 	}
 }

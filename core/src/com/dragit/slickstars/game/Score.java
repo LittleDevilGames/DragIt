@@ -5,12 +5,13 @@ import java.util.Collections;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Json;
 import com.dragit.slickstars.util.Logger;
 
 
-public class Score {
+public class Score implements Disposable {
 	
 	private final String CLASS_NAME = "Score";
 	
@@ -79,7 +80,8 @@ public class Score {
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void dispose() {
 		scoreList.clear();
 		Logger.log(CLASS_NAME, "disposed");

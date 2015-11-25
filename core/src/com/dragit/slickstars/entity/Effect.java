@@ -3,11 +3,12 @@ package com.dragit.slickstars.entity;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Disposable;
 
 /**
  * Created by slick on 24.11.15.
  */
-public class Effect extends Actor {
+public class Effect extends Actor implements Disposable {
 
     private ParticleEffect effect;
 
@@ -24,6 +25,7 @@ public class Effect extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
+
         effect.setPosition(getX(), getY());
         effect.update(delta);
         effect.start();

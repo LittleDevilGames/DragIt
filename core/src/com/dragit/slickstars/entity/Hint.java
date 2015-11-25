@@ -5,8 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.Disposable;
 
-public class Hint extends Actor {
+public class Hint extends Actor implements Disposable {
 	private BitmapFont font;
 	private String text;
 	
@@ -37,5 +38,11 @@ public class Hint extends Actor {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+	}
+
+
+	@Override
+	public void dispose() {
+
 	}
 }

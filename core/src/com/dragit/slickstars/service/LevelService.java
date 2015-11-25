@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Disposable;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Border;
+import com.dragit.slickstars.entity.Effect;
 import com.dragit.slickstars.entity.Hint;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class LevelService {
+public class LevelService implements Disposable {
 	
 	private final String CLASS_NAME = "LevelService";
 	
@@ -248,7 +250,7 @@ public class LevelService {
 	
 	private void pushBall(float x) {
 		Sprite sprite = new Sprite(ballTexture);
-		
+
 		ObjectType type = getRandObjectType(COUNT_OBJ_TYPES);
 		if(balls.size() >= maxBalls) {
 			for(Ball b : balls) {
@@ -330,7 +332,8 @@ public class LevelService {
 		ballParticle = game.res.ballParticle;
 		ballTexture = game.res.ballTexture;
 	}
-	
+
+	@Override
 	public void dispose() {
 		balls.clear();
 		delayTimer.cancel();
