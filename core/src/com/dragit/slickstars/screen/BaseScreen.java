@@ -35,7 +35,7 @@ public abstract class BaseScreen implements Screen {
 	public TextButton createButton(String name, String text, Skin skin, float x, float y, float w, float h) {
 		TextButton button = new TextButton(text, skin, "toggle");
 		button.setBounds(x, y, w, h);
-		button.padTop(h / 2);
+		button.padTop(h / 1.5f);
 		button.setName(name);
 		return button;
 	}

@@ -33,10 +33,6 @@ public class Res implements Disposable {
 
     public boolean isLoaded;
 
-    public enum ResName {
-        BALL_PARTICLE,
-    }
-
     public Res() {
         this.manager = new AssetManager();
         isLoaded = false;

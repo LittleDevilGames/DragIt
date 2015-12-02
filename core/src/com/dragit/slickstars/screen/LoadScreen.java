@@ -53,7 +53,8 @@ public class LoadScreen extends BaseScreen {
         game.res.update();
 
         game.batch.begin();
-        preloadFont.draw(game.batch, "Loading... (" + game.res.getProgress() + "%)", (game.WIDTH / 2) - (preloadFont.getSpaceWidth() * 2), game.HEIGHT - (game.HEIGHT / 3));
+        preloadFont.getData().setScale(game.FONT_MID_SIZE);
+        preloadFont.draw(game.batch, "Loading... (" + (game.res.getProgress() * 100) + "%)", (game.WIDTH / 2) - (preloadFont.getSpaceWidth() * 3), game.HEIGHT - (game.HEIGHT / 3));
         game.batch.end();
 
         game.stage.getViewport().setCamera(game.camera);

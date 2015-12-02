@@ -36,7 +36,6 @@ public class LevelService implements Disposable {
 	private final int DRAG_DELAY = 200;
 
 	public CopyOnWriteArrayList<Ball> balls;
-	private ArrayList<Ball> tempBalls;
 	private MainGame game;
 	private Timer delayTimer;
 	private float currPos;
@@ -50,12 +49,10 @@ public class LevelService implements Disposable {
 	private long lastDragTime;
 
 	private BitmapFont gameFont;
-	private Texture ballTexture;
-	
+
 	public LevelService(MainGame game) {
 		this.game = game;
 		this.balls = new CopyOnWriteArrayList<Ball>();
-		this.tempBalls = new ArrayList<Ball>();
 		this.delayTimer = new Timer();
 
 		getResources();
@@ -265,11 +262,9 @@ public class LevelService implements Disposable {
 		}
 		else {
 			Ball ball = new Ball(x, game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, type, new Sprite(game.res.ballTexture));
-			//ball.addListener(new DragingListener());
 			ball.setEffect(game.res.getBallEffect());
 			game.ballGroup.addActor(ball);
 			balls.add(ball);
-			//tempBalls.add(ball);
 		}
 	}
 	
@@ -284,10 +279,6 @@ public class LevelService implements Disposable {
 			checkDrag(ball);
 			ballUpdate(ball);
 		}
-		/*if(!tempBalls.isEmpty()) {
-			balls.addAll(tempBalls);
-			tempBalls.clear();
-		}*/
 	}
 	
 	private ObjectType getRandObjectType(int max) {
@@ -330,7 +321,6 @@ public class LevelService implements Disposable {
 
 	private void getResources() {
 		gameFont = game.res.gameFont;
-		ballTexture = game.res.ballTexture;
 	}
 
 	@Override

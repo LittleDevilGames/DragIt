@@ -23,6 +23,9 @@ import de.tomgrill.gdxdialogs.core.listener.ButtonClickListener;
 public class MenuScreen extends BaseScreen {
 		
 	private final String CLASS_NAME = "MenuScreen";
+
+	private final String MSG_QUIT = "Do you want quit?";
+
 	private GDXButtonDialog exitDialog;
 	private Timer effectsTimer;
 
@@ -59,11 +62,11 @@ public class MenuScreen extends BaseScreen {
 
 		game.batch.begin();
 
-		gameFont.getData().setScale(4.5f);
+		gameFont.getData().setScale(game.FONT_TITLE_SIZE);
 		gameFont.setColor(Color.SKY);
 		gameFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - (game.UI_LABEL_OFFSET * 4.3f), game.HEIGHT - 150f);
 
-		gameFont.getData().setScale(1f);
+		gameFont.getData().setScale(game.FONT_DEFAULT_SIZE);
 		gameFont.setColor(Color.WHITE);
 		gameFont.draw(game.batch, "ver. " + game.VERSION, game.UI_PADDING, game.UI_PADDING);
 
@@ -128,7 +131,7 @@ public class MenuScreen extends BaseScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				exitDialog = game.dialogs.newDialog(GDXButtonDialog.class);
 				exitDialog.setTitle("Quit");
-				exitDialog.setMessage("Do you want quit?");
+				exitDialog.setMessage(MSG_QUIT);
 
 				exitDialog.setClickListener(new ButtonClickListener() {
 					@Override
