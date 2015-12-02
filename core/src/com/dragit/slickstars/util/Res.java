@@ -5,7 +5,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Pool;
 
 import java.io.File;
 
@@ -22,12 +25,17 @@ public class Res implements Disposable {
 
     private AssetManager manager;
 
+    private ParticleEffectPool effects;
+    public ParticleEffect ballParticle;
     public Texture ballTexture;
     public BitmapFont gameFont;
-    public ParticleEffect ballParticle;
     public ParticleEffect pixelParticle;
 
     public boolean isLoaded;
+
+    public enum ResName {
+        BALL_PARTICLE,
+    }
 
     public Res() {
         this.manager = new AssetManager();
@@ -38,10 +46,10 @@ public class Res implements Disposable {
     private void load() {
         Logger.log(CLASS_NAME, "Loading assets..");
 
+        manager.load(PARTICLE_PATH + "ball.p", ParticleEffect.class);
         manager.load(TEXTURE_PATH + "ball.png", Texture.class);
         manager.load(FONT_PATH + "px.fnt", BitmapFont.class);
         manager.load(PARTICLE_PATH + "pixel.p", ParticleEffect.class);
-        manager.load(PARTICLE_PATH + "ball.p", ParticleEffect.class);
     }
 
     private void getResources() {
@@ -50,6 +58,8 @@ public class Res implements Disposable {
         pixelParticle = get(PARTICLE_PATH + "pixel.p", ParticleEffect.class);
         ballTexture = get(TEXTURE_PATH + "ball.png", Texture.class);
         gameFont = get(FONT_PATH + "px.fnt", BitmapFont.class);
+
+        effects = new ParticleEffectPool(ballParticle, 15, 50);
 
         isLoaded = true;
     }
@@ -67,6 +77,16 @@ public class Res implements Disposable {
         }
 
         return (T) manager.get(path, type);
+    }
+
+    public ParticleEffectPool.PooledEffect getBallEffect() {
+        return effects.obtain();
+    }
+
+    public void freeBallEffect(ParticleEffectPool.PooledEffect effect) {
+        if(effect != null) {
+            effects.free(effect);
+        }
     }
 
     public float getProgress() {

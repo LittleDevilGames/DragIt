@@ -17,11 +17,13 @@ import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.game.MainGame.ObjectType;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Res;
 import com.dragit.slickstars.util.Util;
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LevelService implements Disposable {
 	
@@ -33,7 +35,7 @@ public class LevelService implements Disposable {
 	private final int DRAGS_FOR_COMBO = 5;
 	private final int DRAG_DELAY = 200;
 
-	public ArrayList<Ball> balls;
+	public CopyOnWriteArrayList<Ball> balls;
 	private ArrayList<Ball> tempBalls;
 	private MainGame game;
 	private Timer delayTimer;
@@ -48,12 +50,11 @@ public class LevelService implements Disposable {
 	private long lastDragTime;
 
 	private BitmapFont gameFont;
-	private ParticleEffect ballParticle;
 	private Texture ballTexture;
 	
 	public LevelService(MainGame game) {
 		this.game = game;
-		this.balls = new ArrayList<Ball>();
+		this.balls = new CopyOnWriteArrayList<Ball>();
 		this.tempBalls = new ArrayList<Ball>();
 		this.delayTimer = new Timer();
 
@@ -81,14 +82,13 @@ public class LevelService implements Disposable {
 		delayTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				
-				if(timerState && !MainGame.isPause) {
-					if(direction == Direction.LEFT) {
-						if(currPos <= end) timerState = false;
+
+				if (timerState && !MainGame.isPause) {
+					if (direction == Direction.LEFT) {
+						if (currPos <= end) timerState = false;
 						currPos -= offset;
-					}
-					else if(direction == Direction.RIGHT) {
-						if(currPos >= end) timerState = false;
+					} else if (direction == Direction.RIGHT) {
+						if (currPos >= end) timerState = false;
 						currPos += offset;
 					}
 					pushBall(currPos);
@@ -143,7 +143,6 @@ public class LevelService implements Disposable {
 			if(ball.getDirection() == Direction.RIGHT) {
 				ball.setX(ball.getX() + game.DRAG_SPEED);
 			}
-			ballParticle.setPosition(ball.getX() + (ball.getWidth() / 2), ball.getY() + (ball.getHeight() / 2));
 		}
 		
 		if(ball.isAlive) {
@@ -154,6 +153,7 @@ public class LevelService implements Disposable {
 				pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, false, game.BALL_OUT_POINT);
 				ball.isDragged = false;
 				ball.isAlive = false;
+
 			}
 		}
 		return 1;
@@ -249,7 +249,6 @@ public class LevelService implements Disposable {
 	}
 	
 	private void pushBall(float x) {
-		Sprite sprite = new Sprite(ballTexture);
 
 		ObjectType type = getRandObjectType(COUNT_OBJ_TYPES);
 		if(balls.size() >= maxBalls) {
@@ -265,10 +264,12 @@ public class LevelService implements Disposable {
 			}
 		}
 		else {
-			Ball ball = new Ball(x, game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, type, sprite);
-			//ball.addListener(new DragingListener()); 
+			Ball ball = new Ball(x, game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, type, new Sprite(game.res.ballTexture));
+			//ball.addListener(new DragingListener());
+			ball.setEffect(game.res.getBallEffect());
 			game.ballGroup.addActor(ball);
-			tempBalls.add(ball);
+			balls.add(ball);
+			//tempBalls.add(ball);
 		}
 	}
 	
@@ -283,10 +284,10 @@ public class LevelService implements Disposable {
 			checkDrag(ball);
 			ballUpdate(ball);
 		}
-		if(!tempBalls.isEmpty()) {
+		/*if(!tempBalls.isEmpty()) {
 			balls.addAll(tempBalls);
 			tempBalls.clear();
-		}
+		}*/
 	}
 	
 	private ObjectType getRandObjectType(int max) {
@@ -329,7 +330,6 @@ public class LevelService implements Disposable {
 
 	private void getResources() {
 		gameFont = game.res.gameFont;
-		ballParticle = game.res.ballParticle;
 		ballTexture = game.res.ballTexture;
 	}
 

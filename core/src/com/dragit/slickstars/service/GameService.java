@@ -32,7 +32,6 @@ public class GameService implements Disposable {
 	private int partOfTime;
 
 	private BitmapFont gameFont;
-	private ParticleEffect ballParticle;
 
 	public GameService(MainGame game) {
 		this.game = game;
@@ -131,8 +130,6 @@ public class GameService implements Disposable {
 			game.status = GameStatus.GAME_END;
 		}
 
-		ballParticle.draw(game.batch, delta);
-
 		levelService.update(delta);
 		
 		if(generateCount < 1) {
@@ -179,7 +176,6 @@ public class GameService implements Disposable {
 
 	private void getResources() {
 		gameFont = game.res.gameFont;
-		ballParticle = game.res.ballParticle;
 	}
 
 	@Override
