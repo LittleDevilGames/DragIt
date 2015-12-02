@@ -1,26 +1,31 @@
 package com.dragit.slickstars.service;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Disposable;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Border;
+import com.dragit.slickstars.entity.Effect;
 import com.dragit.slickstars.entity.Hint;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.game.MainGame.ObjectType;
-import com.dragit.slickstars.util.Art;
-import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Res;
 import com.dragit.slickstars.util.Util;
 
-public class LevelService {
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class LevelService implements Disposable {
 	
 	private final String CLASS_NAME = "LevelService";
 	
@@ -30,8 +35,7 @@ public class LevelService {
 	private final int DRAGS_FOR_COMBO = 5;
 	private final int DRAG_DELAY = 200;
 
-	public ArrayList<Ball> balls;
-	private ArrayList<Ball> tempBalls;
+	public CopyOnWriteArrayList<Ball> balls;
 	private MainGame game;
 	private Timer delayTimer;
 	private float currPos;
@@ -43,13 +47,16 @@ public class LevelService {
 	private ArrayList<Border> sides;
 	private int comboCount;
 	private long lastDragTime;
-	
+
+	private BitmapFont gameFont;
+
 	public LevelService(MainGame game) {
 		this.game = game;
-		this.balls = new ArrayList<Ball>();
-		this.tempBalls = new ArrayList<Ball>();
+		this.balls = new CopyOnWriteArrayList<Ball>();
 		this.delayTimer = new Timer();
-		
+
+		getResources();
+
 		this.comboCount = 0;
 		createSides();
 		this.maxBalls = COUNT_LEVEL_BALLS;
@@ -72,14 +79,13 @@ public class LevelService {
 		delayTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				
-				if(timerState && !MainGame.isPause) {
-					if(direction == Direction.LEFT) {
-						if(currPos <= end) timerState = false;
+
+				if (timerState && !MainGame.isPause) {
+					if (direction == Direction.LEFT) {
+						if (currPos <= end) timerState = false;
 						currPos -= offset;
-					}
-					else if(direction == Direction.RIGHT) {
-						if(currPos >= end) timerState = false;
+					} else if (direction == Direction.RIGHT) {
+						if (currPos >= end) timerState = false;
 						currPos += offset;
 					}
 					pushBall(currPos);
@@ -144,6 +150,7 @@ public class LevelService {
 				pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, false, game.BALL_OUT_POINT);
 				ball.isDragged = false;
 				ball.isAlive = false;
+
 			}
 		}
 		return 1;
@@ -200,7 +207,7 @@ public class LevelService {
 	}
 	
 	private void pointAction(float x, float y, boolean take, int value, String str) {
-		Hint pointHint = new Hint(x, y, str, Font.mainFont);
+		Hint pointHint = new Hint(x, y, str, gameFont);
 		game.stage.addActor(pointHint);
 		pointHint.startAction();
 		if(take) {
@@ -213,7 +220,7 @@ public class LevelService {
 	
 	private void pointAction(float x, float y, boolean take, int value) {
 		String pointMessage = (take) ? ("+" + value) : ("-" + value);
-		Hint pointHint = new Hint(x, y, pointMessage, Font.mainFont);
+		Hint pointHint = new Hint(x, y, pointMessage, gameFont);
 		game.stage.addActor(pointHint);
 		pointHint.startAction();
 		if(take) {
@@ -225,7 +232,7 @@ public class LevelService {
 	}
 	
 	private void scoreAction(int score, float x, float y) {
-		Hint scoreHint = new Hint(x, y, "+" + score, Font.mainFont);
+		Hint scoreHint = new Hint(x, y, "+" + score, gameFont);
 		game.stage.addActor(scoreHint);
 		scoreHint.startAction();
 		game.score.set(game.score.get() + score);
@@ -239,8 +246,7 @@ public class LevelService {
 	}
 	
 	private void pushBall(float x) {
-		Sprite sprite = new Sprite(Art.get("ballTexture"));
-		
+
 		ObjectType type = getRandObjectType(COUNT_OBJ_TYPES);
 		if(balls.size() >= maxBalls) {
 			for(Ball b : balls) {
@@ -255,10 +261,10 @@ public class LevelService {
 			}
 		}
 		else {
-			Ball ball = new Ball(x, game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, type, sprite);
-			//ball.addListener(new DragingListener()); 
+			Ball ball = new Ball(x, game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, type, new Sprite(game.res.ballTexture));
+			ball.setEffect(game.res.getBallEffect());
 			game.ballGroup.addActor(ball);
-			tempBalls.add(ball);
+			balls.add(ball);
 		}
 	}
 	
@@ -272,10 +278,6 @@ public class LevelService {
 		for(Ball ball : balls) {
 			checkDrag(ball);
 			ballUpdate(ball);
-		}
-		if(!tempBalls.isEmpty()) {
-			balls.addAll(tempBalls);
-			tempBalls.clear();
 		}
 	}
 	
@@ -316,7 +318,12 @@ public class LevelService {
 			}
 		}
 	}
-	
+
+	private void getResources() {
+		gameFont = game.res.gameFont;
+	}
+
+	@Override
 	public void dispose() {
 		balls.clear();
 		delayTimer.cancel();

@@ -1,6 +1,11 @@
 android {
     buildToolsVersion "23.0.1"
     compileSdkVersion 22
+    
+    packagingOptions {
+		exclude 'LICENSE.txt'
+	}
+	
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -14,10 +19,6 @@ android {
 
         instrumentTest.setRoot('tests')
     }
-    
-    packagingOptions {
-		exclude 'LICENSE.txt'
-	}
 }
 
 

@@ -1,25 +1,27 @@
 package com.dragit.slickstars.service;
 
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.utils.Disposable;
 import com.dragit.slickstars.game.Countdown;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.screen.GameScreen;
-import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 import com.dragit.slickstars.util.Util;
 
-public class GameService {
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class GameService implements Disposable {
 	private final String CLASS_NAME = "GameService";
 	
 	private MainGame game;
-	
-	
+
 	private final int GENERATES_COUNT = 5;
 	private int generateCount;
 	private LevelService levelService;
@@ -28,18 +30,22 @@ public class GameService {
 	private Timer countDownTimer;
 	protected Countdown countdown;
 	private int partOfTime;
-	private int timeCreateBall;
-	
+
+	private BitmapFont gameFont;
+
 	public GameService(MainGame game) {
 		this.game = game;
 		
 		levelService = new LevelService(game);
+
 		game.setDifficult(1);
 		game.setCombo(1);
 		game.dragged = 0;
 		game.maxCombo = 1;
 		startCountdown();
 		pause(false);
+
+		getResources();
 		
 		generateCount = GENERATES_COUNT;
 		startBallTimer();
@@ -62,12 +68,12 @@ public class GameService {
 
 	private void startBallTimer() {
 		ballTimer = new Timer();
-		timeCreateBall = Util.getRandomRange(1000, 5000);
+		int timeCreateBall = Util.getRandomRange(1000, 5000);
 
 		ballTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				if(!MainGame.isPause) {
+				if (!MainGame.isPause) {
 					generateCount--;
 					generateLevel();
 				}
@@ -107,14 +113,12 @@ public class GameService {
 	}
 	
 	public int update(float delta) {
-		/*Particle.fireParticle.draw(game.batch, delta);
-		
-		if(Particle.fireParticle.isComplete()) {
-			Particle.fireParticle.reset();
-		}*/
-		
+
 		if(game.status == GameStatus.GAME_END) {
-			Font.scoreFont.draw(game.batch, "GAME OVER\nYour score: " + game.score.get() + "\nDragged: " + game.dragged + "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f);
+			gameFont.getData().setScale(game.FONT_MID_SIZE);
+			gameFont.setColor(Color.SKY);
+			gameFont.draw(game.batch, "GAME OVER\nYour score: " + game.score.get() + "\nDragged: " + game.dragged + "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f);
+
 			if(Gdx.input.isTouched()) {
 				game.score.writeRecord(game.score.get());
 				restart();
@@ -125,7 +129,7 @@ public class GameService {
 		if(game.points <= 0) {
 			game.status = GameStatus.GAME_END;
 		}
-		
+
 		levelService.update(delta);
 		
 		if(generateCount < 1) {
@@ -141,9 +145,13 @@ public class GameService {
 			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
 			Logger.log(CLASS_NAME, "speed changed to " + game.ballSpeed);
 		}
-		
-		Font.mainFont.draw(game.batch, "Score " + game.score.get(), game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET);
-		Font.mainFont.draw(game.batch, "Points " + game.points, game.UI_LABEL_OFFSET , game.HEIGHT - (game.UI_LABEL_OFFSET * 2));
+
+		gameFont.getData().setScale(game.FONT_MID_SIZE);
+		gameFont.setColor(Color.WHITE);
+		gameFont.draw(game.batch, "Score " + game.score.get(), game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET);
+		if(game.points >= 0) {
+			gameFont.draw(game.batch, "Points " + game.points, game.UI_LABEL_OFFSET, game.HEIGHT - (game.UI_LABEL_OFFSET * 2));
+		}
 		return 1;
 	}
 	
@@ -162,9 +170,15 @@ public class GameService {
 	
 	public void restart() {
 		game.ballGroup.clearChildren();
+		dispose();
 		game.setGameScreen(new GameScreen(game));
 	}
-	
+
+	private void getResources() {
+		gameFont = game.res.gameFont;
+	}
+
+	@Override
 	public void dispose() {
 		levelService.dispose();
 		countDownTimer.cancel();

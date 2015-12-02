@@ -1,11 +1,13 @@
 package com.dragit.slickstars.entity;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.Disposable;
 
-public class Hint extends Actor {
+public class Hint extends Actor implements Disposable {
 	private BitmapFont font;
 	private String text;
 	
@@ -14,6 +16,9 @@ public class Hint extends Actor {
 		this.setY(y);
 		this.font = font;
 		this.text = text;
+
+		this.font.getData().setScale(1.5f);
+		this.font.setColor(Color.WHITE);
 	}
 	
 	public void startAction() {
@@ -33,5 +38,11 @@ public class Hint extends Actor {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+	}
+
+
+	@Override
+	public void dispose() {
+
 	}
 }

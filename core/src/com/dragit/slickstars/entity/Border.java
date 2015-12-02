@@ -2,11 +2,12 @@ package com.dragit.slickstars.entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Disposable;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.ObjectType;
 
-public class Border {
+public class Border implements Disposable {
 	private Color color;
 	private float width;
 	private float height;
@@ -70,5 +71,10 @@ public class Border {
 
 	public void setType(ObjectType type) {
 		this.type = type;
+	}
+
+	@Override
+	public void dispose() {
+
 	}
 }

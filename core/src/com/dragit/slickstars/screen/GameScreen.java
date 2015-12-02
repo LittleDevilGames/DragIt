@@ -1,8 +1,7 @@
 package com.dragit.slickstars.screen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -10,18 +9,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.service.GameService;
-import com.dragit.slickstars.util.Font;
 import com.dragit.slickstars.util.Logger;
 
-public class GameScreen extends BaseScreen implements Screen {
+public class GameScreen extends BaseScreen {
 	private final String CLASS_NAME = "GameScreen";
-	
+
 	private GameService gameService;
+	private ParticleEffect pixelParticle;
 	
 	public GameScreen(MainGame game) {
 		super(game);
 		
 		game.status = GameStatus.GAME_PLAY;
+		resetEffects();
 		createUI();
 		gameService = new GameService(game);
 		Logger.log(CLASS_NAME, "started");
@@ -35,10 +35,7 @@ public class GameScreen extends BaseScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(21/225f, 46/225f, 66/225f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		game.camera.update();
+		super.render(delta);
 		game.shapeRenderer.setProjectionMatrix(game.camera.combined);
 		game.batch.setProjectionMatrix(game.camera.combined);
 
@@ -57,7 +54,11 @@ public class GameScreen extends BaseScreen implements Screen {
 		}
 		else {
 			game.batch.begin();
-			Font.mainFont.draw(game.batch, "PAUSE", (game.WIDTH / 2) - (Font.mainFont.getSpaceWidth() * 5), game.HEIGHT / 2);
+
+			gameFont.getData().setScale(game.FONT_MID_SIZE);
+			gameFont.setColor(Color.WHITE);
+			gameFont.draw(game.batch, "PAUSE", (game.WIDTH / 2) - (gameFont.getSpaceWidth() * 5), game.HEIGHT / 2);
+
 			game.batch.end();
 		}
 	}
@@ -113,6 +114,16 @@ public class GameScreen extends BaseScreen implements Screen {
 		game.uiGroup.setZIndex(2);
 		game.uiGroup.addActor(pauseBtn);
 		game.uiGroup.addActor(menuBtn);
+	}
+
+	private void resetEffects() {
+		pixelParticle.setPosition(-500, -500);
+	}
+
+	@Override
+	protected void getResources() {
+		super.getResources();
+		pixelParticle = game.res.pixelParticle;
 	}
 
 	@Override

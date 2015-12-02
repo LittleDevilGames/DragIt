@@ -10,10 +10,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.dragit.slickstars.screen.MenuScreen;
-import com.dragit.slickstars.util.Art;
-import com.dragit.slickstars.util.Font;
+import com.dragit.slickstars.screen.LoadScreen;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Res;
+
+import de.tomgrill.gdxdialogs.core.GDXDialogs;
+import de.tomgrill.gdxdialogs.core.GDXDialogsSystem;
 
 public class MainGame extends Game {
 	private final String CLASS_NAME = "MainGame";
@@ -43,19 +45,25 @@ public class MainGame extends Game {
 	public final float UI_PADDING = 30f;
 	public final float UI_LABEL_SIZE = 120f;
 	public final float UI_LABEL_OFFSET = 30f;
+	public final float FONT_TITLE_SIZE = 3.5f;
+	public final float FONT_MID_SIZE = 1.5f;
+	public final float FONT_DEFAULT_SIZE = 1f;
 	
 	public final String GAME_TITLE = "DragIt";
 	public final String UI_SKIN_PATH = "data/skin/uiskin.json";
 	public final String UI_SKINATLAS_PATH = "data/skin/uiskin.atlas";
-	
+
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
 	public ShapeRenderer shapeRenderer;
 	public Stage stage;
 	public Screen screen;
 	public Skin skin;
+	public Group effectsGroup;
 	public Group uiGroup;
 	public Group ballGroup;
+	public GDXDialogs dialogs;
+	public Res res;
 	
 	public static boolean isPause;
 	public int points;
@@ -89,20 +97,24 @@ public class MainGame extends Game {
 	public GameStatus status = GameStatus.GAME_NONE;
 	
 	public void init() {
+		res = new Res();
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
 		stage = new Stage();
 		uiGroup = new Group();
 		ballGroup = new Group();
+		effectsGroup = new Group();
+		dialogs = GDXDialogsSystem.install();
 		shapeRenderer = new ShapeRenderer();
 		score = new Score();
 		
 		score.loadRecords();
-		
+
 		stage.addActor(uiGroup);
 		stage.addActor(ballGroup);
-		
+		stage.addActor(effectsGroup);
+
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(UI_SKINATLAS_PATH));
 		skin = new Skin(Gdx.files.internal(UI_SKIN_PATH), atlas);
 		
@@ -111,9 +123,12 @@ public class MainGame extends Game {
 	}
 	
 	private void loadAssets() {
+
+
+		/*
 		Art.load();
 		Font.load();
-		//Particle.load();
+		Particle.load();*/
 		//Audio.load();
 	}
 	
@@ -121,7 +136,7 @@ public class MainGame extends Game {
 	public void create () {
 		init();
 		
-		setGameScreen(new MenuScreen(this));
+		setGameScreen(new LoadScreen(this));
 		Logger.log(CLASS_NAME, "started");
 	}
 
@@ -163,10 +178,9 @@ public class MainGame extends Game {
 		batch.dispose();
 		stage.dispose();
 		shapeRenderer.dispose();
-		Art.dispose();
-		Font.dispose();
-		//Particle.dispose();
-		
+		res.dispose();
+		//Audio.dispose();
+
 		Logger.log(CLASS_NAME, "disposed");
 	}
 }
