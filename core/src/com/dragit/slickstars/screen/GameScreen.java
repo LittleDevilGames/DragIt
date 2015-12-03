@@ -10,9 +10,10 @@ import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.service.GameService;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Util;
 
 public class GameScreen extends BaseScreen {
-	private final String CLASS_NAME = "GameScreen";
+	private final String CLASS_NAME = getClass().getName();
 
 	private GameService gameService;
 	private ParticleEffect pixelParticle;
@@ -54,11 +55,7 @@ public class GameScreen extends BaseScreen {
 		}
 		else {
 			game.batch.begin();
-
-			gameFont.getData().setScale(game.FONT_MID_SIZE);
-			gameFont.setColor(Color.WHITE);
-			gameFont.draw(game.batch, "PAUSE", (game.WIDTH / 2) - (gameFont.getSpaceWidth() * 5), game.HEIGHT / 2);
-
+			Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "PAUSE", (game.WIDTH / 2) - (gameFont.getSpaceWidth() * 5), game.HEIGHT / 2, game.batch);
 			game.batch.end();
 		}
 	}
