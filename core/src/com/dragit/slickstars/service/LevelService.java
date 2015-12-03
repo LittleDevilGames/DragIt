@@ -1,23 +1,19 @@
 package com.dragit.slickstars.service;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.entity.Border;
-import com.dragit.slickstars.entity.Effect;
 import com.dragit.slickstars.entity.Hint;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.game.MainGame.ObjectType;
 import com.dragit.slickstars.util.Logger;
-import com.dragit.slickstars.util.Res;
 import com.dragit.slickstars.util.Util;
 
 import java.util.ArrayList;
@@ -27,7 +23,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LevelService implements Disposable {
 	
-	private final String CLASS_NAME = "LevelService";
+	private final String CLASS_NAME = getClass().getName();
 	
 	private final int COUNT_LEVEL_BALLS = 25;
 	private final int CREATING_PERIOD = 600;
@@ -35,18 +31,20 @@ public class LevelService implements Disposable {
 	private final int DRAGS_FOR_COMBO = 5;
 	private final int DRAG_DELAY = 200;
 
-	public CopyOnWriteArrayList<Ball> balls;
+	private CopyOnWriteArrayList<Ball> balls;
+	private ArrayList<Border> sides;
+
 	private MainGame game;
 	private Timer delayTimer;
+	private boolean timerState;
 	private float currPos;
 	private float end;
 	private float offset;
-	private Direction direction;
 	private int maxBalls;
-	private boolean timerState;
-	private ArrayList<Border> sides;
 	private int comboCount;
 	private long lastDragTime;
+	private Direction direction;
+
 
 	private BitmapFont gameFont;
 
@@ -182,72 +180,10 @@ public class LevelService implements Disposable {
 		}
 		return 1;
 	}
-	
-	private void checkCombo() {
-		if(comboCount >= DRAGS_FOR_COMBO) {
-			comboCount = 0;
-			game.setCombo(game.getCombo() + 1);
-			pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, game.getCombo(), "x" + game.getCombo());
-		}
-		else {
-			pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, 1);
-			comboCount++;
-		}
-	}
-	
-	private void showScore(float x, float y, Border side) {
-		if(side.getState() == Direction.RIGHT) {
-			x -= game.UI_LABEL_OFFSET * 2.2f;
-		}
-		else if(side.getState() == Direction.LEFT) {
-			x += game.UI_LABEL_OFFSET;
-		}
-		
-		scoreAction(game.DRAG_SCORE * game.getDifficult(), x, y);
-	}
-	
-	private void pointAction(float x, float y, boolean take, int value, String str) {
-		Hint pointHint = new Hint(x, y, str, gameFont);
-		game.stage.addActor(pointHint);
-		pointHint.startAction();
-		if(take) {
-			game.points += value;
-		}
-		else {
-			game.points -= value;
-		}
-	}
-	
-	private void pointAction(float x, float y, boolean take, int value) {
-		String pointMessage = (take) ? ("+" + value) : ("-" + value);
-		Hint pointHint = new Hint(x, y, pointMessage, gameFont);
-		game.stage.addActor(pointHint);
-		pointHint.startAction();
-		if(take) {
-			game.points += value;
-		}
-		else {
-			game.points -= value;
-		}
-	}
-	
-	private void scoreAction(int score, float x, float y) {
-		Hint scoreHint = new Hint(x, y, "+" + score, gameFont);
-		game.stage.addActor(scoreHint);
-		scoreHint.startAction();
-		game.score.set(game.score.get() + score);
-	}
 
-	private boolean isBallOut(Ball ball) {
-		if(ball.getY() < (0 - game.BALL_SIZE))
-			return true;
-		
-		return false;
-	}
-	
 	private void pushBall(float x) {
 
-		ObjectType type = getRandObjectType(COUNT_OBJ_TYPES);
+		ObjectType type = Util.getRandObjectType(COUNT_OBJ_TYPES);
 		if(balls.size() >= maxBalls) {
 			for(Ball b : balls) {
 				if(b.isAlive == false) {
@@ -280,26 +216,7 @@ public class LevelService implements Disposable {
 			ballUpdate(ball);
 		}
 	}
-	
-	private ObjectType getRandObjectType(int max) {
-		int type = Util.getRandomRange(0, max);
-		switch(type) {
-			case 0: return ObjectType.RED;
-			case 1: return ObjectType.GREEN;
-		}
-		return ObjectType.GREEN;
-	}
 
-	private Direction getDragDirection(float power) {
-		if(Gdx.input.getDeltaX() > power) {
-			return Direction.RIGHT;
-		}
-		else if(Gdx.input.getDeltaX() < -power) {
-			return Direction.LEFT;
-		}
-		return Direction.NONE;
-	}
-	
 	private void checkDrag(Ball ball) {
 		if(Gdx.input.isTouched() && !MainGame.isPause) {
 			if(!ball.isDragged) {
@@ -307,7 +224,7 @@ public class LevelService implements Disposable {
 				game.camera.unproject(pos);
 				if((System.currentTimeMillis() - lastDragTime) >= DRAG_DELAY) {
 					if((pos.x > ball.getX() && pos.x < (ball.getX() + ball.getWidth()) && (pos.y > ball.getY() && pos.y < (ball.getY() + ball.getHeight())))) {
-						Direction direction = getDragDirection(0.5f);
+						Direction direction = Util.getDragDirection(game.DRAG_POWER);
 						if(direction != Direction.NONE) {
 							ball.setDirection(direction);
 							ball.isDragged = true;
@@ -319,12 +236,80 @@ public class LevelService implements Disposable {
 		}
 	}
 
+	private void checkCombo() {
+		if(comboCount >= DRAGS_FOR_COMBO) {
+			comboCount = 0;
+			game.setCombo(game.getCombo() + 1);
+			pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, game.getCombo(), "x" + game.getCombo());
+		}
+		else {
+			pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, 1);
+			comboCount++;
+		}
+	}
+
+	private void showScore(float x, float y, Border side) {
+		if(side.getState() == Direction.RIGHT) {
+			x -= game.UI_LABEL_OFFSET * 2.2f;
+		}
+		else if(side.getState() == Direction.LEFT) {
+			x += game.UI_LABEL_OFFSET;
+		}
+
+		scoreAction(game.DRAG_SCORE * game.getDifficult(), x, y);
+	}
+
+	private void pointAction(float x, float y, boolean take, int value, String str) {
+		Hint pointHint = new Hint(x, y, str, gameFont);
+		game.stage.addActor(pointHint);
+		pointHint.startAction();
+		if(take) {
+			game.points += value;
+		}
+		else {
+			game.points -= value;
+		}
+	}
+
+	private void pointAction(float x, float y, boolean take, int value) {
+		String pointMessage = (take) ? ("+" + value) : ("-" + value);
+		Hint pointHint = new Hint(x, y, pointMessage, gameFont);
+		game.stage.addActor(pointHint);
+		pointHint.startAction();
+		if(take) {
+			game.points += value;
+		}
+		else {
+			game.points -= value;
+		}
+	}
+
+	private void scoreAction(int score, float x, float y) {
+		Hint scoreHint = new Hint(x, y, "+" + score, gameFont);
+		game.stage.addActor(scoreHint);
+		scoreHint.startAction();
+		game.score.set(game.score.get() + score);
+	}
+
+
+	private boolean isBallOut(Ball ball) {
+		if(ball.getY() < (0 - game.BALL_SIZE))
+			return true;
+
+		return false;
+	}
+
 	private void getResources() {
 		gameFont = game.res.gameFont;
 	}
 
 	@Override
 	public void dispose() {
+
+		for(Ball b : balls) {
+			b.dispose();
+		}
+
 		balls.clear();
 		delayTimer.cancel();
 	}

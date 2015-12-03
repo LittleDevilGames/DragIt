@@ -13,7 +13,7 @@ import com.dragit.slickstars.util.Logger;
 
 public class Score implements Disposable {
 	
-	private final String CLASS_NAME = "Score";
+	private final String CLASS_NAME = getClass().getName();
 	
 	private final String RECORDS_FILE = "records.json";
 	private final int MAX_SCORES = 10;

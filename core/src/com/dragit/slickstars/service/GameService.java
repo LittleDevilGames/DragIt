@@ -3,7 +3,6 @@ package com.dragit.slickstars.service;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.Disposable;
 import com.dragit.slickstars.game.Countdown;
 import com.dragit.slickstars.game.MainGame;
@@ -18,18 +17,20 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameService implements Disposable {
-	private final String CLASS_NAME = "GameService";
+
+	private final String CLASS_NAME = getClass().getName();
 	
 	private MainGame game;
 
 	private final int GENERATES_COUNT = 5;
-	private int generateCount;
+
+	protected Countdown countdown;
+
 	private LevelService levelService;
-	
 	private Timer ballTimer;
 	private Timer countDownTimer;
-	protected Countdown countdown;
 	private int partOfTime;
+	private int generateCount;
 
 	private BitmapFont gameFont;
 
@@ -115,9 +116,11 @@ public class GameService implements Disposable {
 	public int update(float delta) {
 
 		if(game.status == GameStatus.GAME_END) {
-			gameFont.getData().setScale(game.FONT_MID_SIZE);
-			gameFont.setColor(Color.SKY);
-			gameFont.draw(game.batch, "GAME OVER\nYour score: " + game.score.get() + "\nDragged: " + game.dragged + "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f);
+
+			Util.drawText(gameFont, game.FONT_MID_SIZE, Color.SKY,
+					"GAME OVER\nYour score: " + game.score.get()
+					+ "\nDragged: " + game.dragged
+					+ "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f, game.batch);
 
 			if(Gdx.input.isTouched()) {
 				game.score.writeRecord(game.score.get());
@@ -142,6 +145,7 @@ public class GameService implements Disposable {
 			game.setDifficult(game.getDifficult() + 1);
 			game.ballSpeed += game.ACCELERATE_VALUE;
 			countdown.setPartOfTime(partOfTime);
+
 			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
 			Logger.log(CLASS_NAME, "speed changed to " + game.ballSpeed);
 		}
@@ -149,9 +153,11 @@ public class GameService implements Disposable {
 		gameFont.getData().setScale(game.FONT_MID_SIZE);
 		gameFont.setColor(Color.WHITE);
 		gameFont.draw(game.batch, "Score " + game.score.get(), game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET);
+
 		if(game.points >= 0) {
 			gameFont.draw(game.batch, "Points " + game.points, game.UI_LABEL_OFFSET, game.HEIGHT - (game.UI_LABEL_OFFSET * 2));
 		}
+
 		return 1;
 	}
 	
@@ -183,6 +189,7 @@ public class GameService implements Disposable {
 		levelService.dispose();
 		countDownTimer.cancel();
 		ballTimer.cancel();
+
 		Logger.log(CLASS_NAME, "disposed");
 	}
 }

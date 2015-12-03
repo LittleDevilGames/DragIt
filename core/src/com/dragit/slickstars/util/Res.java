@@ -17,7 +17,7 @@ import java.io.File;
  */
 public class Res implements Disposable {
 
-    private final String CLASS_NAME = "Res";
+    private final String CLASS_NAME = getClass().getName();
 
     private final String TEXTURE_PATH = "data" + File.separator + "tex" + File.separator;
     private final String FONT_PATH = "data" + File.separator + "font" + File.separator;

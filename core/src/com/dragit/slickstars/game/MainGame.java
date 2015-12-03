@@ -18,7 +18,7 @@ import de.tomgrill.gdxdialogs.core.GDXDialogs;
 import de.tomgrill.gdxdialogs.core.GDXDialogsSystem;
 
 public class MainGame extends Game {
-	private final String CLASS_NAME = "MainGame";
+	private final String CLASS_NAME = getClass().getName();
 	
 	public final int WIDTH = 480;
 	public final int HEIGHT = 800;
@@ -28,7 +28,8 @@ public class MainGame extends Game {
 	public final int BUTTON_HEIGHT = 65;
 	public final int MIN_BUTTON_WIDTH = 100;
 	public final int MIN_BUTTON_HEIGHT = 30;
-	
+
+	public final float DRAG_POWER = 0.5f;
 	public final float BALL_SIZE = 64f;
 	public final int BALL_OUT_POINT = 2;
 	public final float DEFAULT_BALL_SPEED = 1.5f;
@@ -119,19 +120,8 @@ public class MainGame extends Game {
 		skin = new Skin(Gdx.files.internal(UI_SKIN_PATH), atlas);
 		
 		Gdx.input.setInputProcessor(stage);
-		loadAssets();
 	}
-	
-	private void loadAssets() {
 
-
-		/*
-		Art.load();
-		Font.load();
-		Particle.load();*/
-		//Audio.load();
-	}
-	
 	@Override
 	public void create () {
 		init();
@@ -179,7 +169,6 @@ public class MainGame extends Game {
 		stage.dispose();
 		shapeRenderer.dispose();
 		res.dispose();
-		//Audio.dispose();
 
 		Logger.log(CLASS_NAME, "disposed");
 	}
