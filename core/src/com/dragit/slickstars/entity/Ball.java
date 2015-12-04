@@ -110,6 +110,6 @@ public class Ball extends Actor implements Disposable {
 
 	@Override
 	public void dispose() {
-
+		effect.dispose();
 	}
 }

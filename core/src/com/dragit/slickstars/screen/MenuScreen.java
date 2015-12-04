@@ -62,13 +62,8 @@ public class MenuScreen extends BaseScreen {
 
 		game.batch.begin();
 
-		gameFont.getData().setScale(game.FONT_TITLE_SIZE);
-		gameFont.setColor(Color.SKY);
-		gameFont.draw(game.batch, game.GAME_TITLE, (game.WIDTH / 2) - (game.UI_LABEL_OFFSET * 4.3f), game.HEIGHT - 150f);
-
-		gameFont.getData().setScale(game.FONT_DEFAULT_SIZE);
-		gameFont.setColor(Color.WHITE);
-		gameFont.draw(game.batch, "ver. " + game.VERSION, game.UI_PADDING, game.UI_PADDING);
+		Util.drawText(gameFont, game.FONT_TITLE_SIZE, Color.SKY, game.GAME_TITLE, (game.WIDTH / 2), game.HEIGHT - game.HPADDING * 2, game.batch);
+		Util.drawText(gameFont, game.FONT_DEFAULT_SIZE, Color.WHITE, "ver. " + game.VERSION, game.UI_PADDING, game.UI_PADDING, game.batch, false);
 
 		game.batch.end();
 	}
@@ -154,8 +149,6 @@ public class MenuScreen extends BaseScreen {
 		game.uiGroup.addActor(start);
 		game.uiGroup.addActor(records);
 		game.uiGroup.addActor(quit);
-
-		//button.addListener(new TextTooltip("This is a tooltip!", skin));
 	}
 
 	protected void createEffects() {

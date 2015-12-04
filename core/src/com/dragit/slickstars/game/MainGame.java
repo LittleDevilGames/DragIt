@@ -22,21 +22,24 @@ public class MainGame extends Game {
 	
 	public final int WIDTH = 480;
 	public final int HEIGHT = 800;
-	public final String VERSION = "0.8 alpha";
+	public final String VERSION = "0.9 alpha";
+
+	public final float WPADDING = WIDTH / 8;
+	public final float HPADDING = HEIGHT / 8;
 	
 	public final int BUTTON_WIDTH = 200;
 	public final int BUTTON_HEIGHT = 65;
 	public final int MIN_BUTTON_WIDTH = 100;
 	public final int MIN_BUTTON_HEIGHT = 30;
-	
+
+	public final float DRAG_POWER = 0.5f;
 	public final float BALL_SIZE = 64f;
 	public final int BALL_OUT_POINT = 2;
 	public final float DEFAULT_BALL_SPEED = 1.5f;
 	public final int DRAG_SCORE = 50;
 	public final int DRAG_SPEED = 15;
-	public final float ACCELERATE_VALUE = 0.5f;
+	public final float ACCELERATE_VALUE = 0.7f;
 	public final int GAME_TIME = 60;
-	public final int MAX_DIFFICULTS = 4;
 	public final int CHANGE_SIDE_POINT = 2;
 	
 	public final static String COLOR_RED = "f8212e";
@@ -64,10 +67,10 @@ public class MainGame extends Game {
 	public Group ballGroup;
 	public GDXDialogs dialogs;
 	public Res res;
-	
+	public Score score;
+
 	public static boolean isPause;
 	public int points;
-	public Score score;
 	public int dragged;
 	public int maxCombo;
 	public float ballSpeed = 1f;
@@ -97,6 +100,7 @@ public class MainGame extends Game {
 	public GameStatus status = GameStatus.GAME_NONE;
 	
 	public void init() {
+		Logger.log(CLASS_NAME, "initializing..");
 		res = new Res();
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
@@ -108,8 +112,9 @@ public class MainGame extends Game {
 		dialogs = GDXDialogsSystem.install();
 		shapeRenderer = new ShapeRenderer();
 		score = new Score();
-		
-		score.loadRecords();
+
+		res.load();
+		score.load();
 
 		stage.addActor(uiGroup);
 		stage.addActor(ballGroup);
@@ -119,19 +124,8 @@ public class MainGame extends Game {
 		skin = new Skin(Gdx.files.internal(UI_SKIN_PATH), atlas);
 		
 		Gdx.input.setInputProcessor(stage);
-		loadAssets();
 	}
-	
-	private void loadAssets() {
 
-
-		/*
-		Art.load();
-		Font.load();
-		Particle.load();*/
-		//Audio.load();
-	}
-	
 	@Override
 	public void create () {
 		init();
@@ -179,7 +173,6 @@ public class MainGame extends Game {
 		stage.dispose();
 		shapeRenderer.dispose();
 		res.dispose();
-		//Audio.dispose();
 
 		Logger.log(CLASS_NAME, "disposed");
 	}

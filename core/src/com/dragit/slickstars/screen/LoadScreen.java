@@ -1,9 +1,11 @@
 package com.dragit.slickstars.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.Util;
 
 import java.io.File;
 import java.util.Timer;
@@ -16,10 +18,9 @@ public class LoadScreen extends BaseScreen {
 
     private final String CLASS_NAME = "LoadScreen";
 
-    private final int LOAD_TIME = 3000;
+    private final int LOAD_TIME = 2000;
 
     private MainGame game;
-
     private BitmapFont preloadFont;
 
     public LoadScreen(MainGame game) {
@@ -53,8 +54,7 @@ public class LoadScreen extends BaseScreen {
         game.res.update();
 
         game.batch.begin();
-        preloadFont.getData().setScale(game.FONT_MID_SIZE);
-        preloadFont.draw(game.batch, "Loading... (" + (game.res.getProgress() * 100) + "%)", (game.WIDTH / 2) - (preloadFont.getSpaceWidth() * 3), game.HEIGHT - (game.HEIGHT / 3));
+        Util.drawText(preloadFont, game.FONT_MID_SIZE, Color.WHITE, "Loading... (" + (game.res.getProgress() * 100) + "%)", (game.WIDTH / 2), game.HEIGHT - (game.HEIGHT / 3), game.batch);
         game.batch.end();
 
         game.stage.getViewport().setCamera(game.camera);

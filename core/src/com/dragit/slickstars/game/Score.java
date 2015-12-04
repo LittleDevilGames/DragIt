@@ -39,7 +39,7 @@ public class Score implements Disposable {
 		return scoreList;
 	}
 	
-	public boolean loadRecords() {
+	public boolean load() {
 		Json json = new Json();
 		FileHandle file = Gdx.files.local(RECORDS_FILE);
 		Logger.log(CLASS_NAME, "Loading records from file " + file.name());

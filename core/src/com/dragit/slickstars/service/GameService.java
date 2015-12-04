@@ -3,7 +3,6 @@ package com.dragit.slickstars.service;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.Disposable;
 import com.dragit.slickstars.game.Countdown;
 import com.dragit.slickstars.game.MainGame;
@@ -18,24 +17,30 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameService implements Disposable {
+
 	private final String CLASS_NAME = "GameService";
 	
 	private MainGame game;
 
 	private final int GENERATES_COUNT = 5;
-	private int generateCount;
+	private final int DIFFICULT_BALLS = 3;
+	private final int START_POINTS = 3;
+	private final int MIN_TIME_CREATE_BALL = 1000;
+	private final int MAX_TIME_CREATE_BALL = 5000;
+
+	protected Countdown countdown;
+
 	private LevelService levelService;
-	
 	private Timer ballTimer;
 	private Timer countDownTimer;
-	protected Countdown countdown;
 	private int partOfTime;
+	private int generateCount;
 
 	private BitmapFont gameFont;
 
 	public GameService(MainGame game) {
 		this.game = game;
-		
+
 		levelService = new LevelService(game);
 
 		game.setDifficult(1);
@@ -52,7 +57,7 @@ public class GameService implements Disposable {
 
 		game.ballSpeed = game.DEFAULT_BALL_SPEED;
 		game.score.set(0);
-		game.points = 3;
+		game.points = START_POINTS;
 		game.status = GameStatus.GAME_PLAY;
 		
 		Logger.log(CLASS_NAME, "started");
@@ -68,7 +73,7 @@ public class GameService implements Disposable {
 
 	private void startBallTimer() {
 		ballTimer = new Timer();
-		int timeCreateBall = Util.getRandomRange(1000, 5000);
+		int timeCreateBall = Util.getRandomRange(MIN_TIME_CREATE_BALL, MAX_TIME_CREATE_BALL);
 
 		ballTimer.schedule(new TimerTask() {
 			@Override
@@ -115,9 +120,11 @@ public class GameService implements Disposable {
 	public int update(float delta) {
 
 		if(game.status == GameStatus.GAME_END) {
-			gameFont.getData().setScale(game.FONT_MID_SIZE);
-			gameFont.setColor(Color.SKY);
-			gameFont.draw(game.batch, "GAME OVER\nYour score: " + game.score.get() + "\nDragged: " + game.dragged + "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f);
+
+			Util.drawText(gameFont, game.FONT_MID_SIZE, Color.SKY,
+					"GAME OVER\nYour score: " + game.score.get()
+					+ "\nDragged: " + game.dragged
+					+ "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f, game.batch, false);
 
 			if(Gdx.input.isTouched()) {
 				game.score.writeRecord(game.score.get());
@@ -131,7 +138,7 @@ public class GameService implements Disposable {
 		}
 
 		levelService.update(delta);
-		
+
 		if(generateCount < 1) {
 			ballTimer.cancel();
 			startBallTimer();
@@ -142,16 +149,18 @@ public class GameService implements Disposable {
 			game.setDifficult(game.getDifficult() + 1);
 			game.ballSpeed += game.ACCELERATE_VALUE;
 			countdown.setPartOfTime(partOfTime);
+			levelService.setMaxBalls(levelService.getMaxBalls() + DIFFICULT_BALLS);
+
 			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
 			Logger.log(CLASS_NAME, "speed changed to " + game.ballSpeed);
 		}
 
-		gameFont.getData().setScale(game.FONT_MID_SIZE);
-		gameFont.setColor(Color.WHITE);
-		gameFont.draw(game.batch, "Score " + game.score.get(), game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET);
+		Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Score " + game.score.get(), game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET, game.batch, false);
+
 		if(game.points >= 0) {
-			gameFont.draw(game.batch, "Points " + game.points, game.UI_LABEL_OFFSET, game.HEIGHT - (game.UI_LABEL_OFFSET * 2));
+			Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Points " + game.points, game.UI_LABEL_OFFSET, game.HEIGHT - (game.UI_LABEL_OFFSET * 2), game.batch, false);
 		}
+
 		return 1;
 	}
 	
@@ -183,6 +192,7 @@ public class GameService implements Disposable {
 		levelService.dispose();
 		countDownTimer.cancel();
 		ballTimer.cancel();
+
 		Logger.log(CLASS_NAME, "disposed");
 	}
 }
