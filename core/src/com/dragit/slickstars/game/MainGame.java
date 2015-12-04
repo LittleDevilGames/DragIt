@@ -23,6 +23,9 @@ public class MainGame extends Game {
 	public final int WIDTH = 480;
 	public final int HEIGHT = 800;
 	public final String VERSION = "0.9 alpha";
+
+	public final float WPADDING = WIDTH / 8;
+	public final float HPADDING = HEIGHT / 8;
 	
 	public final int BUTTON_WIDTH = 200;
 	public final int BUTTON_HEIGHT = 65;

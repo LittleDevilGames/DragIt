@@ -55,7 +55,7 @@ public class GameScreen extends BaseScreen {
 		}
 		else {
 			game.batch.begin();
-			Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "PAUSE", (game.WIDTH / 2) - (gameFont.getSpaceWidth() * 5), game.HEIGHT / 2, game.batch);
+			Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "PAUSE", (game.WIDTH / 2), game.HEIGHT / 2, game.batch);
 			game.batch.end();
 		}
 	}

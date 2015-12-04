@@ -24,7 +24,7 @@ public class GameService implements Disposable {
 
 	private final int GENERATES_COUNT = 5;
 	private final int DIFFICULT_BALLS = 3;
-	
+
 	protected Countdown countdown;
 
 	private LevelService levelService;
@@ -37,7 +37,7 @@ public class GameService implements Disposable {
 
 	public GameService(MainGame game) {
 		this.game = game;
-		
+
 		levelService = new LevelService(game);
 
 		game.setDifficult(1);
@@ -121,7 +121,7 @@ public class GameService implements Disposable {
 			Util.drawText(gameFont, game.FONT_MID_SIZE, Color.SKY,
 					"GAME OVER\nYour score: " + game.score.get()
 					+ "\nDragged: " + game.dragged
-					+ "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f, game.batch);
+					+ "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f, game.batch, false);
 
 			if(Gdx.input.isTouched()) {
 				game.score.writeRecord(game.score.get());
@@ -152,12 +152,10 @@ public class GameService implements Disposable {
 			Logger.log(CLASS_NAME, "speed changed to " + game.ballSpeed);
 		}
 
-		gameFont.getData().setScale(game.FONT_MID_SIZE);
-		gameFont.setColor(Color.WHITE);
-		gameFont.draw(game.batch, "Score " + game.score.get(), game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET);
+		Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Score " + game.score.get(), game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET, game.batch, false);
 
 		if(game.points >= 0) {
-			gameFont.draw(game.batch, "Points " + game.points, game.UI_LABEL_OFFSET, game.HEIGHT - (game.UI_LABEL_OFFSET * 2));
+			Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Points " + game.points, game.UI_LABEL_OFFSET, game.HEIGHT - (game.UI_LABEL_OFFSET * 2), game.batch, false);
 		}
 
 		return 1;

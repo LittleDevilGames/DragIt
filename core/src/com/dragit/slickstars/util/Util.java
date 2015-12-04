@@ -3,10 +3,12 @@ package com.dragit.slickstars.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dragit.slickstars.game.MainGame;
 
 import java.util.Random;
+
 
 public class Util {
 	
@@ -35,9 +37,24 @@ public class Util {
 		return MainGame.ObjectType.GREEN;
 	}
 
-	public static void drawText(BitmapFont font, float size, Color color, String text, float x, float y, SpriteBatch batch) {
+	public static void drawText(BitmapFont font, float size, Color color, String text, float x, float y, SpriteBatch batch, boolean autoOffset) {
 		font.getData().setScale(size);
 		font.setColor(color);
-		font.draw(batch, text, x, y);
+
+		float offset = 0f;
+
+		if(autoOffset) {
+			offset = getTextWidth(font, text) / 2;
+		}
+		font.draw(batch, text, x - offset, y);
+	}
+
+	public static void drawText(BitmapFont font, float size, Color color, String text, float x, float y, SpriteBatch batch) {
+		drawText(font, size, color, text, x, y, batch, true);
+	}
+
+	public static float getTextWidth(BitmapFont font, String text) {
+		GlyphLayout gl = new GlyphLayout(font, text);
+		return gl.width;
 	}
 }
