@@ -18,12 +18,13 @@ import java.util.TimerTask;
 
 public class GameService implements Disposable {
 
-	private final String CLASS_NAME = getClass().getName();
+	private final String CLASS_NAME = "GameService";
 	
 	private MainGame game;
 
 	private final int GENERATES_COUNT = 5;
-
+	private final int DIFFICULT_BALLS = 3;
+	
 	protected Countdown countdown;
 
 	private LevelService levelService;
@@ -134,7 +135,7 @@ public class GameService implements Disposable {
 		}
 
 		levelService.update(delta);
-		
+
 		if(generateCount < 1) {
 			ballTimer.cancel();
 			startBallTimer();
@@ -145,6 +146,7 @@ public class GameService implements Disposable {
 			game.setDifficult(game.getDifficult() + 1);
 			game.ballSpeed += game.ACCELERATE_VALUE;
 			countdown.setPartOfTime(partOfTime);
+			levelService.setMaxBalls(levelService.getMaxBalls() + DIFFICULT_BALLS);
 
 			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
 			Logger.log(CLASS_NAME, "speed changed to " + game.ballSpeed);

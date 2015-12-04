@@ -23,10 +23,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LevelService implements Disposable {
 	
-	private final String CLASS_NAME = getClass().getName();
+	private final String CLASS_NAME = "LevelService";
 	
 	private final int COUNT_LEVEL_BALLS = 25;
-	private final int CREATING_PERIOD = 600;
+	private final int CREATING_PERIOD = 500;
 	private final int COUNT_OBJ_TYPES = 2;
 	private final int DRAGS_FOR_COMBO = 5;
 	private final int DRAG_DELAY = 200;
@@ -240,12 +240,11 @@ public class LevelService implements Disposable {
 		if(comboCount >= DRAGS_FOR_COMBO) {
 			comboCount = 0;
 			game.setCombo(game.getCombo() + 1);
-			pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, game.getCombo(), "x" + game.getCombo());
 		}
 		else {
-			pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, 1);
 			comboCount++;
 		}
+		pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, game.getCombo(), "x" + game.getCombo());
 	}
 
 	private void showScore(float x, float y, Border side) {
@@ -301,6 +300,14 @@ public class LevelService implements Disposable {
 
 	private void getResources() {
 		gameFont = game.res.gameFont;
+	}
+
+	public void setMaxBalls(int max) {
+		this.maxBalls = max;
+	}
+
+	public int getMaxBalls() {
+		return this.maxBalls;
 	}
 
 	@Override

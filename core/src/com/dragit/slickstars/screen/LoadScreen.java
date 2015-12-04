@@ -16,7 +16,7 @@ import java.util.TimerTask;
  */
 public class LoadScreen extends BaseScreen {
 
-    private final String CLASS_NAME = getClass().getName();
+    private final String CLASS_NAME = "LoadScreen";
 
     private final int LOAD_TIME = 3000;
 

@@ -13,7 +13,7 @@ import com.dragit.slickstars.util.Logger;
 import com.dragit.slickstars.util.Util;
 
 public class GameScreen extends BaseScreen {
-	private final String CLASS_NAME = getClass().getName();
+	private final String CLASS_NAME = "GameScreen";
 
 	private GameService gameService;
 	private ParticleEffect pixelParticle;

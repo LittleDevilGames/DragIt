@@ -17,15 +17,15 @@ import java.io.File;
  */
 public class Res implements Disposable {
 
-    private final String CLASS_NAME = getClass().getName();
+    private final String CLASS_NAME = "Res";
 
     private final String TEXTURE_PATH = "data" + File.separator + "tex" + File.separator;
     private final String FONT_PATH = "data" + File.separator + "font" + File.separator;
     private final String PARTICLE_PATH = "data" + File.separator + "particle" + File.separator;
 
     private AssetManager manager;
-
     private ParticleEffectPool effects;
+
     public ParticleEffect ballParticle;
     public Texture ballTexture;
     public BitmapFont gameFont;
@@ -36,10 +36,9 @@ public class Res implements Disposable {
     public Res() {
         this.manager = new AssetManager();
         isLoaded = false;
-        load();
     }
 
-    private void load() {
+    public void load() {
         Logger.log(CLASS_NAME, "Loading assets..");
 
         manager.load(PARTICLE_PATH + "ball.p", ParticleEffect.class);
@@ -49,7 +48,6 @@ public class Res implements Disposable {
     }
 
     private void getResources() {
-
         ballParticle = get(PARTICLE_PATH + "ball.p", ParticleEffect.class);
         pixelParticle = get(PARTICLE_PATH + "pixel.p", ParticleEffect.class);
         ballTexture = get(TEXTURE_PATH + "ball.png", Texture.class);
@@ -64,15 +62,6 @@ public class Res implements Disposable {
         if(manager.update() && !isLoaded) {
             getResources();
         }
-    }
-
-    public <T> T get(String path, Class<T> type) {
-        if(!manager.isLoaded(path)) {
-            Logger.log(CLASS_NAME, "Asset (" + path + ") not loaded");
-            return null;
-        }
-
-        return (T) manager.get(path, type);
     }
 
     public ParticleEffectPool.PooledEffect getBallEffect() {
@@ -93,6 +82,21 @@ public class Res implements Disposable {
         return manager;
     }
 
+    public <T> T get(String path, Class<T> type) {
+        if(!manager.isLoaded(path)) {
+            Logger.log(CLASS_NAME, "Asset (" + path + ") not loaded");
+            return null;
+        }
+
+        return (T) manager.get(path, type);
+    }
+
+    public <T> T load(String path, Class<T> type) {
+        if(path.isEmpty()) return null;
+
+        manager.load(path, type);
+        return get(path, type);
+    }
     @Override
     public void dispose() {
         manager.dispose();

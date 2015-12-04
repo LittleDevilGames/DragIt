@@ -13,7 +13,7 @@ import com.dragit.slickstars.util.Logger;
 
 public class Score implements Disposable {
 	
-	private final String CLASS_NAME = getClass().getName();
+	private final String CLASS_NAME = "Score";
 	
 	private final String RECORDS_FILE = "records.json";
 	private final int MAX_SCORES = 10;
@@ -39,7 +39,7 @@ public class Score implements Disposable {
 		return scoreList;
 	}
 	
-	public boolean loadRecords() {
+	public boolean load() {
 		Json json = new Json();
 		FileHandle file = Gdx.files.local(RECORDS_FILE);
 		Logger.log(CLASS_NAME, "Loading records from file " + file.name());

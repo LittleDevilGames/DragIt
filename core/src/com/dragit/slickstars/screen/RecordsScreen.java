@@ -11,7 +11,7 @@ import com.dragit.slickstars.util.Util;
 
 public class RecordsScreen extends BaseScreen {
 
-	private final String CLASS_NAME = getClass().getName();
+	private final String CLASS_NAME = "RecordsScreen";
 	
 	private StringBuilder scoreList;
 	

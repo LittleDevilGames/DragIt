@@ -22,7 +22,7 @@ import de.tomgrill.gdxdialogs.core.listener.ButtonClickListener;
 
 public class MenuScreen extends BaseScreen {
 		
-	private final String CLASS_NAME = getClass().getName();
+	private final String CLASS_NAME = "MenuScreen";
 
 	private final String MSG_QUIT = "Do you want quit?";
 
@@ -149,8 +149,6 @@ public class MenuScreen extends BaseScreen {
 		game.uiGroup.addActor(start);
 		game.uiGroup.addActor(records);
 		game.uiGroup.addActor(quit);
-
-		//button.addListener(new TextTooltip("This is a tooltip!", skin));
 	}
 
 	protected void createEffects() {
