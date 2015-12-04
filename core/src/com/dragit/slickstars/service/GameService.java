@@ -24,6 +24,9 @@ public class GameService implements Disposable {
 
 	private final int GENERATES_COUNT = 5;
 	private final int DIFFICULT_BALLS = 3;
+	private final int START_POINTS = 3;
+	private final int MIN_TIME_CREATE_BALL = 1000;
+	private final int MAX_TIME_CREATE_BALL = 5000;
 
 	protected Countdown countdown;
 
@@ -54,7 +57,7 @@ public class GameService implements Disposable {
 
 		game.ballSpeed = game.DEFAULT_BALL_SPEED;
 		game.score.set(0);
-		game.points = 3;
+		game.points = START_POINTS;
 		game.status = GameStatus.GAME_PLAY;
 		
 		Logger.log(CLASS_NAME, "started");
@@ -70,7 +73,7 @@ public class GameService implements Disposable {
 
 	private void startBallTimer() {
 		ballTimer = new Timer();
-		int timeCreateBall = Util.getRandomRange(1000, 5000);
+		int timeCreateBall = Util.getRandomRange(MIN_TIME_CREATE_BALL, MAX_TIME_CREATE_BALL);
 
 		ballTimer.schedule(new TimerTask() {
 			@Override

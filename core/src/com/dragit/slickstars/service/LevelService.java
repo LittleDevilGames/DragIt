@@ -312,11 +312,10 @@ public class LevelService implements Disposable {
 
 	@Override
 	public void dispose() {
-
 		for(Ball b : balls) {
 			b.dispose();
 		}
-
+		sides.clear();
 		balls.clear();
 		delayTimer.cancel();
 	}

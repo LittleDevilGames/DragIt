@@ -44,9 +44,9 @@ public class RecordsScreen extends BaseScreen {
 		game.batch.setProjectionMatrix(game.camera.combined);
 		
 		game.batch.begin();
-		Util.drawText(gameFont, game.FONT_TITLE_SIZE, Color.SKY, game.GAME_TITLE, (game.WIDTH / 2), game.HEIGHT - 150f, game.batch);
-		Util.drawText(gameFont, game.FONT_DEFAULT_SIZE, Color.WHITE, "RECORDS", (game.WIDTH / 2), game.HEIGHT - 200f, game.batch);
-		Util.drawText(gameFont, game.FONT_MID_SIZE, Color.SKY, scoreList.toString(), 50f, game.HEIGHT - 290f, game.batch, false);
+		Util.drawText(gameFont, game.FONT_TITLE_SIZE, Color.SKY, game.GAME_TITLE, (game.WIDTH / 2), game.HEIGHT - game.HPADDING * 2, game.batch);
+		Util.drawText(gameFont, game.FONT_DEFAULT_SIZE, Color.WHITE, "RECORDS", (game.WIDTH / 2), game.HEIGHT - 230f, game.batch);
+		Util.drawText(gameFont, game.FONT_MID_SIZE, Color.SKY, scoreList.toString(), 50f, game.HEIGHT - 300f, game.batch, false);
 		game.batch.end();
 		
 		game.stage.getViewport().setCamera(game.camera);

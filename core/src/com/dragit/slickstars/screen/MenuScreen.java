@@ -62,7 +62,7 @@ public class MenuScreen extends BaseScreen {
 
 		game.batch.begin();
 
-		Util.drawText(gameFont, game.FONT_TITLE_SIZE, Color.SKY, game.GAME_TITLE, (game.WIDTH / 2), game.HEIGHT - 150f, game.batch);
+		Util.drawText(gameFont, game.FONT_TITLE_SIZE, Color.SKY, game.GAME_TITLE, (game.WIDTH / 2), game.HEIGHT - game.HPADDING * 2, game.batch);
 		Util.drawText(gameFont, game.FONT_DEFAULT_SIZE, Color.WHITE, "ver. " + game.VERSION, game.UI_PADDING, game.UI_PADDING, game.batch, false);
 
 		game.batch.end();
