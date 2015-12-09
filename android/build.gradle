@@ -20,6 +20,11 @@ android {
     defaultConfig {
         minSdkVersion 15
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
     productFlavors {
     }
 }
