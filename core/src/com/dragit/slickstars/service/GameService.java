@@ -27,6 +27,7 @@ public class GameService implements Disposable {
 	private final int START_POINTS = 3;
 	private final int MIN_TIME_CREATE_BALL = 1000;
 	private final int MAX_TIME_CREATE_BALL = 5000;
+	private final int DECREASE_CREATION_PERIOD = 35;
 
 	protected Countdown countdown;
 
@@ -56,7 +57,11 @@ public class GameService implements Disposable {
 		startBallTimer();
 
 		game.ballSpeed = game.DEFAULT_BALL_SPEED;
-		game.score.set(0);
+
+		if(game.score != null) {
+			game.score.set(0);
+		}
+
 		game.points = START_POINTS;
 		game.status = GameStatus.GAME_PLAY;
 		
@@ -146,13 +151,20 @@ public class GameService implements Disposable {
 		}
 		
 		if(countdown.getPartOfTime() < 1 && !countdown.isPause()) {
+
+			long period = levelService.getBallCreationTime();
+
 			game.setDifficult(game.getDifficult() + 1);
 			game.ballSpeed += game.ACCELERATE_VALUE;
-			countdown.setPartOfTime(partOfTime);
+			period -= DECREASE_CREATION_PERIOD;
+			levelService.setBallCreationTime(period);
 			levelService.setMaxBalls(levelService.getMaxBalls() + DIFFICULT_BALLS);
+
+			countdown.setPartOfTime(partOfTime);
 
 			Logger.log(CLASS_NAME, "difficult changed to " + game.getDifficult());
 			Logger.log(CLASS_NAME, "speed changed to " + game.ballSpeed);
+			Logger.log(CLASS_NAME, "ball creation time changed to " + levelService.getBallCreationTime());
 		}
 
 		Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Score " + game.score.get(), game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET, game.batch, false);
@@ -183,8 +195,11 @@ public class GameService implements Disposable {
 		game.setGameScreen(new GameScreen(game));
 	}
 
-	private void getResources() {
+	private int getResources() {
+		if(game.res == null) return 0;
+
 		gameFont = game.res.gameFont;
+		return  1;
 	}
 
 	@Override

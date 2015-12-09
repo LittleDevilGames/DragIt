@@ -26,7 +26,7 @@ public class LevelService implements Disposable {
 	private final String CLASS_NAME = "LevelService";
 	
 	private final int COUNT_LEVEL_BALLS = 25;
-	private final int CREATING_PERIOD = 500;
+	private final int CREATING_PERIOD = 800;
 	private final int COUNT_OBJ_TYPES = 2;
 	private final int DRAGS_FOR_COMBO = 5;
 	private final int DRAG_DELAY = 200;
@@ -44,36 +44,41 @@ public class LevelService implements Disposable {
 	private int comboCount;
 	private long lastDragTime;
 	private Direction direction;
-
+	private long ballCreationTime;
 
 	private BitmapFont gameFont;
 
 	public LevelService(MainGame game) {
 		this.game = game;
 		this.balls = new CopyOnWriteArrayList<Ball>();
-		this.delayTimer = new Timer();
 
-		getResources();
+		if(game != null) {
+			getResources();
+			createSides();
+		}
 
 		this.comboCount = 0;
-		createSides();
+		setBallCreationTime(CREATING_PERIOD);
 		this.maxBalls = COUNT_LEVEL_BALLS;
-		initTimer();
 		this.timerState = false;
+
 		Logger.log(CLASS_NAME, "started");
 	}
 	
 	public void generate(float startPos, float endPos, float offsetPos, Direction ballDirection) {
 		
-		Logger.log(CLASS_NAME, "generating started");
 		this.end = endPos;
 		this.offset = offsetPos;
 		this.direction = ballDirection;
 		this.currPos = startPos;
 		timerState = true;
 	}
-	
-	private void initTimer() {
+
+	public void setBallCreationTime(long time) {
+		ballCreationTime = time;
+
+		if(delayTimer != null) delayTimer.cancel();
+		delayTimer = new Timer();
 		delayTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -89,9 +94,13 @@ public class LevelService implements Disposable {
 					pushBall(currPos);
 				}
 			}
-		}, 0, CREATING_PERIOD);
+		}, 0, ballCreationTime);
 	}
-	
+
+	public long getBallCreationTime() {
+		return ballCreationTime;
+	}
+
 	private void createSides() {
 		this.sides = new ArrayList<Border>();
 		this.sides.add(new Border(new Vector2(0, 0), 10, game.HEIGHT, Direction.LEFT, ObjectType.GREEN));
@@ -298,8 +307,11 @@ public class LevelService implements Disposable {
 		return false;
 	}
 
-	private void getResources() {
+	private int getResources() {
+		if(game.res == null) return 0;
+
 		gameFont = game.res.gameFont;
+		return 1;
 	}
 
 	public void setMaxBalls(int max) {
