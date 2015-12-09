@@ -1,12 +1,7 @@
 package com.dragit.slickstars.game;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.Timer;
-
-import javafx.application.Application;
 
 /**
  * Created by slick on 09.12.15.
