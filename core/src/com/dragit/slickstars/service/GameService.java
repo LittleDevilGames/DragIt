@@ -57,7 +57,11 @@ public class GameService implements Disposable {
 		startBallTimer();
 
 		game.ballSpeed = game.DEFAULT_BALL_SPEED;
-		game.score.set(0);
+
+		if(game.score != null) {
+			game.score.set(0);
+		}
+
 		game.points = START_POINTS;
 		game.status = GameStatus.GAME_PLAY;
 		
@@ -191,8 +195,11 @@ public class GameService implements Disposable {
 		game.setGameScreen(new GameScreen(game));
 	}
 
-	private void getResources() {
+	private int getResources() {
+		if(game.res == null) return 0;
+
 		gameFont = game.res.gameFont;
+		return  1;
 	}
 
 	@Override

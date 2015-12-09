@@ -2,6 +2,7 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+
         jcenter()
     }
     dependencies {
@@ -91,10 +92,14 @@ project(":html") {
 project(":core") {
     apply plugin: "java"
 
+    sourceSets.test.java.srcDirs = ["test/"]
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "net.dermetfan.libgdx-utils:libgdx-utils:0.13.1"
+
+        testCompile 'junit:junit:4.12'
+        testCompile "org.mockito:mockito-core:1.+"
     }
 }
 

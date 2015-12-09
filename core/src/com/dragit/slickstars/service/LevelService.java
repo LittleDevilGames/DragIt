@@ -52,20 +52,21 @@ public class LevelService implements Disposable {
 		this.game = game;
 		this.balls = new CopyOnWriteArrayList<Ball>();
 
-		getResources();
+		if(game != null) {
+			getResources();
+			createSides();
+		}
 
 		this.comboCount = 0;
-		createSides();
 		setBallCreationTime(CREATING_PERIOD);
 		this.maxBalls = COUNT_LEVEL_BALLS;
-
 		this.timerState = false;
+
 		Logger.log(CLASS_NAME, "started");
 	}
 	
 	public void generate(float startPos, float endPos, float offsetPos, Direction ballDirection) {
 		
-		Logger.log(CLASS_NAME, "generating started");
 		this.end = endPos;
 		this.offset = offsetPos;
 		this.direction = ballDirection;
@@ -306,8 +307,11 @@ public class LevelService implements Disposable {
 		return false;
 	}
 
-	private void getResources() {
+	private int getResources() {
+		if(game.res == null) return 0;
+
 		gameFont = game.res.gameFont;
+		return 1;
 	}
 
 	public void setMaxBalls(int max) {

@@ -4,9 +4,13 @@ sourceCompatibility = 1.6
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
-	testCompile "junit:junit:4.11"
-	compile "junit:junit:4.11"
+	testCompile 'junit:junit:4.12'
+
 	compile 'de.tomgrill.gdxdialogs:gdx-dialogs-core:1.0.0'
+	compile 'junit:junit:4.12'
+	compile "org.mockito:mockito-core:1.+"
+
+	testCompile 'junit:junit:4.12'
 }
 
 sourceSets.main.java.srcDirs = [ "src/" ]
