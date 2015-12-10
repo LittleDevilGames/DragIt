@@ -34,25 +34,35 @@ public class Ball extends Actor implements Disposable {
 		this.direction = Direction.NONE;
 		//this.debug();
 	}
+
+	public Ball() {
+		this.isDragged = false;
+		this.isAlive = true;
+		this.direction = Direction.NONE;
+	}
 	
 	@Override
 	public void draw(Batch batch, float delta) {
-		sprite.setColor(color);
-		if(isDragged) {
-			sprite.setAlpha(0.5f);
-			if(effect != null) {
-				effect.setPosition(getX() + (getWidth() / 2), getY() + (getWidth() / 2));
-				effect.draw(batch, Gdx.graphics.getDeltaTime());
+		if(sprite != null) {
+			sprite.setColor(color);
+			if(isDragged) {
+				sprite.setAlpha(0.5f);
+				if(effect != null) {
+					effect.setPosition(getX() + (getWidth() / 2), getY() + (getWidth() / 2));
+					effect.draw(batch, Gdx.graphics.getDeltaTime());
+				}
 			}
-		}
 
-		sprite.draw(batch);
+			sprite.draw(batch);
+		}
 	}
 	
 	@Override
 	public void positionChanged() {
 		super.positionChanged();
-		sprite.setPosition(getX(), getY());
+		if(sprite != null) {
+			sprite.setPosition(getX(), getY());
+		}
 	}
 	
 	@Override

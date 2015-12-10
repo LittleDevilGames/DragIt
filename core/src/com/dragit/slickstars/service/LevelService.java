@@ -1,7 +1,9 @@
 package com.dragit.slickstars.service;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -31,7 +33,7 @@ public class LevelService implements Disposable {
 	private final int DRAGS_FOR_COMBO = 5;
 	private final int DRAG_DELAY = 200;
 
-	private CopyOnWriteArrayList<Ball> balls;
+	protected CopyOnWriteArrayList<Ball> balls;
 	private ArrayList<Border> sides;
 
 	private MainGame game;
@@ -91,7 +93,7 @@ public class LevelService implements Disposable {
 						if (currPos >= end) timerState = false;
 						currPos += offset;
 					}
-					pushBall(currPos);
+					pushBall(currPos, true);
 				}
 			}
 		}, 0, ballCreationTime);
@@ -190,7 +192,7 @@ public class LevelService implements Disposable {
 		return 1;
 	}
 
-	private void pushBall(float x) {
+	protected void pushBall(float x, boolean useEffect) {
 
 		ObjectType type = Util.getRandObjectType(COUNT_OBJ_TYPES);
 		if(balls.size() >= maxBalls) {
@@ -207,12 +209,14 @@ public class LevelService implements Disposable {
 		}
 		else {
 			Ball ball = new Ball(x, game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, type, new Sprite(game.res.ballTexture));
-			ball.setEffect(game.res.getBallEffect());
+			if(useEffect) {
+				ball.setEffect(game.res.getBallEffect());
+			}
 			game.ballGroup.addActor(ball);
 			balls.add(ball);
 		}
 	}
-	
+
 	public void render(float delta) {
 		for(Border side : sides) {
 			game.shapeRenderer.rect(side.position.x, side.position.y, side.getWidth(), side.getHeight(), side.getColor(), side.getColor(), side.getColor(), side.getColor());
@@ -300,14 +304,14 @@ public class LevelService implements Disposable {
 	}
 
 
-	private boolean isBallOut(Ball ball) {
+	protected boolean isBallOut(Ball ball) {
 		if(ball.getY() < (0 - game.BALL_SIZE))
 			return true;
 
 		return false;
 	}
 
-	private int getResources() {
+	protected int getResources() {
 		if(game.res == null) return 0;
 
 		gameFont = game.res.gameFont;
