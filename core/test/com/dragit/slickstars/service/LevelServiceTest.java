@@ -2,26 +2,16 @@ package com.dragit.slickstars.service;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.dragit.slickstars.entity.Ball;
 import com.dragit.slickstars.game.MainGame;
-import com.dragit.slickstars.service.LevelService;
 import com.dragit.slickstars.util.Res;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.io.File;
-import java.util.logging.Level;
-
-import javax.xml.soap.Text;
 
 import sun.applet.Main;
 
@@ -83,5 +73,36 @@ public class LevelServiceTest {
         }
 
         Assert.assertTrue("Count of balls not equal: " + MAX_BALLS, ls.balls.size() == ls.getMaxBalls());
+    }
+
+    @Test
+    public void testOnCreationSides() {
+        MainGame game = new MainGame();
+        LevelService ls = new LevelService(game);
+
+        ls.createSides();
+
+        Assert.assertTrue("Count of side must be " + game.MAX_SIDES, ls.sides.size() == game.MAX_SIDES);
+    }
+
+    @Test
+    public void testOnCheckDragDirection() {
+        MainGame game = new MainGame();
+        LevelService ls = new LevelService(game);
+
+        Ball ball = new Ball();
+        ball.isDragged = false;
+        ball.setX(100);
+        ball.setY(100);
+        ball.setWidth(game.BALL_SIZE);
+        ball.setHeight(game.BALL_SIZE);
+
+        float testDragPosX = 100f;
+        float testDrahPosY = 100f;
+
+        Vector3 pos = new Vector3(testDragPosX, testDrahPosY, 0);
+        boolean isDragged = ls.checkDragDirection(ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight(), pos);
+
+        Assert.assertTrue("Ball not dragged with this coords: (ball)" + ball.getX() + ":" + ball.getY() + " (drag)" + testDragPosX + ":" + testDrahPosY, isDragged);
     }
 }

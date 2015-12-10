@@ -1,9 +1,7 @@
 package com.dragit.slickstars.service;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -34,7 +32,7 @@ public class LevelService implements Disposable {
 	private final int DRAG_DELAY = 200;
 
 	protected CopyOnWriteArrayList<Ball> balls;
-	private ArrayList<Border> sides;
+	protected ArrayList<Border> sides;
 
 	private MainGame game;
 	private Timer delayTimer;
@@ -103,7 +101,7 @@ public class LevelService implements Disposable {
 		return ballCreationTime;
 	}
 
-	private void createSides() {
+	protected void createSides() {
 		this.sides = new ArrayList<Border>();
 		this.sides.add(new Border(new Vector2(0, 0), 10, game.HEIGHT, Direction.LEFT, ObjectType.GREEN));
 		this.sides.add(new Border(new Vector2(game.WIDTH - 10, 0), 10, game.HEIGHT, Direction.RIGHT, ObjectType.RED));
@@ -235,18 +233,28 @@ public class LevelService implements Disposable {
 			if(!ball.isDragged) {
 				Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 				game.camera.unproject(pos);
-				if((System.currentTimeMillis() - lastDragTime) >= DRAG_DELAY) {
-					if((pos.x > ball.getX() && pos.x < (ball.getX() + ball.getWidth()) && (pos.y > ball.getY() && pos.y < (ball.getY() + ball.getHeight())))) {
-						Direction direction = Util.getDragDirection(game.DRAG_POWER);
-						if(direction != Direction.NONE) {
-							ball.setDirection(direction);
-							ball.isDragged = true;
-							lastDragTime = System.currentTimeMillis();
-						}
+
+				boolean isDragged = checkDragDirection(ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight(), pos);
+
+				if(isDragged) {
+					Direction direction = Util.getDragDirection(game.DRAG_POWER);
+					if(direction != Direction.NONE) {
+						ball.setDirection(direction);
+						ball.isDragged = true;
+						lastDragTime = System.currentTimeMillis();
 					}
 				}
 			}
 		}
+	}
+
+	protected boolean checkDragDirection(float x, float y, float w, float h, Vector3 pos) {
+		if((System.currentTimeMillis() - lastDragTime) >= DRAG_DELAY) {
+			if((pos.x > x && pos.x < (x + w) && (pos.y > y && pos.y < (y + h)))) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void checkCombo() {

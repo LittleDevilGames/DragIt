@@ -41,6 +41,7 @@ public class MainGame extends Game {
 	public final float ACCELERATE_VALUE = 0.7f;
 	public final int GAME_TIME = 60;
 	public final int CHANGE_SIDE_POINT = 2;
+	public final int MAX_SIDES = 2;
 	
 	public final static String COLOR_RED = "f8212e";
 	public final static String COLOR_GREEN = "00a8b6";
