@@ -97,8 +97,8 @@ public class LevelServiceTest {
         ball.setWidth(game.BALL_SIZE);
         ball.setHeight(game.BALL_SIZE);
 
-        float testDragPosX = 100f;
-        float testDrahPosY = 100f;
+        float testDragPosX = 120f;
+        float testDrahPosY = 120f;
 
         Vector3 pos = new Vector3(testDragPosX, testDrahPosY, 0);
         boolean isDragged = ls.checkDragDirection(ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight(), pos);
