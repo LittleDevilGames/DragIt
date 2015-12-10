@@ -101,7 +101,7 @@ public class LevelServiceTest {
         float testDrahPosY = 120f;
 
         Vector3 pos = new Vector3(testDragPosX, testDrahPosY, 0);
-        boolean isDragged = ls.checkDragDirection(ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight(), pos);
+        boolean isDragged = ls.checkDrag(ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight(), pos);
 
         Assert.assertTrue("Ball not dragged with this coords: (ball)" + ball.getX() + ":" + ball.getY() + " (drag)" + testDragPosX + ":" + testDrahPosY, isDragged);
     }

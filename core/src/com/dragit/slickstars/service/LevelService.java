@@ -223,18 +223,18 @@ public class LevelService implements Disposable {
 	
 	public void update(float delta) {
 		for(Ball ball : balls) {
-			checkDrag(ball);
+			drag(ball);
 			ballUpdate(ball);
 		}
 	}
 
-	private void checkDrag(Ball ball) {
+	private void drag(Ball ball) {
 		if(Gdx.input.isTouched() && !MainGame.isPause) {
 			if(!ball.isDragged) {
 				Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 				game.camera.unproject(pos);
 
-				boolean isDragged = checkDragDirection(ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight(), pos);
+				boolean isDragged = checkDrag(ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight(), pos);
 
 				if(isDragged) {
 					Direction direction = Util.getDragDirection(game.DRAG_POWER);
@@ -248,7 +248,7 @@ public class LevelService implements Disposable {
 		}
 	}
 
-	protected boolean checkDragDirection(float x, float y, float w, float h, Vector3 pos) {
+	protected boolean checkDrag(float x, float y, float w, float h, Vector3 pos) {
 		if((System.currentTimeMillis() - lastDragTime) >= DRAG_DELAY) {
 			if((pos.x > x && pos.x < (x + w) && (pos.y > y && pos.y < (y + h)))) {
 				return true;
