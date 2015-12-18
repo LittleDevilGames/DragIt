@@ -54,7 +54,7 @@ public class Util {
 	}
 
 	public static float getTextWidth(BitmapFont font, String text) {
-		GlyphLayout gl = new GlyphLayout(font, text);
-		return gl.width;
+		GlyphLayout layout = new GlyphLayout(font, text);
+		return layout.width;
 	}
 }

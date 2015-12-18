@@ -1,6 +1,7 @@
 package com.dragit.slickstars.service;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -261,11 +262,15 @@ public class LevelService implements Disposable {
 		if(comboCount >= DRAGS_FOR_COMBO) {
 			comboCount = 0;
 			game.setCombo(game.getCombo() + 1);
-		}
-		else {
+			showCombo(game.WIDTH / 2, game.HEIGHT / 2);
+		} else {
 			comboCount++;
 		}
 		pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, game.getCombo(), "x" + game.getCombo());
+	}
+
+	private void showCombo(float x, float y) {
+		comboAction(game.getCombo(), x, y);
 	}
 
 	private void showScore(float x, float y, Border side) {
@@ -311,6 +316,11 @@ public class LevelService implements Disposable {
 		game.score.set(game.score.get() + score);
 	}
 
+	private void comboAction(int combo, float x, float y) {
+		Hint comboHint = new Hint(x, y, 6.5f, Color.BLUE, "COMBO x" + combo, gameFont);
+		game.stage.addActor(comboHint);
+		comboHint.startAction();
+	}
 
 	protected boolean isBallOut(Ball ball) {
 		if(ball.getY() < (0 - game.BALL_SIZE))

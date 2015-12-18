@@ -91,7 +91,7 @@ public class GameService implements Disposable {
 		}, 0, timeCreateBall);
 	}
 	
-	private void generateLevel() {
+	protected void generateLevel() {
 		float start, end;
 		Direction direction;
 		
@@ -168,10 +168,10 @@ public class GameService implements Disposable {
 		}
 
 		Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Score " + game.score.get(), game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET, game.batch, false);
-
 		if(game.points >= 0) {
-			Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Points " + game.points, game.UI_LABEL_OFFSET, game.HEIGHT - (game.UI_LABEL_OFFSET * 2), game.batch, false);
+			Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Lives " + game.points, game.UI_LABEL_OFFSET, game.HEIGHT - (game.UI_LABEL_OFFSET * 2), game.batch, false);
 		}
+		Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Combo x" + game.getCombo(), game.UI_LABEL_OFFSET, game.HEIGHT - (game.UI_LABEL_OFFSET * 2) - 30, game.batch, false);
 
 		return 1;
 	}
