@@ -10,6 +10,7 @@ import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.screen.GameScreen;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.TextUtil;
 import com.dragit.slickstars.util.Util;
 
 import java.util.Random;
@@ -126,10 +127,10 @@ public class GameService implements Disposable {
 
 		if(game.status == GameStatus.GAME_END) {
 
-			Util.drawText(gameFont, game.FONT_MID_SIZE, Color.SKY,
+			TextUtil.drawText(gameFont, game.FONT_MID_SIZE, Color.SKY,
 					"GAME OVER\nYour score: " + game.score.get()
 					+ "\nDragged: " + game.dragged
-					+ "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f, game.batch, false);
+					+ "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f, game.batch);
 
 			if(Gdx.input.isTouched()) {
 				game.score.writeRecord(game.score.get());
@@ -167,12 +168,11 @@ public class GameService implements Disposable {
 			Logger.log(CLASS_NAME, "ball creation time changed to " + levelService.getBallCreationTime());
 		}
 
-		Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Score " + game.score.get(), game.UI_LABEL_OFFSET, game.HEIGHT - game.UI_LABEL_OFFSET, game.batch, false);
+		TextUtil.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Score " + game.score.get(), Util.getPos(Util.Centering.POS_LEFT, game.HEIGHT - Util.DEFAULT_PADDING), game.batch);
 		if(game.points >= 0) {
-			Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Lives " + game.points, game.UI_LABEL_OFFSET, game.HEIGHT - (game.UI_LABEL_OFFSET * 2), game.batch, false);
+			TextUtil.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Lives " + game.points, Util.getPos(Util.Centering.POS_LEFT, game.HEIGHT - Util.DEFAULT_PADDING * 2), game.batch);
 		}
-		Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Combo x" + game.getCombo(), game.UI_LABEL_OFFSET, game.HEIGHT - (game.UI_LABEL_OFFSET * 2) - 30, game.batch, false);
-
+		TextUtil.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Combo x" + game.getCombo(), Util.getPos(Util.Centering.POS_LEFT, game.HEIGHT - Util.DEFAULT_PADDING * 3), game.batch);
 		return 1;
 	}
 	

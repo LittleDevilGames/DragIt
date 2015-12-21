@@ -20,8 +20,8 @@ import de.tomgrill.gdxdialogs.core.GDXDialogsSystem;
 public class MainGame extends Game {
 	private final String CLASS_NAME = "MainGame";
 	
-	public final int WIDTH = 480;
-	public final int HEIGHT = 800;
+	public final static int WIDTH = 480;
+	public final static int HEIGHT = 800;
 	public final String VERSION = "0.9 alpha";
 
 	public final float WPADDING = WIDTH / 8;

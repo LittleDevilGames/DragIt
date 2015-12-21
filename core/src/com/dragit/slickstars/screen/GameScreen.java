@@ -10,10 +10,12 @@ import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.service.GameService;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.TextUtil;
 import com.dragit.slickstars.util.Util;
 
 public class GameScreen extends BaseScreen {
 	private final String CLASS_NAME = "GameScreen";
+	private final String PAUSE_LABEL = "PAUSE";
 
 	private GameService gameService;
 	private ParticleEffect pixelParticle;
@@ -55,7 +57,7 @@ public class GameScreen extends BaseScreen {
 		}
 		else {
 			game.batch.begin();
-			Util.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "PAUSE", (game.WIDTH / 2), game.HEIGHT / 2, game.batch);
+			TextUtil.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, PAUSE_LABEL, (game.WIDTH / 2) - Util.getHalfWidth(gameFont, PAUSE_LABEL), game.HEIGHT / 2, game.batch);
 			game.batch.end();
 		}
 	}

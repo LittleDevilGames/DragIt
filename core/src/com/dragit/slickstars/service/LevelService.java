@@ -31,6 +31,7 @@ public class LevelService implements Disposable {
 	private final int COUNT_OBJ_TYPES = 2;
 	private final int DRAGS_FOR_COMBO = 5;
 	private final int DRAG_DELAY = 200;
+	private final String COMBO_LABEL = "COMBO X";
 
 	protected CopyOnWriteArrayList<Ball> balls;
 	protected ArrayList<Border> sides;
@@ -317,7 +318,7 @@ public class LevelService implements Disposable {
 	}
 
 	private void comboAction(int combo, float x, float y) {
-		Hint comboHint = new Hint(x, y, 6.5f, Color.BLUE, "COMBO x" + combo, gameFont);
+		Hint comboHint = new Hint(x - Util.getHalfWidth(gameFont, COMBO_LABEL), y, 6.5f, Color.BLUE, COMBO_LABEL + combo, gameFont);
 		game.stage.addActor(comboHint);
 		comboHint.startAction();
 	}

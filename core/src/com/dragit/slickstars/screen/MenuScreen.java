@@ -12,6 +12,7 @@ import com.dragit.slickstars.entity.Effect;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.TextUtil;
 import com.dragit.slickstars.util.Util;
 
 import java.util.Timer;
@@ -62,8 +63,8 @@ public class MenuScreen extends BaseScreen {
 
 		game.batch.begin();
 
-		Util.drawText(gameFont, game.FONT_TITLE_SIZE, Color.SKY, game.GAME_TITLE, (game.WIDTH / 2), game.HEIGHT - game.HPADDING * 2, game.batch);
-		Util.drawText(gameFont, game.FONT_DEFAULT_SIZE, Color.WHITE, "ver. " + game.VERSION, game.UI_PADDING, game.UI_PADDING, game.batch, false);
+		TextUtil.drawText(gameFont, game.FONT_TITLE_SIZE, Color.SKY, game.GAME_TITLE, game.WIDTH / 2, game.HEIGHT - Util.DEFAULT_PADDING * 2, game.batch);
+		TextUtil.drawText(gameFont, game.FONT_DEFAULT_SIZE, Color.WHITE, "ver. " + game.VERSION, Util.DEFAULT_PADDING, Util.DEFAULT_PADDING, game.batch, false);
 
 		game.batch.end();
 	}
