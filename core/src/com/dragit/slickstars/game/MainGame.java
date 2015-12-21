@@ -1,5 +1,10 @@
 package com.dragit.slickstars.game;
 
+/*
+	This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 Australia License.
+	http://creativecommons.org/licenses/by-nc-sa/3.0/au/
+*/
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -47,7 +52,6 @@ public class MainGame extends Game {
 	public final static String COLOR_GREEN = "00a8b6";
 	
 	public final float UI_PADDING = 30f;
-	public final float UI_LABEL_SIZE = 120f;
 	public final float UI_LABEL_OFFSET = 30f;
 	public final float FONT_TITLE_SIZE = 3.5f;
 	public final float FONT_MID_SIZE = 1.5f;
