@@ -3,13 +3,11 @@ package com.dragit.slickstars.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.Pool;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.ObjectType;
@@ -34,25 +32,35 @@ public class Ball extends Actor implements Disposable {
 		this.direction = Direction.NONE;
 		//this.debug();
 	}
+
+	public Ball() {
+		this.isDragged = false;
+		this.isAlive = true;
+		this.direction = Direction.NONE;
+	}
 	
 	@Override
 	public void draw(Batch batch, float delta) {
-		sprite.setColor(color);
-		if(isDragged) {
-			sprite.setAlpha(0.5f);
-			if(effect != null) {
-				effect.setPosition(getX() + (getWidth() / 2), getY() + (getWidth() / 2));
-				effect.draw(batch, Gdx.graphics.getDeltaTime());
+		if(sprite != null) {
+			sprite.setColor(color);
+			if(isDragged) {
+				sprite.setAlpha(0.5f);
+				if(effect != null) {
+					effect.setPosition(getX() + (getWidth() / 2), getY() + (getWidth() / 2));
+					effect.draw(batch, Gdx.graphics.getDeltaTime());
+				}
 			}
-		}
 
-		sprite.draw(batch);
+			sprite.draw(batch);
+		}
 	}
 	
 	@Override
 	public void positionChanged() {
 		super.positionChanged();
-		sprite.setPosition(getX(), getY());
+		if(sprite != null) {
+			sprite.setPosition(getX(), getY());
+		}
 	}
 	
 	@Override

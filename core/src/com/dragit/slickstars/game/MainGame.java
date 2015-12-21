@@ -20,8 +20,8 @@ import de.tomgrill.gdxdialogs.core.GDXDialogsSystem;
 public class MainGame extends Game {
 	private final String CLASS_NAME = "MainGame";
 	
-	public final int WIDTH = 480;
-	public final int HEIGHT = 800;
+	public final static int WIDTH = 480;
+	public final static int HEIGHT = 800;
 	public final String VERSION = "0.9 alpha";
 
 	public final float WPADDING = WIDTH / 8;
@@ -41,6 +41,7 @@ public class MainGame extends Game {
 	public final float ACCELERATE_VALUE = 0.7f;
 	public final int GAME_TIME = 60;
 	public final int CHANGE_SIDE_POINT = 2;
+	public final int MAX_SIDES = 2;
 	
 	public final static String COLOR_RED = "f8212e";
 	public final static String COLOR_GREEN = "00a8b6";

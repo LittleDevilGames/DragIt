@@ -5,13 +5,44 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.dragit.slickstars.game.MainGame;
 
 import java.util.Random;
 
-
 public class Util {
-	
+
+	public final static float DEFAULT_PADDING = 30f;
+
+	public enum Centering {
+		POS_CENTER,
+		POS_LEFT,
+		POS_RIGHT
+	}
+
+	public static Vector2 getPos(Centering centering, float vertical) {
+		Vector2 pos = new Vector2();
+		switch (centering) {
+			case POS_CENTER: {
+				pos.x = MainGame.WIDTH / 2;
+				pos.y = MainGame.HEIGHT / 2;
+				break;
+			}
+			case POS_LEFT: {
+				pos.x = DEFAULT_PADDING;
+				pos.y = vertical;
+				break;
+			}
+			case POS_RIGHT: {
+				pos.x = MainGame.WIDTH - DEFAULT_PADDING;
+				pos.y = vertical;
+				break;
+			}
+		}
+
+		return pos;
+	}
+
 	public static int getRandomRange(int min, int max) {
 		int pos = 0;
 		pos = new Random().nextInt(max - min) + min;
@@ -37,24 +68,8 @@ public class Util {
 		return MainGame.ObjectType.GREEN;
 	}
 
-	public static void drawText(BitmapFont font, float size, Color color, String text, float x, float y, SpriteBatch batch, boolean autoOffset) {
-		font.getData().setScale(size);
-		font.setColor(color);
-
-		float offset = 0f;
-
-		if(autoOffset) {
-			offset = getTextWidth(font, text) / 2;
-		}
-		font.draw(batch, text, x - offset, y);
-	}
-
-	public static void drawText(BitmapFont font, float size, Color color, String text, float x, float y, SpriteBatch batch) {
-		drawText(font, size, color, text, x, y, batch, true);
-	}
-
-	public static float getTextWidth(BitmapFont font, String text) {
-		GlyphLayout gl = new GlyphLayout(font, text);
-		return gl.width;
+	public static float getHalfWidth(BitmapFont font, String text) {
+		GlyphLayout layout = new GlyphLayout(font, text);
+		return layout.width / 2;
 	}
 }

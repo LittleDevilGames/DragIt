@@ -1,6 +1,7 @@
 package com.dragit.slickstars.service;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -30,9 +31,10 @@ public class LevelService implements Disposable {
 	private final int COUNT_OBJ_TYPES = 2;
 	private final int DRAGS_FOR_COMBO = 5;
 	private final int DRAG_DELAY = 200;
+	private final String COMBO_LABEL = "COMBO X";
 
-	private CopyOnWriteArrayList<Ball> balls;
-	private ArrayList<Border> sides;
+	protected CopyOnWriteArrayList<Ball> balls;
+	protected ArrayList<Border> sides;
 
 	private MainGame game;
 	private Timer delayTimer;
@@ -91,7 +93,7 @@ public class LevelService implements Disposable {
 						if (currPos >= end) timerState = false;
 						currPos += offset;
 					}
-					pushBall(currPos);
+					pushBall(currPos, true);
 				}
 			}
 		}, 0, ballCreationTime);
@@ -101,7 +103,7 @@ public class LevelService implements Disposable {
 		return ballCreationTime;
 	}
 
-	private void createSides() {
+	protected void createSides() {
 		this.sides = new ArrayList<Border>();
 		this.sides.add(new Border(new Vector2(0, 0), 10, game.HEIGHT, Direction.LEFT, ObjectType.GREEN));
 		this.sides.add(new Border(new Vector2(game.WIDTH - 10, 0), 10, game.HEIGHT, Direction.RIGHT, ObjectType.RED));
@@ -190,7 +192,7 @@ public class LevelService implements Disposable {
 		return 1;
 	}
 
-	private void pushBall(float x) {
+	protected void pushBall(float x, boolean useEffect) {
 
 		ObjectType type = Util.getRandObjectType(COUNT_OBJ_TYPES);
 		if(balls.size() >= maxBalls) {
@@ -207,12 +209,14 @@ public class LevelService implements Disposable {
 		}
 		else {
 			Ball ball = new Ball(x, game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, type, new Sprite(game.res.ballTexture));
-			ball.setEffect(game.res.getBallEffect());
+			if(useEffect) {
+				ball.setEffect(game.res.getBallEffect());
+			}
 			game.ballGroup.addActor(ball);
 			balls.add(ball);
 		}
 	}
-	
+
 	public void render(float delta) {
 		for(Border side : sides) {
 			game.shapeRenderer.rect(side.position.x, side.position.y, side.getWidth(), side.getHeight(), side.getColor(), side.getColor(), side.getColor(), side.getColor());
@@ -221,39 +225,53 @@ public class LevelService implements Disposable {
 	
 	public void update(float delta) {
 		for(Ball ball : balls) {
-			checkDrag(ball);
+			drag(ball);
 			ballUpdate(ball);
 		}
 	}
 
-	private void checkDrag(Ball ball) {
+	private void drag(Ball ball) {
 		if(Gdx.input.isTouched() && !MainGame.isPause) {
 			if(!ball.isDragged) {
 				Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 				game.camera.unproject(pos);
-				if((System.currentTimeMillis() - lastDragTime) >= DRAG_DELAY) {
-					if((pos.x > ball.getX() && pos.x < (ball.getX() + ball.getWidth()) && (pos.y > ball.getY() && pos.y < (ball.getY() + ball.getHeight())))) {
-						Direction direction = Util.getDragDirection(game.DRAG_POWER);
-						if(direction != Direction.NONE) {
-							ball.setDirection(direction);
-							ball.isDragged = true;
-							lastDragTime = System.currentTimeMillis();
-						}
+
+				boolean isDragged = checkDrag(ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight(), pos);
+
+				if(isDragged) {
+					Direction direction = Util.getDragDirection(game.DRAG_POWER);
+					if(direction != Direction.NONE) {
+						ball.setDirection(direction);
+						ball.isDragged = true;
+						lastDragTime = System.currentTimeMillis();
 					}
 				}
 			}
 		}
 	}
 
+	protected boolean checkDrag(float x, float y, float w, float h, Vector3 pos) {
+		if((System.currentTimeMillis() - lastDragTime) >= DRAG_DELAY) {
+			if((pos.x > x && pos.x < (x + w) && (pos.y > y && pos.y < (y + h)))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private void checkCombo() {
 		if(comboCount >= DRAGS_FOR_COMBO) {
 			comboCount = 0;
 			game.setCombo(game.getCombo() + 1);
-		}
-		else {
+			showCombo(game.WIDTH / 2, game.HEIGHT / 2);
+		} else {
 			comboCount++;
 		}
 		pointAction(game.WIDTH / 2, game.UI_LABEL_OFFSET * 2, true, game.getCombo(), "x" + game.getCombo());
+	}
+
+	private void showCombo(float x, float y) {
+		comboAction(game.getCombo(), x, y);
 	}
 
 	private void showScore(float x, float y, Border side) {
@@ -299,15 +317,20 @@ public class LevelService implements Disposable {
 		game.score.set(game.score.get() + score);
 	}
 
+	private void comboAction(int combo, float x, float y) {
+		Hint comboHint = new Hint(x - Util.getHalfWidth(gameFont, COMBO_LABEL), y, 6.5f, Color.BLUE, COMBO_LABEL + combo, gameFont);
+		game.stage.addActor(comboHint);
+		comboHint.startAction();
+	}
 
-	private boolean isBallOut(Ball ball) {
+	protected boolean isBallOut(Ball ball) {
 		if(ball.getY() < (0 - game.BALL_SIZE))
 			return true;
 
 		return false;
 	}
 
-	private int getResources() {
+	protected int getResources() {
 		if(game.res == null) return 0;
 
 		gameFont = game.res.gameFont;

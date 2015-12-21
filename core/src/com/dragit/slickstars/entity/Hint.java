@@ -20,9 +20,19 @@ public class Hint extends Actor implements Disposable {
 		this.font.getData().setScale(1.5f);
 		this.font.setColor(Color.WHITE);
 	}
+
+	public Hint(float x, float y, float size, Color color, String text, BitmapFont font) {
+		this.setX(x);
+		this.setY(y);
+		this.font = font;
+		this.text = text;
+
+		this.font.getData().setScale(size);
+		this.font.setColor(color);
+	}
 	
 	public void startAction() {
-		this.addAction(Actions.sequence(Actions.moveTo(getX(), getY()+40, 2f), Actions.delay(0.7f), Actions.hide(), Actions.removeActor(this)));
+		this.addAction(Actions.sequence(Actions.scaleBy(10f, 2f, 0.5f), Actions.moveTo(getX(), getY()+40, 2f), Actions.delay(0.7f), Actions.hide(), Actions.removeActor(this)));
 	}
 	
 	@Override
