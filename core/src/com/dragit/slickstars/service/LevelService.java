@@ -15,6 +15,7 @@ import com.dragit.slickstars.game.MainGame.Direction;
 import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.game.MainGame.ObjectType;
 import com.dragit.slickstars.util.Logger;
+import com.dragit.slickstars.util.TextUtil;
 import com.dragit.slickstars.util.Util;
 
 import java.util.ArrayList;
@@ -318,7 +319,7 @@ public class LevelService implements Disposable {
 	}
 
 	private void comboAction(int combo, float x, float y) {
-		Hint comboHint = new Hint(x - Util.getHalfWidth(gameFont, COMBO_LABEL), y, 6.5f, Color.BLUE, COMBO_LABEL + combo, gameFont);
+		Hint comboHint = new Hint(x - TextUtil.getHalfWidth(gameFont, COMBO_LABEL), y, 6.5f, Color.BLUE, COMBO_LABEL + combo, gameFont);
 		game.stage.addActor(comboHint);
 		comboHint.startAction();
 	}

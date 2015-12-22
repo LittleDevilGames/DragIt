@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.dragit.slickstars.game.MainGame;
 import com.dragit.slickstars.util.Logger;
 import com.dragit.slickstars.util.TextUtil;
-import com.dragit.slickstars.util.Util;
 
 import java.io.File;
 import java.util.Timer;
@@ -57,7 +56,7 @@ public class LoadScreen extends BaseScreen {
 
         game.batch.begin();
         loadLabel = "Loading... (" + (game.res.getProgress() * 100) + "%)";
-        TextUtil.drawText(preloadFont, game.FONT_MID_SIZE, Color.WHITE, loadLabel, (game.WIDTH / 2) - Util.getHalfWidth(preloadFont, loadLabel), game.HEIGHT - (game.HEIGHT / 3), game.batch);
+        TextUtil.drawText(preloadFont, game.FONT_MID_SIZE, Color.WHITE, loadLabel, (game.WIDTH / 2) - TextUtil.getHalfWidth(preloadFont, loadLabel), game.HEIGHT - (game.HEIGHT / 3), game.batch);
         game.batch.end();
 
         game.stage.getViewport().setCamera(game.camera);

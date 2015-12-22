@@ -2,6 +2,7 @@ package com.dragit.slickstars.util;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
@@ -17,7 +18,7 @@ public class TextUtil {
         float offset = 0f;
 
         if(autoOffset) {
-            offset = Util.getHalfWidth(font, text) / 2;
+            offset = getHalfWidth(font, text) / 2;
         }
         font.draw(batch, text, x - offset, y);
     }
@@ -33,5 +34,10 @@ public class TextUtil {
 
     public static void drawText(BitmapFont font, float size, Color color, String text, Vector2 pos, SpriteBatch batch) {
         drawText(font, size, color, text, pos.x, pos.y, batch);
+    }
+
+    public static float getHalfWidth(BitmapFont font, String text) {
+        GlyphLayout layout = new GlyphLayout(font, text);
+        return layout.width / 2;
     }
 }

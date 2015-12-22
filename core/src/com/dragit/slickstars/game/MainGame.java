@@ -1,10 +1,5 @@
 package com.dragit.slickstars.game;
 
-/*
-	This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 Australia License.
-	http://creativecommons.org/licenses/by-nc-sa/3.0/au/
-*/
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -27,11 +22,8 @@ public class MainGame extends Game {
 	
 	public final static int WIDTH = 480;
 	public final static int HEIGHT = 800;
-	public final String VERSION = "0.9 alpha";
+	public final String VERSION = "0.9";
 
-	public final float WPADDING = WIDTH / 8;
-	public final float HPADDING = HEIGHT / 8;
-	
 	public final int BUTTON_WIDTH = 200;
 	public final int BUTTON_HEIGHT = 65;
 	public final int MIN_BUTTON_WIDTH = 100;
