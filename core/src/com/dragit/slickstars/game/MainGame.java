@@ -22,11 +22,8 @@ public class MainGame extends Game {
 	
 	public final static int WIDTH = 480;
 	public final static int HEIGHT = 800;
-	public final String VERSION = "0.9 alpha";
+	public final String VERSION = "0.9";
 
-	public final float WPADDING = WIDTH / 8;
-	public final float HPADDING = HEIGHT / 8;
-	
 	public final int BUTTON_WIDTH = 200;
 	public final int BUTTON_HEIGHT = 65;
 	public final int MIN_BUTTON_WIDTH = 100;
@@ -47,7 +44,6 @@ public class MainGame extends Game {
 	public final static String COLOR_GREEN = "00a8b6";
 	
 	public final float UI_PADDING = 30f;
-	public final float UI_LABEL_SIZE = 120f;
 	public final float UI_LABEL_OFFSET = 30f;
 	public final float FONT_TITLE_SIZE = 3.5f;
 	public final float FONT_MID_SIZE = 1.5f;

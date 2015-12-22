@@ -1,10 +1,6 @@
 package com.dragit.slickstars.util;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.dragit.slickstars.game.MainGame;
 
@@ -13,11 +9,14 @@ import java.util.Random;
 public class Util {
 
 	public final static float DEFAULT_PADDING = 30f;
+	public final static float MIN_PADDING = 20f;
 
 	public enum Centering {
 		POS_CENTER,
 		POS_LEFT,
-		POS_RIGHT
+		POS_RIGHT,
+		POS_TOP,
+		POS_BOTTOM
 	}
 
 	public static Vector2 getPos(Centering centering, float vertical) {
@@ -36,6 +35,16 @@ public class Util {
 			case POS_RIGHT: {
 				pos.x = MainGame.WIDTH - DEFAULT_PADDING;
 				pos.y = vertical;
+				break;
+			}
+			case POS_TOP: {
+				pos.x = MainGame.WIDTH / 2;
+				pos.y = MainGame.HEIGHT - DEFAULT_PADDING;
+				break;
+			}
+			case POS_BOTTOM: {
+				pos.x = MainGame.WIDTH / 2;
+				pos.y = DEFAULT_PADDING;
 				break;
 			}
 		}
@@ -66,10 +75,5 @@ public class Util {
 			case 1: return MainGame.ObjectType.GREEN;
 		}
 		return MainGame.ObjectType.GREEN;
-	}
-
-	public static float getHalfWidth(BitmapFont font, String text) {
-		GlyphLayout layout = new GlyphLayout(font, text);
-		return layout.width / 2;
 	}
 }

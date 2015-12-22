@@ -1,6 +1,7 @@
 package com.dragit.slickstars.screen;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,7 +12,6 @@ import com.dragit.slickstars.game.MainGame.GameStatus;
 import com.dragit.slickstars.service.GameService;
 import com.dragit.slickstars.util.Logger;
 import com.dragit.slickstars.util.TextUtil;
-import com.dragit.slickstars.util.Util;
 
 public class GameScreen extends BaseScreen {
 	private final String CLASS_NAME = "GameScreen";
@@ -19,7 +19,8 @@ public class GameScreen extends BaseScreen {
 
 	private GameService gameService;
 	private ParticleEffect pixelParticle;
-	
+	private Texture titleBg;
+
 	public GameScreen(MainGame game) {
 		super(game);
 		
@@ -42,6 +43,10 @@ public class GameScreen extends BaseScreen {
 		game.shapeRenderer.setProjectionMatrix(game.camera.combined);
 		game.batch.setProjectionMatrix(game.camera.combined);
 
+		game.batch.begin();
+		game.batch.draw(titleBg, 0, game.HEIGHT - 80f, game.WIDTH, 80f);
+		game.batch.end();
+
 		game.stage.getViewport().setCamera(game.camera);
 		game.stage.act(delta);
 		game.stage.draw();
@@ -57,7 +62,7 @@ public class GameScreen extends BaseScreen {
 		}
 		else {
 			game.batch.begin();
-			TextUtil.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, PAUSE_LABEL, (game.WIDTH / 2) - Util.getHalfWidth(gameFont, PAUSE_LABEL), game.HEIGHT / 2, game.batch);
+			TextUtil.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, PAUSE_LABEL, (game.WIDTH / 2) - TextUtil.getHalfWidth(gameFont, PAUSE_LABEL), game.HEIGHT / 2, game.batch);
 			game.batch.end();
 		}
 	}
@@ -123,6 +128,7 @@ public class GameScreen extends BaseScreen {
 	protected void getResources() {
 		super.getResources();
 		pixelParticle = game.res.pixelParticle;
+		titleBg = game.res.titleBg;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package com.dragit.slickstars.service;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Disposable;
 import com.dragit.slickstars.game.Countdown;
@@ -126,11 +127,10 @@ public class GameService implements Disposable {
 	public int update(float delta) {
 
 		if(game.status == GameStatus.GAME_END) {
-
 			TextUtil.drawText(gameFont, game.FONT_MID_SIZE, Color.SKY,
 					"GAME OVER\nYour score: " + game.score.get()
-					+ "\nDragged: " + game.dragged
-					+ "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f, game.batch);
+							+ "\nDragged: " + game.dragged
+							+ "\nMax combo: x" + game.maxCombo, game.WIDTH / 3.5f, game.HEIGHT / 1.5f, game.batch);
 
 			if(Gdx.input.isTouched()) {
 				game.score.writeRecord(game.score.get());
@@ -168,11 +168,12 @@ public class GameService implements Disposable {
 			Logger.log(CLASS_NAME, "ball creation time changed to " + levelService.getBallCreationTime());
 		}
 
-		TextUtil.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Score " + game.score.get(), Util.getPos(Util.Centering.POS_LEFT, game.HEIGHT - Util.DEFAULT_PADDING), game.batch);
-		if(game.points >= 0) {
-			TextUtil.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Lives " + game.points, Util.getPos(Util.Centering.POS_LEFT, game.HEIGHT - Util.DEFAULT_PADDING * 2), game.batch);
+		if(game.points < 0) {
+			game.points = 0;
 		}
-		TextUtil.drawText(gameFont, game.FONT_MID_SIZE, Color.WHITE, "Combo x" + game.getCombo(), Util.getPos(Util.Centering.POS_LEFT, game.HEIGHT - Util.DEFAULT_PADDING * 3), game.batch);
+		TextUtil.drawText(gameFont, game.FONT_DEFAULT_SIZE, Color.WHITE, "Score " + game.score.get(), Util.getPos(Util.Centering.POS_LEFT, game.HEIGHT - Util.MIN_PADDING), game.batch);
+		TextUtil.drawText(gameFont, game.FONT_DEFAULT_SIZE, Color.WHITE, "Lives " + game.points, Util.getPos(Util.Centering.POS_LEFT, game.HEIGHT - Util.MIN_PADDING * 2), game.batch);
+		TextUtil.drawText(gameFont, game.FONT_DEFAULT_SIZE, Color.WHITE, "Combo x" + game.getCombo(), Util.getPos(Util.Centering.POS_LEFT, game.HEIGHT - Util.MIN_PADDING * 3), game.batch);
 		return 1;
 	}
 	
