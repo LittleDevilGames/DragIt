@@ -28,6 +28,7 @@ public class Res implements Disposable {
 
     public ParticleEffect ballParticle;
     public Texture ballTexture;
+    public Texture titleBg;
     public BitmapFont gameFont;
     public ParticleEffect pixelParticle;
 
@@ -43,6 +44,7 @@ public class Res implements Disposable {
 
         manager.load(PARTICLE_PATH + "ball.p", ParticleEffect.class);
         manager.load(TEXTURE_PATH + "ball.png", Texture.class);
+        manager.load(TEXTURE_PATH + "title_bg.png", Texture.class);
         manager.load(FONT_PATH + "px.fnt", BitmapFont.class);
         manager.load(PARTICLE_PATH + "pixel.p", ParticleEffect.class);
     }
@@ -51,6 +53,7 @@ public class Res implements Disposable {
         ballParticle = get(PARTICLE_PATH + "ball.p", ParticleEffect.class);
         pixelParticle = get(PARTICLE_PATH + "pixel.p", ParticleEffect.class);
         ballTexture = get(TEXTURE_PATH + "ball.png", Texture.class);
+        titleBg = get(TEXTURE_PATH + "title_bg.png", Texture.class);
         gameFont = get(FONT_PATH + "px.fnt", BitmapFont.class);
 
         effects = new ParticleEffectPool(ballParticle, 15, 50);

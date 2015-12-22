@@ -9,6 +9,7 @@ import java.util.Random;
 public class Util {
 
 	public final static float DEFAULT_PADDING = 30f;
+	public final static float MIN_PADDING = 20f;
 
 	public enum Centering {
 		POS_CENTER,

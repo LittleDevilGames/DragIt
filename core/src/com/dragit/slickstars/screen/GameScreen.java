@@ -1,6 +1,7 @@
 package com.dragit.slickstars.screen;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -18,7 +19,8 @@ public class GameScreen extends BaseScreen {
 
 	private GameService gameService;
 	private ParticleEffect pixelParticle;
-	
+	private Texture titleBg;
+
 	public GameScreen(MainGame game) {
 		super(game);
 		
@@ -40,6 +42,10 @@ public class GameScreen extends BaseScreen {
 		super.render(delta);
 		game.shapeRenderer.setProjectionMatrix(game.camera.combined);
 		game.batch.setProjectionMatrix(game.camera.combined);
+
+		game.batch.begin();
+		game.batch.draw(titleBg, 0, game.HEIGHT - 80f, game.WIDTH, 80f);
+		game.batch.end();
 
 		game.stage.getViewport().setCamera(game.camera);
 		game.stage.act(delta);
@@ -122,6 +128,7 @@ public class GameScreen extends BaseScreen {
 	protected void getResources() {
 		super.getResources();
 		pixelParticle = game.res.pixelParticle;
+		titleBg = game.res.titleBg;
 	}
 
 	@Override

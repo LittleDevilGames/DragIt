@@ -194,12 +194,12 @@ public class LevelService implements Disposable {
 	}
 
 	protected void pushBall(float x, boolean useEffect) {
-
+		float offset = (game.BALL_SIZE * 2) + 10f;
 		ObjectType type = Util.getRandObjectType(COUNT_OBJ_TYPES);
 		if(balls.size() >= maxBalls) {
 			for(Ball b : balls) {
 				if(b.isAlive == false) {
-					b.setPosition(x, game.HEIGHT + game.BALL_SIZE * 2);
+					b.setPosition(x, game.HEIGHT - offset);
 					b.isAlive = true;
 					b.isDragged = false;
 					b.setDirection(Direction.NONE);
@@ -209,7 +209,7 @@ public class LevelService implements Disposable {
 			}
 		}
 		else {
-			Ball ball = new Ball(x, game.HEIGHT + game.BALL_SIZE * 2, game.BALL_SIZE, game.BALL_SIZE, type, new Sprite(game.res.ballTexture));
+			Ball ball = new Ball(x, game.HEIGHT - offset, game.BALL_SIZE, game.BALL_SIZE, type, new Sprite(game.res.ballTexture));
 			if(useEffect) {
 				ball.setEffect(game.res.getBallEffect());
 			}
